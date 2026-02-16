@@ -10,11 +10,19 @@ import { MissionSectionHeader } from '../components/MissionSectionHeader';
 import { ProofLine } from '../components/ProofLine';
 import { getRouteScreenContract } from '../contracts/route-screen-contracts';
 
+/* ────────────────────────────────────────────
+   21. Grow > AI Recommendations
+   Route: /grow/recommendations
+   Spec: Ranked AI-curated actions with
+         explainable factors + projected impact
+──────────────────────────────────────────── */
+
 const recommendations = [
   {
     id: 'REC-001',
     title: 'Consolidate streaming subscriptions',
-    summary: 'You have 3 overlapping streaming services. Consolidating to 1 premium plan saves $28/mo.',
+    summary:
+      'Three overlapping streaming services detected. Consolidating to a single premium plan saves $28/mo while maintaining 95% content coverage.',
     topFactors: [
       { label: 'Usage overlap', contribution: 0.91, note: '3 services with 60% content overlap' },
       { label: 'Cost reduction', contribution: 0.88, note: '$28/mo potential savings' },
@@ -23,32 +31,40 @@ const recommendations = [
     confidence: 0.89,
     impact: '$336/yr',
     auditId: 'GV-2026-0212-REC1',
+    reversibleWindow: '30 days',
+    sideEffects: ['Recurring billing changes', 'Service transition period ~48h'],
   },
   {
     id: 'REC-002',
     title: 'Increase emergency fund contribution',
-    summary: 'Current buffer covers 14 days. Increasing to 21 days reduces income-gap risk by 34%.',
+    summary:
+      'Current buffer covers 14 days of expenses. Increasing to 21 days reduces income-gap risk by 34%, improving overall financial resilience.',
     topFactors: [
       { label: 'Buffer adequacy', contribution: 0.76, note: 'Below recommended 30-day threshold' },
-      { label: 'Income stability', contribution: 0.94, note: 'Stable monthly salary' },
+      { label: 'Income stability', contribution: 0.94, note: 'Stable monthly salary detected' },
       { label: 'Risk reduction', contribution: 0.85, note: '34% income-gap risk decrease' },
     ],
     confidence: 0.91,
     impact: 'Risk -34%',
     auditId: 'GV-2026-0212-REC2',
+    reversibleWindow: 'Anytime',
+    sideEffects: ['Reduced discretionary budget ~$120/mo'],
   },
   {
     id: 'REC-003',
     title: 'Renegotiate internet plan',
-    summary: 'Market rate for equivalent speed is $20 lower than current bill. Auto-negotiation available.',
+    summary:
+      'Market rate for equivalent speed tier is $20 lower than current bill. Auto-negotiation via partner API available with 72% historical success rate.',
     topFactors: [
       { label: 'Market comparison', contribution: 0.95, note: '$20/mo above market rate' },
       { label: 'Service equivalence', contribution: 0.88, note: 'Same speed tier available' },
-      { label: 'Negotiation success rate', contribution: 0.72, note: '72% historical success' },
+      { label: 'Negotiation success', contribution: 0.72, note: '72% historical success rate' },
     ],
     confidence: 0.84,
     impact: '$240/yr',
     auditId: 'GV-2026-0212-REC3',
+    reversibleWindow: '24h',
+    sideEffects: ['Account re-provisioning may take 24h', 'Current promotional rates may be lost'],
   },
 ];
 
@@ -67,9 +83,10 @@ export const GrowRecommendations: React.FC = () => {
       <section className="engine-section">
         <MissionSectionHeader
           title="Evidence-backed recommendations"
-          message="Each recommendation includes explainable factors and projected impact."
-          contextCue="Select a recommendation to send to Execute"
+          message="Each recommendation includes explainable factors and projected impact. Select one to route to Execute."
+          contextCue="Ranked by composite score: impact x confidence x feasibility"
         />
+
         <div className="engine-item-list">
           {recommendations.map((rec) => (
             <div key={rec.id}>
@@ -91,15 +108,17 @@ export const GrowRecommendations: React.FC = () => {
                   </Link>
                 }
               />
+
               <ActionOutcomePreview
                 outcome={`Applying this recommendation: expected ${rec.impact} impact.`}
-                reversibleWindow="24h"
-                sideEffects={['Recurring billing may change', 'Account adjustments applied within 24h']}
+                reversibleWindow={rec.reversibleWindow}
+                sideEffects={rec.sideEffects}
                 impact={rec.impact}
               />
+
               <ProofLine
                 claim={`Recommendation ${rec.id}`}
-                evidence={`Confidence ${rec.confidence} | Impact: ${rec.impact}`}
+                evidence={`Confidence ${(rec.confidence * 100).toFixed(0)}% | Impact: ${rec.impact}`}
                 source="Grow engine v2.1"
                 basis="30 days analysis"
                 sourceType="model"

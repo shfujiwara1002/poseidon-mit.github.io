@@ -14,6 +14,13 @@ import { mockPrivacyControls, mockDataExports } from '../services/mockGovern';
 import type { PrivacyControl } from '../services/mockGovern';
 import { getRouteScreenContract } from '../contracts/route-screen-contracts';
 
+/* ────────────────────────────────────────────
+   25. Settings > Data Rights
+   Route: /settings/rights
+   Spec: GDPR rights panel, consent scopes,
+         data export, destructive delete
+──────────────────────────────────────────── */
+
 const gdprRights: DataRight[] = [
   { id: 'DR-1', title: 'Right to access', article: 'GDPR Art. 15', status: 'available', lastExercised: 'Never' },
   { id: 'DR-2', title: 'Right to portability', article: 'GDPR Art. 20', status: 'available', lastExercised: '5d ago' },
@@ -42,22 +49,25 @@ export const SettingsRights: React.FC = () => {
   const [deleteConfirmation, setDeleteConfirmation] = useState('');
 
   const handleToggleControl = (category: string) => {
-    setControls((prev) => prev.map((item) => (item.category === category ? { ...item, enabled: !item.enabled } : item)));
+    setControls((prev) =>
+      prev.map((item) =>
+        item.category === category ? { ...item, enabled: !item.enabled } : item
+      )
+    );
   };
+
+  const activeCount = controls.filter((c) => c.enabled).length;
 
   const mainContent = (
     <>
-      {/* GDPR Rights panel — P1 component */}
+      {/* ── GDPR Rights panel ── */}
       <section className="engine-section" data-slot="data_rights">
         <MissionSectionHeader
           title="Your data rights"
           message="GDPR-compliant rights you can exercise at any time."
           contextCue="Each action is audit-logged and reversible within 30 days"
         />
-        <DataRightsPanel
-          rights={gdprRights}
-          actions={dataRightActions}
-        />
+        <DataRightsPanel rights={gdprRights} actions={dataRightActions} />
         <ProofLine
           claim="4 rights available"
           evidence="GDPR Articles 15, 17, 18, 20 | All exercisable"
@@ -74,17 +84,26 @@ export const SettingsRights: React.FC = () => {
         />
       </section>
 
-      {/* Data consent scopes */}
+      {/* ── Data consent scopes ── */}
       <section className="engine-section" data-slot="consent_scope">
         <MissionSectionHeader
           title="Data consent scopes"
           message="Control what data categories Poseidon can process."
           contextCue="Changes take effect immediately and are audit-logged"
-          right={<MissionStatusChip tone="primary" label={`${controls.filter((c) => c.enabled).length}/${controls.length} active`} />}
+          right={
+            <MissionStatusChip
+              tone="primary"
+              label={`${activeCount}/${controls.length} active`}
+            />
+          }
         />
         <div className="engine-item-list">
           {controls.map((control) => (
-            <PrivacyControlCard key={control.category} control={control} onToggle={handleToggleControl} />
+            <PrivacyControlCard
+              key={control.category}
+              control={control}
+              onToggle={handleToggleControl}
+            />
           ))}
         </div>
         <ProofLine
@@ -96,7 +115,7 @@ export const SettingsRights: React.FC = () => {
         />
       </section>
 
-      {/* Consent scope for data management */}
+      {/* ── Session consent scope ── */}
       <ConsentScopePanel
         scope="Data management and export operations"
         duration="Session-based"
@@ -106,7 +125,7 @@ export const SettingsRights: React.FC = () => {
         onToggle={setConsentGranted}
       />
 
-      {/* Data export history */}
+      {/* ── Export history ── */}
       <article className="engine-card">
         <MissionSectionHeader
           title="Export history"
@@ -130,7 +149,7 @@ export const SettingsRights: React.FC = () => {
         />
       </article>
 
-      {/* Delete my data — requires DELETE confirmation */}
+      {/* ── Destructive: Delete my data ── */}
       <section className="engine-section engine-section--destructive">
         <MissionSectionHeader
           title="Delete my data"
@@ -144,13 +163,16 @@ export const SettingsRights: React.FC = () => {
             placeholder="Type DELETE to confirm"
             value={deleteConfirmation}
             onChange={(e) => setDeleteConfirmation(e.target.value)}
+            aria-label="Type DELETE to confirm data deletion"
           />
           <button
             type="button"
             className="entry-btn entry-btn--primary entry-btn--destructive"
             disabled={deleteConfirmation !== 'DELETE'}
           >
-            {deleteConfirmation === 'DELETE' ? 'Permanently delete all data' : 'Type DELETE above to confirm'}
+            {deleteConfirmation === 'DELETE'
+              ? 'Permanently delete all data'
+              : 'Type DELETE above to confirm'}
           </button>
         </div>
       </section>
@@ -171,7 +193,7 @@ export const SettingsRights: React.FC = () => {
       />
       <MissionDataRows
         items={[
-          { id: 'YR-1', title: 'Active scopes', value: String(controls.filter((c) => c.enabled).length), tone: 'healthy' },
+          { id: 'YR-1', title: 'Active scopes', value: String(activeCount), tone: 'healthy' },
           { id: 'YR-2', title: 'Exports completed', value: '2', tone: 'primary' },
           { id: 'YR-3', title: '3rd party sharing', value: '1 partner', tone: 'warning' },
           { id: 'YR-4', title: 'Min retention', value: '90 days', tone: 'primary' },
@@ -205,7 +227,7 @@ export const SettingsRights: React.FC = () => {
         },
         freshness: new Date(Date.now() - 10 * 60 * 1000),
         kpis: [
-          { label: 'Active scopes', value: String(controls.filter((c) => c.enabled).length), definition: 'Data categories with active consent', accent: 'teal', sparklineData: kpiSparklines.scopes, sparklineColor: 'var(--state-healthy)' },
+          { label: 'Active scopes', value: String(activeCount), definition: 'Data categories with active consent', accent: 'teal', sparklineData: kpiSparklines.scopes, sparklineColor: 'var(--state-healthy)' },
           { label: 'Exports', value: '2', definition: 'Data export requests', accent: 'blue', sparklineData: kpiSparklines.exports, sparklineColor: 'var(--state-primary)' },
           { label: 'Min retention', value: '90d', definition: 'Minimum data retention period', accent: 'cyan', sparklineData: kpiSparklines.retention, sparklineColor: '#00F0FF' },
           { label: '3rd party', value: '1', definition: 'Active third-party data sharing partners', accent: 'amber', sparklineData: kpiSparklines.sharing, sparklineColor: 'var(--state-warning)' },

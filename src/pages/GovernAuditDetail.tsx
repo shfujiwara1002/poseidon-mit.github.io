@@ -10,6 +10,13 @@ import { MissionSectionHeader } from '../components/MissionSectionHeader';
 import { ProofLine } from '../components/ProofLine';
 import { getRouteScreenContract } from '../contracts/route-screen-contracts';
 
+/* ────────────────────────────────────────────
+   24. Govern > Audit Detail
+   Route: /govern/audit/:id
+   Spec: Full decision reconstruction with
+         factors, compliance flags, user feedback
+──────────────────────────────────────────── */
+
 const auditEntry = {
   id: 'GV-2026-0212-001',
   engine: 'protect',
@@ -17,12 +24,13 @@ const auditEntry = {
   timestamp: '12 minutes ago',
   model: { name: 'FraudDetectionV3.2', version: '3.2.1', accuracy: 99.7 },
   explanation: {
-    summary: 'Transaction flagged as fraudulent based on amount deviation (3x usual), location anomaly (5,000km), and time-of-day risk.',
+    summary:
+      'Transaction flagged as fraudulent based on amount deviation (3x usual), location anomaly (5,000 km from usual), and time-of-day risk (03:00 AM local). All three signals exceeded their respective thresholds simultaneously.',
     confidence: 97,
   },
   topFactors: [
     { label: 'Amount deviation', contribution: 0.95, note: '3x typical transaction amount' },
-    { label: 'Location anomaly', contribution: 0.92, note: '5,000km from usual location' },
+    { label: 'Location anomaly', contribution: 0.92, note: '5,000 km from usual location' },
     { label: 'Time-of-day risk', contribution: 0.88, note: '03:00 AM local time' },
     { label: 'Merchant history', contribution: 0.72, note: 'First purchase at this merchant' },
   ],
@@ -42,10 +50,11 @@ export const GovernAuditDetail: React.FC = () => {
 
   const mainContent = (
     <>
+      {/* ── Decision metadata ── */}
       <section className="engine-section">
         <MissionSectionHeader
           title="Decision metadata"
-          message="Complete record of the AI decision parameters."
+          message="Complete record of the AI decision parameters and context."
         />
         <MissionDataRows
           items={[
@@ -66,6 +75,7 @@ export const GovernAuditDetail: React.FC = () => {
         />
       </section>
 
+      {/* ── Decision reconstruction via ExplainableInsightPanel ── */}
       <ExplainableInsightPanel
         title="Decision reconstruction"
         summary={auditEntry.explanation.summary}
@@ -80,6 +90,7 @@ export const GovernAuditDetail: React.FC = () => {
         }}
       />
 
+      {/* ── Compliance flags ── */}
       <article className="engine-card">
         <MissionSectionHeader
           title="Compliance flags"
@@ -87,9 +98,9 @@ export const GovernAuditDetail: React.FC = () => {
         />
         <MissionDataRows
           items={[
-            { id: 'CF-1', title: 'GDPR', value: auditEntry.compliance.gdpr ? 'Compliant' : 'Non-compliant', tone: auditEntry.compliance.gdpr ? 'healthy' : 'critical' },
-            { id: 'CF-2', title: 'ECOA', value: auditEntry.compliance.ecoa ? 'Compliant' : 'Non-compliant', tone: auditEntry.compliance.ecoa ? 'healthy' : 'critical' },
-            { id: 'CF-3', title: 'CCPA', value: auditEntry.compliance.ccpa ? 'Compliant' : 'Non-compliant', tone: auditEntry.compliance.ccpa ? 'healthy' : 'critical' },
+            { id: 'CF-1', title: 'GDPR', value: auditEntry.compliance.gdpr ? 'Compliant' : 'Non-compliant', tone: auditEntry.compliance.gdpr ? 'healthy' as const : 'critical' as const },
+            { id: 'CF-2', title: 'ECOA', value: auditEntry.compliance.ecoa ? 'Compliant' : 'Non-compliant', tone: auditEntry.compliance.ecoa ? 'healthy' as const : 'critical' as const },
+            { id: 'CF-3', title: 'CCPA', value: auditEntry.compliance.ccpa ? 'Compliant' : 'Non-compliant', tone: auditEntry.compliance.ccpa ? 'healthy' as const : 'critical' as const },
           ]}
         />
         <ProofLine
@@ -111,6 +122,7 @@ export const GovernAuditDetail: React.FC = () => {
 
   const sideContent = (
     <>
+      {/* ── Contributing factors dropdown ── */}
       <article className="engine-card" data-slot="factors_dropdown">
         <MissionSectionHeader
           title="Contributing factors"
@@ -122,6 +134,7 @@ export const GovernAuditDetail: React.FC = () => {
         />
       </article>
 
+      {/* ── User feedback ── */}
       <article className="engine-card">
         <MissionSectionHeader
           title="User feedback"
@@ -129,7 +142,7 @@ export const GovernAuditDetail: React.FC = () => {
         />
         <MissionDataRows
           items={[
-            { id: 'UF-1', title: 'Verdict', value: auditEntry.userFeedback.correct ? 'Correct' : 'Incorrect', tone: auditEntry.userFeedback.correct ? 'healthy' : 'critical' },
+            { id: 'UF-1', title: 'Verdict', value: auditEntry.userFeedback.correct ? 'Correct' : 'Incorrect', tone: auditEntry.userFeedback.correct ? 'healthy' as const : 'critical' as const },
             { id: 'UF-2', title: 'Comment', value: auditEntry.userFeedback.comment ?? 'None', tone: 'primary' },
           ]}
         />
@@ -142,6 +155,7 @@ export const GovernAuditDetail: React.FC = () => {
         />
       </article>
 
+      {/* ── Navigation ── */}
       <article className="engine-card">
         <MissionSectionHeader
           title="Related"
