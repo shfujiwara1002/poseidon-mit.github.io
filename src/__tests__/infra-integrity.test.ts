@@ -7,7 +7,7 @@
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import { describe, expect, it } from 'vitest';
-import { routeLoaders } from '../router/lazyRoutes';
+import { routeLoaders, V0_READY_ROUTES } from '../router/lazyRoutes';
 
 const root = resolve(__dirname, '../..');
 const read = (rel: string) => readFileSync(resolve(root, rel), 'utf-8');
@@ -64,5 +64,15 @@ describe('Infrastructure integrity', () => {
     for (const route of tier2) {
       expect(routeLoaders).toHaveProperty(route);
     }
+  });
+
+  it('V0_READY_ROUTES contains only valid route paths', () => {
+    for (const route of V0_READY_ROUTES) {
+      expect(routeLoaders).toHaveProperty(route);
+    }
+  });
+
+  it('V0_READY_ROUTES includes the landing page', () => {
+    expect(V0_READY_ROUTES.has('/')).toBe(true);
   });
 });

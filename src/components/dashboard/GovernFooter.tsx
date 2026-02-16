@@ -21,10 +21,10 @@ export function GovernFooter() {
         <span>Verified</span>
       </div>
 
-      <a href="/govern/audit" className="govern-footer__audit-link">
+      <span className="govern-footer__audit-link" aria-label="Audit reference">
         <ExternalLink size={12} />
         GV-2026-0215-DASH
-      </a>
+      </span>
 
       <button className="govern-footer__cta" type="button">
         Request human review

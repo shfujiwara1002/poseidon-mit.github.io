@@ -145,10 +145,10 @@ function InsightPanel() {
           </svg>
           <span style={{ fontSize: 12, color: 'rgba(165,180,198,0.9)' }}>Confidence</span>
         </div>
-        <a href="/govern/audit" className="insight-panel__audit-link">
+        <span className="insight-panel__audit-link" aria-label="Audit reference">
           <ExternalLink size={12} />
           GV-2026-0212-DASH-REC
-        </a>
+        </span>
       </div>
     </motion.div>
   );

@@ -1,0 +1,55 @@
+import { motion } from 'framer-motion';
+import { Construction, ArrowLeft, Waves } from 'lucide-react';
+import { Link, useRouter } from '../router';
+
+export default function ComingSoon() {
+  const { path } = useRouter();
+
+  return (
+    <div className="min-h-screen bg-[#070d1a] text-white flex flex-col">
+      <nav className="sticky top-0 z-50 backdrop-blur-xl bg-white/[0.03] border-b border-white/[0.06]">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+          <Link
+            to="/"
+            className="flex items-center gap-2 font-bold text-lg text-white"
+            aria-label="Poseidon.AI home"
+          >
+            <Waves className="h-5 w-5 text-teal-400" />
+            Poseidon.AI
+          </Link>
+          <Link
+            to="/dashboard"
+            className="text-sm font-medium px-5 py-2 rounded-xl bg-gradient-to-r from-teal-500 to-cyan-400 text-slate-950"
+          >
+            Dashboard
+          </Link>
+        </div>
+      </nav>
+
+      <div className="flex-1 flex items-center justify-center px-6">
+        <motion.div
+          className="text-center max-w-md"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div className="mx-auto mb-6 w-16 h-16 rounded-full bg-white/[0.05] border border-white/[0.08] flex items-center justify-center">
+            <Construction className="h-7 w-7 text-teal-400" />
+          </div>
+          <h1 className="text-3xl font-bold text-white mb-3">Coming Soon</h1>
+          <p className="text-slate-400 mb-2">
+            This page is being redesigned with our new experience.
+          </p>
+          <p className="font-mono text-xs text-slate-600 mb-8">{path}</p>
+          <Link
+            to="/dashboard"
+            className="inline-flex items-center gap-2 text-sm text-teal-400 hover:text-teal-300 transition-colors"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to Dashboard
+          </Link>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
