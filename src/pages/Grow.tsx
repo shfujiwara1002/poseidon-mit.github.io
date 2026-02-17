@@ -1,302 +1,720 @@
-import React, { useState, useMemo } from 'react';
-import { Link } from '../router';
-import { TrendingUp, DollarSign, Target } from 'lucide-react';
-import { CategoryScoreBar } from '../components/CategoryScoreBar';
-import type { CategoryScore } from '../components/CategoryScoreBar';
-import { ContributionChart } from '../components/ContributionChart';
-import { DefinitionLine } from '../components/DefinitionLine';
-import { ForecastBandChart } from '../components/ForecastBandChart';
-import { GovernContractSet } from '../components/GovernContractSet';
-import { MilestonesTimeline } from '../components/MilestonesTimeline';
-import type { Milestone } from '../components/MilestonesTimeline';
-import { MissionActionList } from '../components/MissionActionList';
-import { MissionSectionHeader } from '../components/MissionSectionHeader';
-import { MissionStatusChip } from '../components/MissionStatusChip';
-import { NetWorthHero } from '../components/NetWorthHero';
-import { PageShell } from '../components/PageShell';
-import { ProofLine } from '../components/ProofLine';
-import { SavingsGoalCard } from '../components/SavingsGoalCard';
-import { ScoreRing } from '../components/ScoreRing';
-import { getRouteScreenContract } from '../contracts/route-screen-contracts';
+import React from 'react';
+import { motion } from 'framer-motion';
 import {
-  generateCashFlowForecast,
-  mockGrowStats,
-  mockSavingsGoals,
-} from '../services/mockGrow';
+  Shield,
+  ShieldCheck,
+  ExternalLink,
+  TrendingUp,
+  Target,
+  DollarSign,
+  User,
+  ArrowUpRight,
+  Clock,
+  CheckCircle2,
+  AlertTriangle,
+  CircleDot,
+} from 'lucide-react';
+import {
+  AreaChart,
+  Area,
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
 
-// ── Static data ──────────────────────────────────────────────
+/* ═══════════════════════════════════════════
+   TYPES
+   ═══════════════════════════════════════════ */
 
-const healthCategories: CategoryScore[] = [
-  { name: 'Savings rate', score: 85, icon: DollarSign, color: 'var(--accent-violet)' },
-  { name: 'Debt ratio', score: 72, icon: TrendingUp, color: 'var(--accent-violet)' },
-  { name: 'Income growth', score: 81, icon: TrendingUp, color: 'var(--accent-violet)' },
-  { name: 'Investment', score: 74, icon: Target, color: 'var(--accent-violet)' },
+type GoalStatus = 'On track' | 'Behind' | 'Ahead';
+
+interface Goal {
+  id: string;
+  name: string;
+  progress: number;
+  target: string;
+  current: string;
+  gap: string;
+  timeline: string;
+  status: GoalStatus;
+  recommendation: string;
+  confidence: number;
+  actions: string[];
+}
+
+/* ═══════════════════════════════════════════
+   DATA
+   ═══════════════════════════════════════════ */
+
+const goals: Goal[] = [
+  {
+    id: 'g1',
+    name: 'Retirement by 2045',
+    progress: 67,
+    target: '$2.4M',
+    current: '$847k',
+    gap: '$1.55M',
+    timeline: '19 years remaining',
+    status: 'Behind',
+    recommendation: 'Increase monthly contribution by $420',
+    confidence: 0.89,
+    actions: ['Adjust goal', 'View scenarios'],
+  },
+  {
+    id: 'g2',
+    name: 'Emergency fund: $50k',
+    progress: 88,
+    target: '$50k',
+    current: '$44k',
+    gap: '$6k',
+    timeline: '4 months to completion',
+    status: 'On track',
+    recommendation: 'Maintain current savings rate',
+    confidence: 0.94,
+    actions: ['View details'],
+  },
+  {
+    id: 'g3',
+    name: 'Home down payment: $120k',
+    progress: 42,
+    target: '$120k',
+    current: '$50k',
+    gap: '$70k',
+    timeline: '3.5 years to target',
+    status: 'On track',
+    recommendation: 'No action needed',
+    confidence: 0.91,
+    actions: ['View details'],
+  },
 ];
 
-const growMilestones: Milestone[] = [
-  { label: 'Emergency fund started', date: 'Jan 2026', status: 'completed' },
-  { label: '$5k milestone', date: 'Jan 28', status: 'completed' },
-  { label: '$8k milestone', date: 'Feb 10', status: 'completed' },
-  { label: '$12k target', date: 'May 2026 (projected)', status: 'upcoming' },
-  { label: '6-month runway', date: 'Aug 2026', status: 'future' },
+const projectionData = [
+  { year: '2026', value: 847, low: 780, high: 920 },
+  { year: '2030', value: 1100, low: 950, high: 1300 },
+  { year: '2035', value: 1500, low: 1200, high: 1900 },
+  { year: '2040', value: 2000, low: 1500, high: 2600 },
+  { year: '2045', value: 2400, low: 1800, high: 3200 },
+  { year: '2050', value: 2800, low: 2000, high: 3800 },
+  { year: '2054', value: 2800, low: 2100, high: 3600 },
 ];
 
-const monthlyContributions = [
-  { month: 'Sep', amount: 1400 },
-  { month: 'Oct', amount: 1650 },
-  { month: 'Nov', amount: 1800 },
-  { month: 'Dec', amount: 1950 },
-  { month: 'Jan', amount: 2000 },
-  { month: 'Feb', amount: 2100 },
+const allocationData = [
+  { name: 'Stocks', value: 62, color: '#8B5CF6' },
+  { name: 'Bonds', value: 28, color: '#3B82F6' },
+  { name: 'Cash', value: 10, color: '#64748B' },
 ];
 
-const kpiSparklines = {
-  netWorth: [{ value: 780 }, { value: 795 }, { value: 810 }, { value: 825 }, { value: 840 }, { value: 847 }],
-  savings: [{ value: 1.4 }, { value: 1.6 }, { value: 1.8 }, { value: 1.9 }, { value: 2.0 }, { value: 2.1 }],
-  goals: [{ value: 2 }, { value: 2 }, { value: 3 }, { value: 3 }, { value: 3 }, { value: 3 }],
-  confidence: [{ value: 0.85 }, { value: 0.86 }, { value: 0.87 }, { value: 0.88 }, { value: 0.89 }, { value: 0.89 }],
+const recentActivity = [
+  { text: 'Goal updated: Retirement target', time: '2 days ago' },
+  { text: 'Contribution increased: +$200/mo', time: '1 week ago' },
+  { text: 'Rebalanced portfolio: +2% stocks', time: '2 weeks ago' },
+];
+
+/* ═══════════════════════════════════════════
+   ANIMATION VARIANTS
+   ═══════════════════════════════════════════ */
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
 };
 
-// ── Component ────────────────────────────────────────────────
+const stagger = {
+  visible: {
+    transition: { staggerChildren: 0.08 },
+  },
+};
 
-export const Grow: React.FC = () => {
-  const [forecastDays, setForecastDays] = useState(30);
-  const contract = getRouteScreenContract('grow');
-  const cashFlowData = useMemo(() => generateCashFlowForecast(forecastDays), [forecastDays]);
-  const currentBalance = cashFlowData[0]?.balance || 0;
-  const projectedBalance = cashFlowData[cashFlowData.length - 1]?.balance || 0;
-  const balanceChange = projectedBalance - currentBalance;
-  const endConfidence = cashFlowData[cashFlowData.length - 1]?.confidence || 0;
+/* ═══════════════════════════════════════════
+   UTILITY HELPERS
+   ═══════════════════════════════════════════ */
 
-  // ── Primary feed ───────────────────────────────────────────
+const statusConfig: Record<GoalStatus, { color: string; bg: string }> = {
+  'On track': { color: '#10B981', bg: 'rgba(16,185,129,0.12)' },
+  Behind: { color: '#F59E0B', bg: 'rgba(245,158,11,0.12)' },
+  Ahead: { color: '#10B981', bg: 'rgba(16,185,129,0.12)' },
+};
 
-  const primaryFeed = (
-    <>
-      {/* Net worth hero */}
-      <article className="engine-card">
-        <NetWorthHero
-          total="$847,200"
-          change="+$12,400 (+1.5%)"
-          trend="up"
-          period="this quarter"
-          glowColor="var(--engine-grow)"
-        />
-      </article>
+function getConfidenceColor(c: number): string {
+  if (c >= 0.9) return '#10B981';
+  if (c >= 0.8) return '#8B5CF6';
+  if (c >= 0.7) return '#F59E0B';
+  return '#EF4444';
+}
 
-      {/* Forecast chart */}
-      <article className="engine-card">
-        <MissionSectionHeader
-          title="Cash flow forecast"
-          message="Monte Carlo simulation with 10,000 paths. Updated every 6 hours."
-          right={
-            <MissionStatusChip
-              tone={balanceChange >= 0 ? 'healthy' : 'warning'}
-              label={`${forecastDays}d horizon`}
-            />
-          }
-        />
-        <div className="grow-forecast-controls">
-          {[7, 30, 90].map((days) => (
+/* ═══════════════════════════════════════════
+   GLASS CARD COMPONENT
+   ═══════════════════════════════════════════ */
+
+function GlassCard({
+  children,
+  className = '',
+  borderColor,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement> & { borderColor?: string }) {
+  return (
+    <div
+      className={`rounded-2xl border border-white/[0.06] p-4 md:p-6 ${className}`}
+      style={{
+        background: 'rgba(255,255,255,0.03)',
+        backdropFilter: 'blur(24px)',
+        WebkitBackdropFilter: 'blur(24px)',
+        boxShadow: '0 4px 16px rgba(0,0,0,0.2)',
+        ...(borderColor ? { borderLeftWidth: '2px', borderLeftColor: borderColor } : {}),
+      }}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   SUB-COMPONENTS
+   ═══════════════════════════════════════════ */
+
+function ConfidenceIndicator({ value }: { value: number }) {
+  const color = getConfidenceColor(value);
+  const pct = value * 100;
+  return (
+    <div className="flex items-center gap-2">
+      <div className="h-1.5 w-16 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
+        <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, background: color }} />
+      </div>
+      <span className="text-xs font-mono tabular-nums" style={{ color }}>{value.toFixed(2)}</span>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   HERO SECTION
+   ═══════════════════════════════════════════ */
+
+function HeroSection() {
+  return (
+    <motion.section
+      variants={stagger}
+      initial="hidden"
+      animate="visible"
+      className="flex flex-col gap-6"
+    >
+      {/* Engine badge */}
+      <motion.div variants={fadeUp}>
+        <span
+          className="inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold tracking-wider uppercase"
+          style={{
+            borderColor: 'rgba(139,92,246,0.3)',
+            background: 'rgba(139,92,246,0.08)',
+            color: '#8B5CF6',
+          }}
+        >
+          <TrendingUp size={12} />
+          Grow Engine
+        </span>
+      </motion.div>
+
+      {/* Headline */}
+      <motion.div variants={fadeUp} className="flex flex-col gap-2">
+        <h1
+          className="text-2xl md:text-4xl font-bold leading-tight tracking-tight text-balance"
+          style={{ fontFamily: 'var(--font-display)', color: '#F1F5F9' }}
+        >
+          3 active goals. Confidence 0.89. On track for 2 of 3.
+        </h1>
+        <p className="text-sm md:text-base leading-relaxed" style={{ color: '#CBD5E1' }}>
+          AI-driven forecasts and optimization scenarios. Net worth growth: +$12.4k this month.
+        </p>
+      </motion.div>
+
+      {/* Featured AI insight card */}
+      <motion.div variants={fadeUp}>
+        <GlassCard borderColor="#8B5CF6" className="flex flex-col gap-4">
+          <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+            <div className="flex flex-col gap-2">
+              <p className="text-sm md:text-base font-medium" style={{ color: '#F1F5F9' }}>
+                Retire by 2045 — increase monthly contributions by $420 to stay on track (89% confidence)
+              </p>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <span className="text-xs" style={{ color: '#64748B' }}>Confidence</span>
+              <ConfidenceIndicator value={0.89} />
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-2">
             <button
-              key={days}
-              type="button"
-              className={forecastDays === days ? 'entry-btn entry-btn--primary' : 'entry-btn entry-btn--ghost'}
-              onClick={() => setForecastDays(days)}
+              className="inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+              style={{
+                background: 'linear-gradient(135deg, #8B5CF6, #7C3AED)',
+                color: '#ffffff',
+                minHeight: '44px',
+              }}
+              aria-label="Review growth scenarios"
             >
-              {days}d
+              <Target size={16} />
+              Review scenarios
+            </button>
+            <button
+              className="inline-flex items-center gap-2 rounded-xl border px-5 py-2.5 text-sm font-medium transition-all hover:bg-white/[0.04] active:scale-[0.98] cursor-pointer"
+              style={{ borderColor: 'rgba(255,255,255,0.1)', color: '#CBD5E1', background: 'transparent', minHeight: '44px' }}
+            >
+              Adjust goal
+            </button>
+          </div>
+          {/* ProofLine */}
+          <div
+            className="flex flex-wrap items-center gap-1 text-xs"
+            style={{ color: '#64748B' }}
+            role="note"
+            aria-label="Evidence trail"
+          >
+            <span>3 goals tracked</span>
+            <span aria-hidden="true">|</span>
+            <span>Confidence 0.89</span>
+            <span aria-hidden="true">|</span>
+            <span className="font-mono">Model: GrowthOptimizer v2.8</span>
+            <span aria-hidden="true">|</span>
+            <span>Basis: Monte Carlo simulation (10K runs)</span>
+          </div>
+        </GlassCard>
+      </motion.div>
+    </motion.section>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   KPI GRID
+   ═══════════════════════════════════════════ */
+
+interface KpiCardData {
+  label: string;
+  value: string;
+  badge?: { text: string; color: string; bg: string };
+  trend?: { text: string; color: string };
+}
+
+const kpiData: KpiCardData[] = [
+  {
+    label: 'Net Worth',
+    value: '$847k',
+    trend: { text: '+$12.4k (+1.5%)', color: '#10B981' },
+  },
+  {
+    label: 'Goal Progress',
+    value: '67%',
+    badge: { text: 'on track', color: '#10B981', bg: 'rgba(16,185,129,0.12)' },
+  },
+  {
+    label: 'Projected Growth',
+    value: '+8.2%',
+    trend: { text: 'annualized', color: '#10B981' },
+  },
+  {
+    label: 'Risk-adjusted Return',
+    value: '6.4%',
+    trend: { text: 'Sharpe-adjusted', color: '#14B8A6' },
+  },
+];
+
+function KpiGrid() {
+  return (
+    <motion.section
+      variants={stagger}
+      initial="hidden"
+      animate="visible"
+      className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4"
+      aria-label="Key performance indicators"
+    >
+      {kpiData.map((kpi) => (
+        <motion.div key={kpi.label} variants={fadeUp}>
+          <GlassCard className="flex flex-col gap-2">
+            <span className="text-xs uppercase tracking-wider font-medium" style={{ color: '#64748B' }}>
+              {kpi.label}
+            </span>
+            <div className="flex items-end gap-2">
+              <span
+                className="text-2xl md:text-3xl font-bold tabular-nums"
+                style={{ fontFamily: 'var(--font-display)', color: '#F1F5F9' }}
+              >
+                {kpi.value}
+              </span>
+              {kpi.badge && (
+                <span
+                  className="mb-1 inline-flex rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider"
+                  style={{ background: kpi.badge.bg, color: kpi.badge.color }}
+                >
+                  {kpi.badge.text}
+                </span>
+              )}
+            </div>
+            {kpi.trend && (
+              <span className="flex items-center gap-1 text-xs font-medium" style={{ color: kpi.trend.color }}>
+                <ArrowUpRight size={12} />
+                {kpi.trend.text}
+              </span>
+            )}
+          </GlassCard>
+        </motion.div>
+      ))}
+    </motion.section>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   GOAL CARDS
+   ═══════════════════════════════════════════ */
+
+function GoalCard({ goal }: { goal: Goal }) {
+  const sc = statusConfig[goal.status];
+  return (
+    <motion.div variants={fadeUp}>
+      <GlassCard borderColor={goal.status === 'Behind' ? '#F59E0B' : 'rgba(139,92,246,0.3)'} className="flex flex-col gap-4">
+        <div className="flex items-start justify-between flex-wrap gap-2">
+          <h3 className="text-base font-semibold" style={{ color: '#F1F5F9' }}>{goal.name}</h3>
+          <span
+            className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold"
+            style={{ background: sc.bg, color: sc.color }}
+          >
+            {goal.status === 'On track' || goal.status === 'Ahead' ? <CheckCircle2 size={11} /> : <AlertTriangle size={11} />}
+            {goal.status}
+          </span>
+        </div>
+
+        {/* Progress bar */}
+        <div className="flex flex-col gap-1.5">
+          <div className="flex items-center justify-between">
+            <span className="text-xs" style={{ color: '#64748B' }}>Progress</span>
+            <span className="text-xs font-mono tabular-nums" style={{ color: '#8B5CF6' }}>{goal.progress}%</span>
+          </div>
+          <div
+            className="h-2 w-full rounded-full overflow-hidden"
+            style={{ background: 'rgba(255,255,255,0.06)' }}
+            role="progressbar"
+            aria-valuenow={goal.progress}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label={`${goal.progress}% progress toward ${goal.name}`}
+          >
+            <motion.div
+              className="h-full rounded-full"
+              style={{ background: '#8B5CF6' }}
+              initial={{ width: 0 }}
+              animate={{ width: `${goal.progress}%` }}
+              transition={{ duration: 1, ease: 'easeOut' }}
+            />
+          </div>
+        </div>
+
+        {/* Target details */}
+        <div className="grid grid-cols-3 gap-3">
+          <div className="flex flex-col gap-0.5">
+            <span className="text-[10px] uppercase tracking-wider" style={{ color: '#64748B' }}>Target</span>
+            <span className="text-sm font-mono font-semibold tabular-nums" style={{ color: '#F1F5F9' }}>{goal.target}</span>
+          </div>
+          <div className="flex flex-col gap-0.5">
+            <span className="text-[10px] uppercase tracking-wider" style={{ color: '#64748B' }}>Current</span>
+            <span className="text-sm font-mono font-semibold tabular-nums" style={{ color: '#F1F5F9' }}>{goal.current}</span>
+          </div>
+          <div className="flex flex-col gap-0.5">
+            <span className="text-[10px] uppercase tracking-wider" style={{ color: '#64748B' }}>Gap</span>
+            <span className="text-sm font-mono font-semibold tabular-nums" style={{ color: '#F59E0B' }}>{goal.gap}</span>
+          </div>
+        </div>
+
+        {/* Timeline */}
+        <div className="flex items-center gap-2">
+          <Clock size={12} style={{ color: '#64748B' }} />
+          <span className="text-xs" style={{ color: '#94A3B8' }}>{goal.timeline}</span>
+        </div>
+
+        {/* AI Recommendation */}
+        <div
+          className="rounded-xl px-3 py-2.5 flex items-start gap-2"
+          style={{ background: 'rgba(139,92,246,0.06)', border: '1px solid rgba(139,92,246,0.15)' }}
+        >
+          <CircleDot size={12} className="mt-0.5 shrink-0" style={{ color: '#8B5CF6' }} />
+          <div className="flex flex-col gap-1">
+            <span className="text-xs font-medium" style={{ color: '#CBD5E1' }}>
+              AI recommendation: {goal.recommendation}
+            </span>
+            <ConfidenceIndicator value={goal.confidence} />
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="flex flex-wrap gap-2">
+          {goal.actions.map((action, i) => (
+            <button
+              key={action}
+              className={`inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer ${
+                i === 0 ? '' : ''
+              }`}
+              style={
+                i === 0
+                  ? {
+                      background: 'linear-gradient(135deg, #8B5CF6, #7C3AED)',
+                      color: '#ffffff',
+                      minHeight: '44px',
+                    }
+                  : {
+                      borderWidth: '1px',
+                      borderColor: 'rgba(255,255,255,0.1)',
+                      color: '#CBD5E1',
+                      background: 'transparent',
+                      minHeight: '44px',
+                    }
+              }
+              aria-label={`${action} for ${goal.name}`}
+            >
+              {action}
             </button>
           ))}
         </div>
-        <ForecastBandChart
-          data={cashFlowData}
-          height={320}
-          historicalCount={Math.min(5, forecastDays)}
-        />
-        <ProofLine
-          claim={`${forecastDays}-day forecast`}
-          evidence={`Projected ${balanceChange >= 0 ? '+' : ''}$${Math.abs(balanceChange).toLocaleString()} | Confidence ${endConfidence}%`}
-          source="GrowthForecast v3.2"
-          basis="180-day pattern analysis"
-          sourceType="model"
-        />
-        <DefinitionLine
-          metric="Forecast confidence"
-          formula="ensemble(LSTM, ARIMA, seasonal)"
-          unit="percentage"
-          period={`${forecastDays} days rolling`}
-          threshold="> 80%"
-        />
-      </article>
+      </GlassCard>
+    </motion.div>
+  );
+}
 
-      {/* Goal cards */}
-      <section className="engine-section">
-        <MissionSectionHeader
-          title="Savings goals"
-          message="Progress toward active financial goals."
-          right={<MissionStatusChip tone="healthy" label={`${mockGrowStats.goalsOnTrack}/${mockGrowStats.totalGoals} on track`} />}
-        />
-        <div className="engine-item-list">
-          {mockSavingsGoals.map((goal) => (
-            <SavingsGoalCard key={goal.id} goal={goal} />
+function GoalsSection() {
+  return (
+    <motion.section variants={stagger} initial="hidden" animate="visible" className="flex flex-col gap-4">
+      <h2
+        className="text-lg md:text-xl font-semibold"
+        style={{ fontFamily: 'var(--font-display)', color: '#F1F5F9' }}
+      >
+        Your Goals
+      </h2>
+      <div className="flex flex-col gap-4">
+        {goals.map((g) => (
+          <GoalCard key={g.id} goal={g} />
+        ))}
+      </div>
+    </motion.section>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   SIDEBAR COMPONENTS
+   ═══════════════════════════════════════════ */
+
+function GrowthProjection() {
+  return (
+    <GlassCard className="flex flex-col gap-4">
+      <div className="flex items-center justify-between">
+        <h3 className="text-sm font-semibold" style={{ fontFamily: 'var(--font-display)', color: '#F1F5F9' }}>
+          30-Year Projection
+        </h3>
+      </div>
+      <div className="flex items-center justify-between">
+        <span className="text-xs" style={{ color: '#64748B' }}>$847k</span>
+        <span className="text-xs font-semibold" style={{ color: '#8B5CF6' }}>$2.8M (2054)</span>
+      </div>
+      <div className="h-32" role="img" aria-label="Growth projection chart showing net worth growing from $847k to projected $2.8M by 2054">
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart data={projectionData}>
+            <defs>
+              <linearGradient id="growGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.3} />
+                <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0} />
+              </linearGradient>
+              <linearGradient id="growBand" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.1} />
+                <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0.02} />
+              </linearGradient>
+            </defs>
+            <XAxis
+              dataKey="year"
+              tick={{ fill: '#64748B', fontSize: 10 }}
+              axisLine={false}
+              tickLine={false}
+            />
+            <YAxis hide />
+            <Tooltip
+              contentStyle={{
+                background: '#0F1D32',
+                border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: '8px',
+                fontSize: '12px',
+                color: '#F1F5F9',
+              }}
+              formatter={(value: number) => [`$${value}k`, '']}
+            />
+            <Area type="monotone" dataKey="high" stackId="1" stroke="none" fill="url(#growBand)" />
+            <Area type="monotone" dataKey="value" stroke="#8B5CF6" strokeWidth={2} fill="url(#growGrad)" />
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
+    </GlassCard>
+  );
+}
+
+function AssetAllocation() {
+  return (
+    <GlassCard className="flex flex-col gap-4">
+      <h3 className="text-sm font-semibold" style={{ fontFamily: 'var(--font-display)', color: '#F1F5F9' }}>
+        Asset Allocation
+      </h3>
+      <div className="flex items-center gap-4">
+        <div className="h-24 w-24 shrink-0" role="img" aria-label="Asset allocation: 62% stocks, 28% bonds, 10% cash">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={allocationData}
+                cx="50%"
+                cy="50%"
+                innerRadius={25}
+                outerRadius={40}
+                paddingAngle={3}
+                dataKey="value"
+                stroke="none"
+              >
+                {allocationData.map((entry) => (
+                  <Cell key={entry.name} fill={entry.color} />
+                ))}
+              </Pie>
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+        <div className="flex flex-col gap-2">
+          {allocationData.map((item) => (
+            <div key={item.name} className="flex items-center gap-2">
+              <div className="h-2 w-2 rounded-full shrink-0" style={{ background: item.color }} />
+              <span className="text-xs" style={{ color: '#CBD5E1' }}>{item.name}</span>
+              <span className="text-xs font-mono tabular-nums ml-auto" style={{ color: '#94A3B8' }}>{item.value}%</span>
+            </div>
           ))}
         </div>
-        <ProofLine
-          claim={`${mockGrowStats.goalsOnTrack} of ${mockGrowStats.totalGoals} goals on track`}
-          evidence={`${mockGrowStats.forecastAccuracy}% forecast accuracy | Updated 6h ago`}
-          source="Goal tracker v2.1"
-          sourceType="model"
-        />
-      </section>
-
-      {/* Contribution chart */}
-      <article className="engine-card">
-        <MissionSectionHeader
-          title="Monthly contributions"
-          message="Contribution history with target line."
-        />
-        <ContributionChart
-          data={monthlyContributions}
-          targetMonthly={2000}
-          accentColor="var(--engine-grow)"
-        />
-      </article>
-
-      {/* Govern footer */}
-      <GovernContractSet
-        auditId="GV-2026-0215-GRW"
-        modelVersion="GrowthForecast v3.2"
-        explanationVersion="SHAP v2.1"
-      />
-    </>
-  );
-
-  // ── Decision rail ──────────────────────────────────────────
-
-  const decisionRail = (
-    <>
-      {/* Financial health score */}
-      <article className="engine-card">
-        <ScoreRing
-          score={78}
-          label="Financial Health"
-          subtitle="/ 100"
-          statusText="Good"
-          color="var(--accent-violet)"
-          size="lg"
-        />
-      </article>
-
-      {/* Category breakdown */}
-      <article className="engine-card">
-        <MissionSectionHeader
-          title="Health categories"
-          message="Score breakdown by financial dimension."
-        />
-        <CategoryScoreBar categories={healthCategories} iconAccent="var(--accent-violet)" />
-      </article>
-
-      {/* Goal milestones */}
-      <article className="engine-card">
-        <MissionSectionHeader
-          title="Goal milestones"
-          message="Progress toward key financial targets."
-        />
-        <MilestonesTimeline
-          milestones={growMilestones}
-          accentColor="var(--accent-violet)"
-        />
-      </article>
-
-      {/* AI recommendation */}
-      <article className="engine-card">
-        <MissionSectionHeader title="AI recommendation" />
-        <div
-          className="rounded-xl p-4"
-          style={{ background: 'rgba(139,92,246,0.08)', border: '1px solid rgba(139,92,246,0.15)' }}
-        >
-          <p className="text-sm leading-relaxed" style={{ color: 'var(--text)' }}>
-            Increasing monthly savings by $200 would accelerate emergency fund goal by 2.3 months.
-          </p>
-        </div>
-        <ProofLine
-          claim="Acceleration possible"
-          evidence="+$200/mo brings completion to Mar 2026"
-          source="GrowthForecast v3.2"
-          sourceType="model"
-        />
-      </article>
-
-      {/* Navigation */}
-      <div className="mission-dual-actions">
-        <Link className="entry-btn entry-btn--ghost" to="/grow/scenarios">Scenario simulator</Link>
-        <Link className="entry-btn entry-btn--ghost" to="/govern">Audit trail</Link>
       </div>
-    </>
+      <span
+        className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider"
+        style={{ color: '#10B981' }}
+      >
+        <CheckCircle2 size={10} />
+        Within target range
+      </span>
+    </GlassCard>
   );
+}
 
+function RecentActivity() {
   return (
-    <PageShell
-      slug="grow"
-      contract={contract}
-      layout="engine"
-      heroVariant="focused"
-      hero={{
-        kicker: 'Grow',
-        engineBadge: 'Grow',
-        headline: 'Net worth trajectory: +8.2% this quarter. 3 goals on track.',
-        subline: 'Monte Carlo forecast with 10,000 simulations. Updated every 6 hours.',
-        proofLine: {
-          claim: 'Forecast confidence 0.89',
-          evidence: 'Simulations: 10,000 | Model: GrowthForecast v3.2 | Basis: 180-day pattern analysis',
-          source: 'Grow engine',
-        },
-        heroAction: {
-          label: 'AI insight:',
-          text: 'Increasing monthly savings by $200 would accelerate emergency fund goal by 2.3 months.',
-          cta: { label: 'Send to Execute', to: '/execute' },
-        },
-        freshness: new Date(Date.now() - 6 * 60 * 60 * 1000),
-        kpis: [
-          {
-            label: 'Net worth',
-            value: '$847k',
-            delta: '+8.2%',
-            definition: 'Total net worth across all linked accounts.',
-            accent: 'teal',
-            sparklineData: kpiSparklines.netWorth,
-            sparklineColor: 'var(--state-healthy)',
-          },
-          {
-            label: 'Monthly savings',
-            value: '$2.1k',
-            delta: '+12%',
-            definition: 'Total saved this month across all goals.',
-            accent: 'violet',
-            sparklineData: kpiSparklines.savings,
-            sparklineColor: 'var(--engine-grow)',
-          },
-          {
-            label: 'Goals on track',
-            value: '3/4',
-            definition: 'Goals projected to meet target on time.',
-            accent: 'cyan',
-            sparklineData: kpiSparklines.goals,
-            sparklineColor: '#00F0FF',
-          },
-          {
-            label: 'Forecast confidence',
-            value: '0.89',
-            definition: 'Statistical confidence of primary forecast path.',
-            accent: 'blue',
-            sparklineData: kpiSparklines.confidence,
-            sparklineColor: 'var(--state-primary)',
-          },
-        ],
-      }}
-      primaryFeed={primaryFeed}
-      decisionRail={decisionRail}
-    />
+    <GlassCard className="flex flex-col gap-4">
+      <h3 className="text-sm font-semibold" style={{ fontFamily: 'var(--font-display)', color: '#F1F5F9' }}>
+        Recent Activity
+      </h3>
+      <div className="flex flex-col gap-0">
+        {recentActivity.map((item, i) => (
+          <div
+            key={i}
+            className="flex items-start gap-3 py-2.5"
+            style={{
+              borderBottom: i < recentActivity.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
+            }}
+          >
+            <div
+              className="mt-0.5 h-2 w-2 rounded-full shrink-0"
+              style={{ background: '#8B5CF6' }}
+              aria-hidden="true"
+            />
+            <div className="flex flex-col gap-0.5 min-w-0">
+              <span className="text-xs font-medium" style={{ color: '#F1F5F9' }}>{item.text}</span>
+              <span className="text-[10px]" style={{ color: '#64748B' }}>{item.time}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </GlassCard>
   );
-};
+}
+
+/* ═══════════════════════════════════════════
+   GOVERNANCE FOOTER
+   ═══════════════════════════════════════════ */
+
+function GovernFooter() {
+  return (
+    <footer
+      className="mt-8 flex flex-col gap-3 md:flex-row md:items-center md:justify-between rounded-2xl border border-white/[0.06] px-4 py-3 md:px-6 md:py-4"
+      style={{ background: 'rgba(255,255,255,0.03)' }}
+      role="contentinfo"
+      aria-label="Governance verification footer"
+    >
+      <div className="flex items-center gap-2">
+        <div
+          className="flex items-center justify-center rounded-full"
+          style={{ width: 28, height: 28, background: 'rgba(59,130,246,0.12)' }}
+        >
+          <ShieldCheck size={14} style={{ color: '#3B82F6' }} />
+        </div>
+        <span
+          className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider"
+          style={{ background: 'rgba(16,185,129,0.12)', color: '#10B981' }}
+        >
+          <Shield size={10} />
+          Verified
+        </span>
+      </div>
+      <div className="flex items-center gap-2">
+        <span className="text-xs font-mono" style={{ color: '#64748B' }}>
+          GV-2026-0216-GROW
+        </span>
+        <ExternalLink size={12} style={{ color: '#64748B' }} aria-hidden="true" />
+      </div>
+      <button
+        className="inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-xs font-medium transition-all hover:bg-white/[0.04] cursor-pointer"
+        style={{ borderColor: 'rgba(255,255,255,0.08)', color: '#CBD5E1', background: 'transparent', minHeight: '44px' }}
+        aria-label="Request human review of growth projections"
+      >
+        <User size={14} />
+        Request human review
+      </button>
+    </footer>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   MAIN COMPONENT
+   ═══════════════════════════════════════════ */
+
+export function Grow() {
+  return (
+    <div className="min-h-screen w-full" style={{ background: '#0B1221' }}>
+      {/* Skip link */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-1/2 focus:-translate-x-1/2 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold"
+        style={{ background: '#8B5CF6', color: '#ffffff' }}
+      >
+        Skip to main content
+      </a>
+
+      <div
+        id="main-content"
+        className="mx-auto flex flex-col gap-6 md:gap-8 px-4 py-6 md:px-6 md:py-8 lg:px-8"
+        style={{ maxWidth: '1280px' }}
+        role="main"
+      >
+        <HeroSection />
+        <KpiGrid />
+
+        <div className="flex flex-col lg:flex-row gap-6">
+          <div className="flex-1 min-w-0 lg:w-2/3">
+            <GoalsSection />
+          </div>
+          <aside className="w-full lg:w-80 shrink-0 flex flex-col gap-4" aria-label="Growth statistics sidebar">
+            <GrowthProjection />
+            <AssetAllocation />
+            <RecentActivity />
+          </aside>
+        </div>
+
+        <GovernFooter />
+      </div>
+    </div>
+  );
+}
 
 export default Grow;
