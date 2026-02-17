@@ -11,6 +11,7 @@ import {
   ChevronRight,
   Bell,
 } from 'lucide-react';
+import { Link } from '../../router';
 
 /* ─── Engine config ──────────────────────────────────────── */
 
@@ -195,9 +196,9 @@ export function AppNavShell({
             const isActive = path === item.path || path.startsWith(item.path + '/');
             const Icon = item.icon;
             return (
-              <a
+              <Link
                 key={item.path}
-                href={item.path}
+                to={item.path}
                 className="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors duration-150"
                 style={{
                   color: isActive ? '#f8fafc' : '#94a3b8',
@@ -220,7 +221,7 @@ export function AppNavShell({
               >
                 <Icon className="w-[18px] h-[18px]" style={{ color: isActive ? item.color : undefined }} aria-hidden="true" />
                 <span className="text-sm font-medium">{item.label}</span>
-              </a>
+              </Link>
             );
           })}
 
@@ -235,9 +236,9 @@ export function AppNavShell({
             const isActive = path === item.path || path.startsWith(item.path + '/');
             const Icon = item.icon;
             return (
-              <a
+              <Link
                 key={item.path}
-                href={item.path}
+                to={item.path}
                 className="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors duration-150"
                 style={{
                   color: isActive ? '#f8fafc' : '#94a3b8',
@@ -260,7 +261,7 @@ export function AppNavShell({
               >
                 <Icon className="w-[18px] h-[18px]" aria-hidden="true" />
                 <span className="text-sm font-medium">{item.label}</span>
-              </a>
+              </Link>
             );
           })}
         </nav>
@@ -420,9 +421,9 @@ export function AppNavShell({
               const isActive = path === item.path;
               const color = engineColor ?? '#94a3b8';
               return (
-                <a
+                <Link
                   key={item.path}
-                  href={item.path}
+                  to={item.path}
                   className="flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-colors duration-150"
                   style={{
                     color: isActive ? color : '#94a3b8',
@@ -444,7 +445,7 @@ export function AppNavShell({
                   aria-current={isActive ? 'page' : undefined}
                 >
                   {item.label}
-                </a>
+                </Link>
               );
             })}
           </div>
@@ -474,9 +475,9 @@ export function AppNavShell({
           const isActive = path === item.path || path.startsWith(item.path + '/');
           const Icon = item.icon;
           return (
-            <a
+            <Link
               key={item.path}
-              href={item.path}
+              to={item.path}
               className="flex flex-col items-center justify-center gap-1 flex-1 pt-2 pb-1 transition-colors duration-150"
               style={{ color: isActive ? item.color : '#64748b' }}
               onClick={() => handleBottomNavTap(item.path)}
@@ -494,7 +495,7 @@ export function AppNavShell({
               />
               <Icon className="w-5 h-5" aria-hidden="true" />
               <span className="text-[10px] font-medium">{item.label}</span>
-            </a>
+            </Link>
           );
         })}
       </nav>
