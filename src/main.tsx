@@ -73,7 +73,7 @@ function isAppRoute(path: string): boolean {
 function RouterOutlet() {
   const { path } = useRouter();
   const LazyComponent = routes[path as RoutePath];
-  const PageComponent = LazyComponent || routes['/'];
+  const PageComponent = LazyComponent || routes['/404'] || routes['/'];
 
   if (!PageComponent) return <RouteLoadingFallback />;
 

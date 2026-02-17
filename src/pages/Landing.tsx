@@ -55,7 +55,7 @@ const engines = [
   {
     icon: Shield,
     name: 'Protect',
-    color: '#0DD9B4',
+    color: '#22C55E',
     desc: 'Real-time threat detection with explainable AI.',
     confidence: 0.94,
   },
@@ -214,14 +214,14 @@ export default function Landing() {
               to="/signup"
               className="px-8 py-4 rounded-xl bg-gradient-to-r from-teal-500 to-cyan-400 text-slate-950 font-semibold text-lg shadow-[0_0_30px_rgba(13,217,180,0.3)] hover:shadow-[0_0_40px_rgba(13,217,180,0.4)] transition-all"
             >
-              Get Started Free
+              Open Dashboard
             </Link>
             <Link
               to="/dashboard"
               className="px-8 py-4 rounded-xl border border-white/[0.1] text-white hover:bg-white/[0.05] transition-all flex items-center gap-2"
             >
               <PlayCircle className="h-5 w-5" />
-              Watch Demo
+              Try the Demo
             </Link>
           </motion.div>
 
@@ -397,8 +397,8 @@ export default function Landing() {
             <span className="text-sm font-medium">MIT Sloan CTO Program &middot; Group 7 &middot; March 2026</span>
           </div>
           <div className="flex gap-6 text-xs text-slate-600">
-            <a href="#" className="hover:text-slate-400 cursor-pointer transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-slate-400 cursor-pointer transition-colors">Terms of Service</a>
+            <Link to="/trust" className="hover:text-slate-400 cursor-pointer transition-colors">Privacy Policy</Link>
+            <Link to="/trust" className="hover:text-slate-400 cursor-pointer transition-colors">Terms of Service</Link>
           </div>
         </div>
       </footer>

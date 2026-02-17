@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { LayoutDashboard, Sparkles, ChevronRight, Info } from 'lucide-react';
+import { useRouter } from '../../router';
 
 const stagger = {
   hidden: {},
@@ -12,6 +13,7 @@ const fadeUp = {
 };
 
 export function HeroSection() {
+  const { navigate } = useRouter();
   return (
     <motion.section
       className="hero-section"
@@ -48,7 +50,7 @@ export function HeroSection() {
             <strong>Top recommendation:</strong> Consolidate 3 overlapping subscriptions — projected save $140/mo (92% confidence)
           </p>
         </div>
-        <button className="hero-insight__cta" type="button">
+        <button className="hero-insight__cta" type="button" onClick={() => navigate('/execute')}>
           Review in Execute
           <ChevronRight size={14} />
         </button>
@@ -56,7 +58,7 @@ export function HeroSection() {
 
       {/* Proof line */}
       <motion.div variants={fadeUp} className="hero-proof" role="status" aria-label="Engine confidence scores">
-        <span className="hero-proof__label">Composite confidence 0.92</span>
+        <span className="hero-proof__label">System confidence 0.92</span>
         <span className="hero-proof__sep" aria-hidden="true">|</span>
         <span style={{ color: 'var(--engine-protect)' }}>Protect 0.94</span>
         <span className="hero-proof__sep" aria-hidden="true">|</span>
@@ -65,7 +67,7 @@ export function HeroSection() {
         <span style={{ color: 'var(--engine-execute)' }}>Execute 0.91</span>
         <span className="hero-proof__sep" aria-hidden="true">|</span>
         <span style={{ color: 'var(--engine-govern)' }}>Govern 0.97</span>
-        <button className="hero-proof__info" type="button" aria-label="About confidence scoring">
+        <button className="hero-proof__info" type="button" aria-label="About confidence scoring" onClick={() => navigate('/help')}>
           <Info size={13} />
         </button>
       </motion.div>

@@ -55,7 +55,7 @@ const engines = [
   {
     icon: Shield,
     name: 'Protect',
-    color: '#14B8A6',
+    color: '#22C55E',
     desc: 'Real-time threat detection with explainable AI.',
     confidence: 0.94,
   },
@@ -153,7 +153,7 @@ export default function LandingV3() {
       <nav className="sticky top-0 z-50 backdrop-blur-xl bg-white/[0.03] border-b border-white/[0.06]">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           {/* Left: logo */}
-          <Link to="/v3/landing" className="flex items-center gap-2 font-bold text-lg text-white" aria-label="Poseidon.AI home">
+          <Link to="/" className="flex items-center gap-2 font-bold text-lg text-white" aria-label="Poseidon.AI home">
             <img src="/logo.png" alt="" width="40" height="40" className="h-10 w-10 object-contain" aria-hidden="true" />
             Poseidon.AI
           </Link>
@@ -169,7 +169,7 @@ export default function LandingV3() {
               Sign in
             </Link>
             <Link
-              to="/v3/dashboard"
+              to="/dashboard"
               className="text-sm font-medium px-5 py-2 rounded-xl bg-gradient-to-r from-teal-500 to-cyan-400 text-slate-950 hover:brightness-110 transition-all"
             >
               Get Started
@@ -222,13 +222,13 @@ export default function LandingV3() {
             className="flex items-center justify-center gap-4 mt-8"
           >
             <Link
-              to="/v3/dashboard"
+              to="/dashboard"
               className="px-8 py-4 rounded-xl bg-gradient-to-r from-teal-500 to-cyan-400 text-slate-950 font-semibold text-lg shadow-[0_0_30px_rgba(13,217,180,0.3)] hover:shadow-[0_0_40px_rgba(13,217,180,0.4)] transition-all"
             >
               Open Dashboard
             </Link>
             <Link
-              to="/v3/dashboard"
+              to="/dashboard"
               className="px-8 py-4 rounded-xl border border-white/[0.1] text-white hover:bg-white/[0.05] transition-all flex items-center gap-2"
             >
               <PlayCircle className="h-5 w-5" />

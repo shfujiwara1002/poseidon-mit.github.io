@@ -139,13 +139,13 @@ function MiniScoreRing({ value }: { value: number }) {
         <svg viewBox="0 0 36 36" className="h-8 w-8 -rotate-90">
           <circle cx="18" cy="18" r="14" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="3" />
           <circle
-            cx="18" cy="18" r="14" fill="none" stroke="#14B8A6" strokeWidth="3"
+            cx="18" cy="18" r="14" fill="none" stroke="#22C55E" strokeWidth="3"
             strokeLinecap="round"
             strokeDasharray={`${pct * 0.88} ${88 - pct * 0.88}`}
           />
         </svg>
       </div>
-      <span className="font-mono text-sm font-semibold" style={{ color: '#14B8A6' }}>
+      <span className="font-mono text-sm font-semibold" style={{ color: '#22C55E' }}>
         {pct}{'%'}
       </span>
     </div>
@@ -155,7 +155,7 @@ function MiniScoreRing({ value }: { value: number }) {
 /* ─── Score Ring (large, for Decision Rail) ────────────────── */
 
 function ScoreRingLarge({ score }: { score: number }) {
-  const data = [{ value: score, fill: '#14B8A6' }];
+  const data = [{ value: score, fill: '#22C55E' }];
   return (
     <div className="flex flex-col items-center gap-3">
       <p className="text-xs font-medium uppercase tracking-widest" style={{ color: '#64748B' }}>
@@ -187,7 +187,7 @@ function ScoreRingLarge({ score }: { score: number }) {
           <span className="text-xs" style={{ color: '#64748B' }}>{'/100'}</span>
         </div>
       </div>
-      <span className="text-sm font-medium" style={{ color: '#14B8A6' }}>
+      <span className="text-sm font-medium" style={{ color: '#22C55E' }}>
         {'Low \u2014 monitoring'}
       </span>
     </div>
@@ -209,19 +209,19 @@ function CategoryScoreBars() {
           >
             <div
               className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
-              style={{ background: 'rgba(20,184,166,0.1)' }}
+              style={{ background: 'rgba(34,197,94,0.1)' }}
             >
-              <Icon className="h-4 w-4" style={{ color: '#14B8A6' }} />
+              <Icon className="h-4 w-4" style={{ color: '#22C55E' }} />
             </div>
             <div className="min-w-0 flex-1">
               <div className="mb-1.5 flex items-center justify-between">
                 <span className="text-sm font-medium" style={{ color: '#F1F5F9' }}>{cat.name}</span>
-                <span className="font-mono text-sm font-semibold" style={{ color: '#14B8A6' }}>{cat.score}</span>
+                <span className="font-mono text-sm font-semibold" style={{ color: '#22C55E' }}>{cat.score}</span>
               </div>
               <div className="h-2 overflow-hidden rounded-full" style={{ background: 'rgba(255,255,255,0.08)' }}>
                 <motion.div
                   className="h-full rounded-full"
-                  style={{ background: 'linear-gradient(90deg, #14B8A6, rgba(20,184,166,0.6))' }}
+                  style={{ background: 'linear-gradient(90deg, #22C55E, rgba(34,197,94,0.6))' }}
                   initial={{ width: 0 }}
                   animate={{ width: `${cat.score}%` }}
                   transition={{ duration: 1, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
@@ -249,7 +249,7 @@ function Timeline() {
                 className="absolute left-4 top-8 h-full w-px -translate-x-1/2"
                 style={{
                   background: m.status === 'completed'
-                    ? 'linear-gradient(to bottom, rgba(20,184,166,0.3), rgba(20,184,166,0.1))'
+                    ? 'linear-gradient(to bottom, rgba(34,197,94,0.3), rgba(34,197,94,0.1))'
                     : 'linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(255,255,255,0.05))',
                 }}
               />
@@ -258,16 +258,16 @@ function Timeline() {
               {m.status === 'completed' ? (
                 <div
                   className="flex h-8 w-8 items-center justify-center rounded-full"
-                  style={{ background: 'rgba(20,184,166,0.15)', boxShadow: 'inset 0 0 0 2px rgba(20,184,166,0.3)' }}
+                  style={{ background: 'rgba(34,197,94,0.15)', boxShadow: 'inset 0 0 0 2px rgba(34,197,94,0.3)' }}
                 >
                   <Check className="h-4 w-4" style={{ color: '#10B981' }} />
                 </div>
               ) : (
                 <div
                   className="flex h-8 w-8 items-center justify-center rounded-full"
-                  style={{ background: 'rgba(20,184,166,0.15)', boxShadow: 'inset 0 0 0 2px rgba(20,184,166,0.3)' }}
+                  style={{ background: 'rgba(34,197,94,0.15)', boxShadow: 'inset 0 0 0 2px rgba(34,197,94,0.3)' }}
                 >
-                  <div className="h-3 w-3 animate-pulse rounded-full" style={{ background: '#14B8A6' }} />
+                  <div className="h-3 w-3 animate-pulse rounded-full" style={{ background: '#22C55E' }} />
                 </div>
               )}
             </div>
@@ -281,7 +281,7 @@ function Timeline() {
               {m.status === 'completed' && (
                 <span
                   className="rounded-full px-2.5 py-0.5 text-xs font-medium"
-                  style={{ background: 'rgba(20,184,166,0.1)', color: '#10B981' }}
+                  style={{ background: 'rgba(34,197,94,0.1)', color: '#10B981' }}
                 >
                   Done
                 </span>
@@ -289,7 +289,7 @@ function Timeline() {
               {m.status === 'current' && (
                 <span
                   className="rounded-full px-2.5 py-0.5 text-xs font-medium"
-                  style={{ background: 'rgba(20,184,166,0.1)', color: '#14B8A6' }}
+                  style={{ background: 'rgba(34,197,94,0.1)', color: '#22C55E' }}
                 >
                   Active
                 </span>
@@ -308,7 +308,7 @@ function SHAPPanel() {
   return (
     <div className="flex flex-col gap-4 rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
       <div className="flex items-center gap-2">
-        <Brain className="h-4 w-4" style={{ color: '#14B8A6' }} />
+        <Brain className="h-4 w-4" style={{ color: '#22C55E' }} />
         <span className="text-sm font-semibold" style={{ color: '#F1F5F9' }}>SHAP Factor Analysis</span>
       </div>
       <div className="flex flex-col gap-3">
@@ -316,12 +316,12 @@ function SHAPPanel() {
           <div key={f.label} className="flex flex-col gap-1.5">
             <div className="flex items-center justify-between">
               <span className="text-sm" style={{ color: '#CBD5E1' }}>{f.label}</span>
-              <span className="font-mono text-sm font-semibold" style={{ color: '#14B8A6' }}>{f.value.toFixed(2)}</span>
+              <span className="font-mono text-sm font-semibold" style={{ color: '#22C55E' }}>{f.value.toFixed(2)}</span>
             </div>
             <div className="h-2 overflow-hidden rounded-full" style={{ background: 'rgba(255,255,255,0.06)' }}>
               <motion.div
                 className="h-full rounded-full"
-                style={{ background: 'linear-gradient(90deg, #14B8A6, rgba(20,184,166,0.5))' }}
+                style={{ background: 'linear-gradient(90deg, #22C55E, rgba(34,197,94,0.5))' }}
                 initial={{ width: 0 }}
                 animate={{ width: `${f.value * 100}%` }}
                 transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
@@ -385,7 +385,7 @@ export const Protect: React.FC = () => {
       <div
         className="pointer-events-none absolute inset-0"
         style={{
-          background: 'radial-gradient(70% 50% at 50% 0%, rgba(20,184,166,0.06), transparent), radial-gradient(40% 40% at 80% 20%, rgba(20,184,166,0.03), transparent)',
+          background: 'radial-gradient(70% 50% at 50% 0%, rgba(34,197,94,0.06), transparent), radial-gradient(40% 40% at 80% 20%, rgba(34,197,94,0.03), transparent)',
         }}
       />
 
@@ -404,11 +404,11 @@ export const Protect: React.FC = () => {
           <div className="flex items-center gap-2.5">
             <div
               className="flex h-7 w-7 items-center justify-center rounded-full"
-              style={{ background: 'rgba(20,184,166,0.15)' }}
+              style={{ background: 'rgba(34,197,94,0.15)' }}
             >
-              <Shield className="h-3.5 w-3.5" style={{ color: '#14B8A6' }} />
+              <Shield className="h-3.5 w-3.5" style={{ color: '#22C55E' }} />
             </div>
-            <span className="text-sm font-semibold tracking-wide" style={{ color: '#14B8A6' }}>
+            <span className="text-sm font-semibold tracking-wide" style={{ color: '#22C55E' }}>
               Protect
             </span>
           </div>
@@ -431,9 +431,9 @@ export const Protect: React.FC = () => {
           <GlassCard className="flex flex-wrap items-center gap-3">
             <div
               className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
-              style={{ background: 'rgba(20,184,166,0.1)' }}
+              style={{ background: 'rgba(34,197,94,0.1)' }}
             >
-              <Sparkles className="h-4 w-4" style={{ color: '#14B8A6' }} />
+              <Sparkles className="h-4 w-4" style={{ color: '#22C55E' }} />
             </div>
             <p className="min-w-[200px] flex-1 text-sm leading-relaxed" style={{ color: 'rgba(248,250,252,0.9)' }}>
               Unusual pattern detected at <strong style={{ color: '#F1F5F9' }}>MerchantX</strong> {'\u2014'} $4,200 charge deviates 3.2x from category average.
@@ -484,7 +484,7 @@ export const Protect: React.FC = () => {
           {/* ── LEFT: Primary Feed ── */}
           <motion.div variants={fadeUp} className="flex min-w-0 flex-[2] flex-col gap-5">
             {/* Threat Table */}
-            <GlassCard borderAccent="#14B8A6">
+            <GlassCard borderAccent="#22C55E">
               <div className="mb-4 flex items-center justify-between">
                 <h2 className="text-lg font-semibold" style={{ color: '#F1F5F9' }}>
                   Threat Signals
@@ -550,9 +550,9 @@ export const Protect: React.FC = () => {
                             <button
                               className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors"
                               style={{
-                                background: 'rgba(20,184,166,0.1)',
-                                border: '1px solid rgba(20,184,166,0.3)',
-                                color: '#14B8A6',
+                                background: 'rgba(34,197,94,0.1)',
+                                border: '1px solid rgba(34,197,94,0.3)',
+                                color: '#22C55E',
                               }}
                               onClick={(e) => { e.stopPropagation(); navigate('/protect/alert-detail'); }}
                             >
@@ -614,7 +614,7 @@ export const Protect: React.FC = () => {
                       <div className="flex items-center justify-between">
                         <button
                           className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold"
-                          style={{ background: 'rgba(20,184,166,0.1)', border: '1px solid rgba(20,184,166,0.3)', color: '#14B8A6' }}
+                          style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.3)', color: '#22C55E' }}
                           onClick={(e) => { e.stopPropagation(); navigate('/protect/alert-detail'); }}
                         >
                           <Eye className="h-3.5 w-3.5" />
@@ -655,7 +655,7 @@ export const Protect: React.FC = () => {
             </div>
 
             {/* Quick Actions */}
-            <GlassCard borderAccent="#14B8A6">
+            <GlassCard borderAccent="#22C55E">
               <h2 className="mb-4 text-lg font-semibold" style={{ color: '#F1F5F9' }}>
                 Quick Actions
               </h2>
@@ -716,13 +716,13 @@ export const Protect: React.FC = () => {
             </GlassCard>
 
             {/* Evidence Summary */}
-            <GlassCard borderAccent="#14B8A6">
+            <GlassCard borderAccent="#22C55E">
               <div className="flex items-start gap-3">
                 <div
                   className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
-                  style={{ background: 'rgba(20,184,166,0.1)' }}
+                  style={{ background: 'rgba(34,197,94,0.1)' }}
                 >
-                  <AlertCircle className="h-4 w-4" style={{ color: '#14B8A6' }} />
+                  <AlertCircle className="h-4 w-4" style={{ color: '#22C55E' }} />
                 </div>
                 <div>
                   <h3 className="text-sm font-semibold" style={{ color: '#F1F5F9' }}>

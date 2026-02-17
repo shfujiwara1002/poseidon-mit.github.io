@@ -144,7 +144,7 @@ const stagger = {
    ═══════════════════════════════════════════ */
 
 const engineColor: Record<Engine, string> = {
-  Protect: '#14B8A6',
+  Protect: '#22C55E',
   Grow: '#8B5CF6',
   Govern: '#3B82F6',
 };
@@ -311,6 +311,7 @@ function HeroSection() {
                 color: '#04141a',
               }}
               aria-label="Approve action: Block wire transfer to MerchantX"
+              onClick={() => navigate('/execute/approval')}
             >
               <CheckCircle2 size={16} />
               Approve
@@ -319,6 +320,7 @@ function HeroSection() {
               className="inline-flex items-center gap-2 rounded-xl border px-5 py-2.5 text-sm font-semibold transition-all hover:shadow-[0_0_12px_rgba(239,68,68,0.3)] active:scale-[0.98] cursor-pointer"
               style={{ borderColor: 'rgba(239,68,68,0.4)', color: '#EF4444', background: 'transparent' }}
               aria-label="Reject action: Block wire transfer to MerchantX"
+              onClick={() => navigate('/execute/approval')}
             >
               <XCircle size={16} />
               Reject

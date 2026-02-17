@@ -81,7 +81,7 @@ const stagger = {
    ═══════════════════════════════════════════ */
 
 const typeColor: Record<DecisionType, string> = {
-  Protect: '#14B8A6',
+  Protect: '#22C55E',
   Grow: '#8B5CF6',
   Execute: '#EAB308',
   Govern: '#3B82F6',

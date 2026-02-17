@@ -142,7 +142,7 @@ export function GovernOversight() {
             <motion.div variants={fadeUp} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6">
               <h2 className="text-sm font-semibold text-white mb-4">Recently Resolved</h2>
               <div className="overflow-x-auto">
-                <table className="w-full text-left min-w-[480px]">
+                <table className="w-full text-left min-w-[320px]">
                   <thead>
                     <tr className="border-b border-white/[0.06]">
                       {['Decision', 'Reviewer', 'Outcome', 'Time'].map((h) => (

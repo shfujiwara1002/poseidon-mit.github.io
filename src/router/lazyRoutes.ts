@@ -67,6 +67,7 @@ export const routeLoaders = {
   '/help': () => import('../pages/HelpSupport'),
 
   '/onboarding': () => import('../pages/Onboarding'),
+  '/404': () => import('../pages/ComingSoon'),
 } as const;
 
 export type RoutePath = keyof typeof routeLoaders;
@@ -114,6 +115,7 @@ export const V0_READY_ROUTES = new Set<RoutePath>([
   '/settings/integrations',
   '/settings/rights',
   '/help',
+  '/404',
 ]);
 
 export interface RouteUXMeta {

@@ -174,7 +174,13 @@ export function OnboardingComplete() {
           >
             {'Enter Dashboard \u2192'}
           </Link>
-          <p className="text-xs text-white/30 mt-3">
+          <Link
+            to="/onboarding/goals"
+            className="block w-full text-center text-xs text-white/30 hover:text-white/50 transition-colors mt-2 py-1"
+          >
+            {'← Back to Goals'}
+          </Link>
+          <p className="text-xs text-white/30 mt-2">
             Your data is read-only. Nothing changes without your approval.
           </p>
         </motion.div>
