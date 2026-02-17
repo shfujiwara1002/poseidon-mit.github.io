@@ -20,9 +20,12 @@ import { LogoIcon, logoIconSchema } from './LogoIcon';
 import { LogoTritonWordmark } from './LogoTritonWordmark';
 import { LogoPoseidonWordmark } from './LogoPoseidonWordmark';
 import { VideoMaster30s } from './VideoMaster30s';
+import { VideoMaster30sRebuild } from './VideoMaster30sRebuild';
+import { Thumbnail } from './Thumbnail';
 import { VideoVertical9x16 } from './VideoVertical9x16';
 import { VideoMasterWWDCv4 } from './VideoMasterWWDCv4';
 import { VideoMasterV5 } from './video/v5/VideoMasterV5';
+import { VideoMasterV5Flagship } from './video/v5/VideoMasterV5Flagship';
 import { VideoMasterPoseidonIntro } from './video/poseidon-intro/VideoMasterPoseidonIntro';
 import { ProductDemo30s } from './ProductDemo30s';
 import { PoseidonHeroDemo } from './PoseidonHeroDemo';
@@ -105,6 +108,15 @@ const RemotionRoot: React.FC = () => {
         }}
       />
       <Composition
+        id="VideoMaster30sRebuild"
+        component={VideoMaster30sRebuild}
+        durationInFrames={900}
+        fps={FPS}
+        width={WIDTH}
+        height={HEIGHT}
+        defaultProps={{}}
+      />
+      <Composition
         id="VideoVertical9x16"
         component={VideoVertical9x16}
         durationInFrames={VIDEO_DURATION_FRAMES}
@@ -137,6 +149,19 @@ const RemotionRoot: React.FC = () => {
         height={HEIGHT}
         defaultProps={{
           ...DEFAULT_AUDIO,
+          enableAudio: true,
+        }}
+      />
+      <Composition
+        id="VideoMasterV5Flagship"
+        component={VideoMasterV5Flagship}
+        durationInFrames={V5_VIDEO_DURATION_FRAMES}
+        fps={FPS}
+        width={WIDTH}
+        height={HEIGHT}
+        defaultProps={{
+          voSrc: 'audio/poseidon-vo-v7.mp3',
+          musicVolumeMax: 0.25,
           enableAudio: true,
         }}
       />
@@ -554,6 +579,14 @@ const RemotionRoot: React.FC = () => {
         defaultProps={{ variant: 'stacked', background: 'navy', fontFamily: "'Sora', system-ui, sans-serif" }}
       />
 
+      <Composition
+        id="Thumbnail"
+        component={Thumbnail}
+        durationInFrames={1}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
     </>
   );
 };

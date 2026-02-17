@@ -17,18 +17,23 @@ export const VIDEO_SAFE_AREA = {
 
 export const DEFAULT_AUDIO = {
   musicSrc: 'audio/poseidon-beat.wav',
+  voSrc: 'audio/poseidon-vo-30s.mp3', // Placeholder for new VO
   sfxWhooshSrc: 'audio/whoosh.wav',
   sfxHitSrc: 'audio/hit.ogg',
 } as const;
 
+// 30 Seconds = 900 Frames
+// Shot 1: 0-5s (0-150)
+// Shot 2: 5-10s (150-300)
+// Shot 3: 10-18s (300-540)
+// Shot 4: 18-24s (540-720)
+// Shot 5: 24-30s (720-900)
 export const SHOTS = {
-  shot1: { start: 0, duration: VIDEO_FPS * 4 },
-  shot2: { start: 120, duration: VIDEO_FPS * 4 },
-  shot3: { start: 240, duration: VIDEO_FPS * 5 },
-  shot4: { start: 390, duration: VIDEO_FPS * 5 },
-  shot5: { start: 540, duration: VIDEO_FPS * 5 },
-  shot6: { start: 690, duration: VIDEO_FPS * 3 },
-  shot7: { start: 780, duration: VIDEO_FPS * 4 },
+  shot1: { start: 0, duration: 150 },
+  shot2: { start: 150, duration: 150 },
+  shot3: { start: 300, duration: 240 },
+  shot4: { start: 540, duration: 180 },
+  shot5: { start: 720, duration: 180 },
 } as const;
 
 export type ShotKey = keyof typeof SHOTS;

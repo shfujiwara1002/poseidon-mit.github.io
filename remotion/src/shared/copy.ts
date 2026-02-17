@@ -594,6 +594,48 @@ export const copy = {
     },
     footnote: 'Growth: 12% → 2.4%/mo over 36 mo. Benchmarked vs Copilot, Cleo, Rocket Money.',
   },
+  // V5 Flagship — 30s rebuild (60 words, 6 shots)
+  videoV5Flagship: {
+    shot1: {
+      vo: 'Your financial AI makes decisions every day. Can you explain a single one?',
+    },
+    shot2: {
+      vo: 'Black-box AI breaks trust. You need an architecture you can see.',
+      tagline: 'Transparency is not a feature. It is the architecture.',
+    },
+    shot3: {
+      vo: 'Threats detected in under 100 milliseconds. 99.7% accuracy on your behavioral patterns.',
+      panelTitle: 'Protect Dashboard',
+      chartLabel: 'Transaction Monitoring',
+      anomalyCard: 'ANOMALY DETECTED',
+      auditLine: 'G-PF-0192 | Flag unauthorized transfer $2,847 | BLOCKED',
+      accuracy: 99.7,
+    },
+    shot4: {
+      vo: 'Every action logged. Every decision explainable.',
+      auditEntries: [
+        { id: 'G-PF-0192', engine: 'Protect', action: 'Flag unauthorized transfer', time: '02:14', status: 'Pending' },
+        { id: 'G-GR-0821', engine: 'Grow', action: 'Update forecast drivers', time: '08:32', status: 'Reviewed' },
+        { id: 'G-EX-0417', engine: 'Execute', action: 'Approve bill negotiation', time: '09:05', status: 'Approved' },
+      ],
+      badges: ['EU AI Act', 'GDPR', 'SOX'],
+    },
+    shot5: {
+      vo: 'Deterministic models compute. GenAI explains. Humans approve.',
+      layers: [
+        { label: 'Deterministic Models', sublabel: 'Compute', color: '#00F0FF' },
+        { label: 'GenAI Layer', sublabel: 'Explain', color: '#8B5CF6' },
+        { label: 'Human Approval', sublabel: 'Decide', color: '#22C55E' },
+      ],
+    },
+    shot6: {
+      vo: 'Poseidon. AI your money can trust.',
+      headline: 'Poseidon',
+      tagline: 'AI your money can trust.',
+      cta: 'Get Early Access',
+      footer: 'poseidon.ai',
+    },
+  },
   footer: {
     text: 'MIT CTO Program | Group 7 | March 2026',
     disclosure: 'We use AI tools to assist development. We review, test, and take responsibility for the final output.',

@@ -18,8 +18,7 @@ console.log('Copying assets into remotion/public/assets ...');
 execSync('node scripts/copy-assets.mjs', { cwd: rootDir, stdio: 'inherit' });
 
 const renders = [
-  { id: 'VideoMasterWWDCv4', file: 'poseidon-wwdcv4-30s.mp4', width: 1920, height: 1080 },
-  { id: 'VideoVertical9x16', file: 'poseidon-vertical-30s.mp4', width: 1080, height: 1920 },
+  { id: 'VideoMaster30sRebuild', file: 'poseidon-flow-v6.mp4', width: 1920, height: 1080 },
 ];
 
 renders.forEach((render, index) => {
