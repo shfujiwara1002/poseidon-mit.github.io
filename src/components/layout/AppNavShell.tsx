@@ -177,7 +177,7 @@ export function AppNavShell({
       >
         {/* Logo */}
         <div className="flex items-center gap-2.5 px-5 py-5">
-          <img src="/logo.png" alt="" className="w-9 h-9 object-contain" aria-hidden="true" />
+          <img src="/logo.png" alt="" className="w-11 h-11 object-contain" aria-hidden="true" />
           <span className="text-base font-bold tracking-tight" style={{ color: '#f8fafc' }}>
             Poseidon.AI
           </span>
@@ -379,7 +379,7 @@ export function AppNavShell({
         >
           {/* Left: Logo */}
           <div className="flex items-center gap-2">
-            <img src="/logo.png" alt="" className="w-8 h-8 object-contain" aria-hidden="true" />
+            <img src="/logo.png" alt="" className="w-10 h-10 object-contain" aria-hidden="true" />
             <span className="text-sm font-bold" style={{ color: '#f8fafc' }}>
               Poseidon.AI
             </span>
