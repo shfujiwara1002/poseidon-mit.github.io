@@ -2,7 +2,7 @@ import React, { Suspense, Component, type ReactNode } from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, useRouter } from './router';
 import { routes, type RoutePath } from './router/lazyRoutes';
-import { AppNavShell } from './components/AppNavShell';
+import { AppNavShell } from './components/layout/AppNavShell';
 import './styles/tailwind.css';
 import './styles/app.css';
 
