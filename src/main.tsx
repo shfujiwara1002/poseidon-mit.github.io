@@ -2,6 +2,7 @@ import React, { Suspense, Component, type ReactNode } from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, useRouter } from './router';
 import { routes, type RoutePath } from './router/lazyRoutes';
+import { AppNavShell } from './components/AppNavShell';
 import './styles/tailwind.css';
 import './styles/app.css';
 
@@ -62,11 +63,29 @@ function RouteLoadingFallback() {
   );
 }
 
+/** Routes that use the AppNavShell wrapper (authenticated app pages) */
+const APP_SHELL_PREFIXES = ['/dashboard', '/protect', '/grow', '/execute', '/govern', '/settings', '/help'];
+
+function isAppRoute(path: string): boolean {
+  return APP_SHELL_PREFIXES.some((prefix) => path === prefix || path.startsWith(prefix + '/'));
+}
+
 function RouterOutlet() {
   const { path } = useRouter();
   const LazyComponent = routes[path as RoutePath];
   const PageComponent = LazyComponent || routes['/'];
-  return PageComponent ? <PageComponent /> : <RouteLoadingFallback />;
+
+  if (!PageComponent) return <RouteLoadingFallback />;
+
+  if (isAppRoute(path)) {
+    return (
+      <AppNavShell path={path}>
+        <PageComponent />
+      </AppNavShell>
+    );
+  }
+
+  return <PageComponent />;
 }
 
 function MinimalApp() {
