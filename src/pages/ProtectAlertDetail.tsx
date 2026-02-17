@@ -17,6 +17,7 @@ import {
   XCircle,
   CircleDot,
 } from 'lucide-react';
+import { usePageTitle } from '../hooks/use-page-title';
 
 /* ═══════════════════════════════════════════
    TYPES
@@ -573,6 +574,7 @@ function GovernFooter() {
    ═══════════════════════════════════════════ */
 
 export function ProtectAlertDetail() {
+  usePageTitle('Alert Details');
   return (
     <div className="min-h-screen w-full" style={{ background: '#0B1221' }}>
       <a

@@ -4,12 +4,14 @@ import { prefetchRoute, type RoutePath } from './lazyRoutes';
 
 interface RouterState {
   path: string;
+  search: string;
   navigate: (to: string) => void;
   prefetch: (to: RoutePath) => Promise<void>;
 }
 
 const defaultRouter: RouterState = {
   path: '/',
+  search: '',
   navigate: () => {
     logger.warn('Router not initialized');
   },
@@ -28,24 +30,44 @@ const normalizePath = (value: string) => {
 
 export const RouterProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [path, setPath] = useState(() => normalizePath(window.location.pathname));
+  const [search, setSearch] = useState(() => window.location.search);
 
   useEffect(() => {
-    const handlePopState = () => setPath(normalizePath(window.location.pathname));
+    const handlePopState = () => {
+      setPath(normalizePath(window.location.pathname));
+      setSearch(window.location.search);
+    };
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
   const navigate = (to: string) => {
-    const targetPath = normalizePath(to);
-    if (targetPath === path) return;
-    window.history.pushState({}, '', targetPath);
-    setPath(targetPath);
-    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    const qIndex = to.indexOf('?');
+    const rawPath = qIndex >= 0 ? to.slice(0, qIndex) : to;
+    const rawSearch = qIndex >= 0 ? to.slice(qIndex) : '';
+    const targetPath = normalizePath(rawPath);
+    if (targetPath === path && rawSearch === search) return;
+
+    const update = () => {
+      window.history.pushState({}, '', targetPath + rawSearch);
+      setPath(targetPath);
+      setSearch(rawSearch);
+      if (targetPath !== path) {
+        window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      }
+    };
+
+    // Progressive enhancement: View Transitions API
+    if ((document as { startViewTransition?: (cb: () => void) => void }).startViewTransition) {
+      (document as { startViewTransition: (cb: () => void) => void }).startViewTransition(update);
+    } else {
+      update();
+    }
   };
 
   const prefetch = async (to: RoutePath) => prefetchRoute(to);
 
-  const value = useMemo(() => ({ path, navigate, prefetch }), [path]);
+  const value = useMemo(() => ({ path, search, navigate, prefetch }), [path, search]);
 
   return <RouterContext.Provider value={value}>{children}</RouterContext.Provider>;
 };

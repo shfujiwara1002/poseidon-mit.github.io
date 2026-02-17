@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Lightbulb, Sparkles, TrendingUp, DollarSign, BarChart3, ChevronDown, ChevronUp, Send, X, Shield, Filter } from 'lucide-react';
 import { Link } from '../router';
+import { usePageTitle } from '../hooks/use-page-title';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 12 },
@@ -89,6 +90,7 @@ const difficultyColors: Record<Difficulty, { text: string; bg: string }> = {
    ═══════════════════════════════════════════ */
 
 export function GrowRecommendations() {
+  usePageTitle('Recommendations');
   const [sort, setSort] = useState<SortMode>('Highest Impact');
   const [category, setCategory] = useState<Category>('All');
   const [expanded, setExpanded] = useState<Record<number, boolean>>({});

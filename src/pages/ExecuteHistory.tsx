@@ -14,6 +14,7 @@ import {
   User,
   CircleDot,
 } from 'lucide-react';
+import { usePageTitle } from '../hooks/use-page-title';
 
 /* ═══════════════════════════════════════════
    TYPES
@@ -580,6 +581,7 @@ function GovernFooter() {
    ═══════════════════════════════════════════ */
 
 export function ExecuteHistory() {
+  usePageTitle('Action History');
   const [activeFilter, setActiveFilter] = useState<FilterTab>('All');
 
   return (

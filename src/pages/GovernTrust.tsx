@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Shield, TrendingUp, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { Link } from '../router';
 import { GovernFooter } from '../components/dashboard/GovernFooter';
+import { usePageTitle } from '../hooks/use-page-title';
 
 /* ═══════════════════════════════════════════
    ANIMATION PRESETS
@@ -77,6 +78,7 @@ const trustTrend = [
    ═══════════════════════════════════════════ */
 
 export function GovernTrust() {
+  usePageTitle('Trust Index');
   const [cards, setCards] = useState(engineCards);
   const [dirty, setDirty] = useState(false);
 

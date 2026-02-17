@@ -60,3 +60,124 @@
     -webkit-backdrop-filter: blur(var(--glass-blur-mobile));
   }
 }
+
+/* ── Grain Overlay ── */
+
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.025;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grain-overlay {
+    display: none;
+  }
+}
+
+/* ── Shimmer Loading Animation ── */
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03) 25%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.03) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shimmer {
+    animation: none;
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+/* ── Engine-aware Glass Hover Glow ── */
+
+.glass-hover-protect:hover {
+  border-color: rgba(34, 197, 94, 0.2) !important;
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.06);
+}
+
+.glass-hover-grow:hover {
+  border-color: rgba(139, 92, 246, 0.2) !important;
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.06);
+}
+
+.glass-hover-execute:hover {
+  border-color: rgba(234, 179, 8, 0.2) !important;
+  box-shadow: 0 0 20px rgba(234, 179, 8, 0.06);
+}
+
+.glass-hover-govern:hover {
+  border-color: rgba(59, 130, 246, 0.2) !important;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.06);
+}
+
+/* ── Aurora Pulse Animation ── */
+
+@keyframes aurora-drift {
+  0% {
+    opacity: 0.85;
+    transform: scale(1) translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.02) translateY(-1%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora-drift-animated {
+    animation: none !important;
+  }
+}
+
+/* ── Presentation Mode ── */
+
+[data-presentation-mode="true"] {
+  --prose-font-scale: 1.15;
+}
+
+[data-presentation-mode="true"] .glass-surface,
+[data-presentation-mode="true"] .glass-surface-strong,
+[data-presentation-mode="true"] .glass-surface-card {
+  border-width: 1.5px;
+}
+
+[data-presentation-mode="true"] h1 {
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+}
+
+/* ── View Transitions API ── */
+
+::view-transition-old(root) {
+  animation: 200ms ease-out both vt-fade-out;
+}
+
+::view-transition-new(root) {
+  animation: 200ms ease-in both vt-fade-in;
+}
+
+@keyframes vt-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes vt-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

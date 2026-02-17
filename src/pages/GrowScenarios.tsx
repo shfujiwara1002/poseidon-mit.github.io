@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, GitBranch, Zap } from 'lucide-react';
 import { Link } from '../router';
 import { GovernFooter } from '../components/dashboard/GovernFooter';
+import { usePageTitle } from '../hooks/use-page-title';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 12 },
@@ -37,6 +38,7 @@ const circumference = 2 * Math.PI * 40;
    ═══════════════════════════════════════════ */
 
 export function GrowScenarios() {
+  usePageTitle('Growth Scenarios');
   const [activeScenario, setActiveScenario] = useState('B');
   const [horizon, setHorizon] = useState<(typeof horizonOptions)[number]>('1yr');
   const [incomeAdj, setIncomeAdj] = useState(10);

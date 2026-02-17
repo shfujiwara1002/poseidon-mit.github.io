@@ -1,8 +1,9 @@
-import React, { Suspense, Component, type ReactNode } from 'react';
+import React, { Suspense, Component, useEffect, type ReactNode } from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, useRouter } from './router';
 import { routes, type RoutePath } from './router/lazyRoutes';
 import { AppNavShell } from './components/layout/AppNavShell';
+import { usePresentationMode } from './hooks/usePresentationMode';
 import './styles/tailwind.css';
 import './styles/app.css';
 
@@ -88,14 +89,26 @@ function RouterOutlet() {
   return <PageComponent />;
 }
 
+/** Syncs presentation mode (?mode=present) to document.documentElement for CSS selectors */
+function PresentationModeSync() {
+  const { isPresentation } = usePresentationMode();
+  useEffect(() => {
+    document.documentElement.setAttribute('data-presentation-mode', String(isPresentation));
+    return () => document.documentElement.removeAttribute('data-presentation-mode');
+  }, [isPresentation]);
+  return null;
+}
+
 function MinimalApp() {
   return (
     <ErrorBoundary>
       <RouterProvider>
+        <PresentationModeSync />
         <Suspense fallback={<RouteLoadingFallback />}>
           <RouterOutlet />
         </Suspense>
       </RouterProvider>
+      <div className="grain-overlay" aria-hidden="true" />
     </ErrorBoundary>
   );
 }

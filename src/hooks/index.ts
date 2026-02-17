@@ -12,3 +12,4 @@ export { useRealtimeUpdates } from './useRealtimeUpdates';
 export { useReducedMotionSafe } from './useReducedMotionSafe';
 export { useTimeContext } from './useTimeContext';
 export { useVoiceInput } from './useVoiceInput';
+export { useViewMode, type ViewMode } from './useViewMode';

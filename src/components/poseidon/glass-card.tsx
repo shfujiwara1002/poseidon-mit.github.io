@@ -1,35 +1,39 @@
 /**
  * GlassCard — Glass morphism container for the Poseidon design language.
  *
- * Wraps DS v2 GlassPanel with a simplified API for v0 adaptation.
- * Apply to upgrade plain shadcn/ui cards during "Poseidon化" step.
+ * Self-contained implementation matching v0 engine page pattern.
+ * Supports optional left-border accent via borderColor prop.
  */
-import type { ReactNode } from 'react'
-import { GlassPanel } from '@/design-system/components/effects/GlassPanel'
 import { cn } from '@/lib/utils'
-import { type EngineName, toDSEngine } from '@/lib/engine-tokens'
 
-export interface GlassCardProps {
-  children: ReactNode
-  engine?: EngineName
-  blur?: 'sm' | 'md' | 'lg'
+export interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode
   className?: string
+  borderColor?: string
 }
 
 export function GlassCard({
   children,
-  engine,
-  blur = 'md',
   className,
+  borderColor,
+  style,
+  ...props
 }: GlassCardProps) {
   return (
-    <GlassPanel
-      blur={blur}
-      engine={toDSEngine(engine)}
-      className={cn('p-4', className)}
+    <div
+      className={cn('rounded-2xl border border-white/[0.06] p-4 md:p-6', className)}
+      style={{
+        background: 'rgba(255,255,255,0.03)',
+        backdropFilter: 'blur(24px)',
+        WebkitBackdropFilter: 'blur(24px)',
+        boxShadow: 'var(--glass-inset, inset 0 1px 0 0 rgba(255,255,255,0.26), inset -1px 0 0 rgba(255,255,255,0.1), inset 0 0 20px rgba(255,255,255,0.06)), 0 4px 16px rgba(0,0,0,0.2)',
+        ...(borderColor ? { borderLeftWidth: '2px', borderLeftColor: borderColor } : {}),
+        ...style,
+      }}
+      {...props}
     >
       {children}
-    </GlassPanel>
+    </div>
   )
 }
 

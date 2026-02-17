@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Lightbulb, TrendingUp, Sparkles } from 'lucide-react';
 import { Link } from '../router';
 import { GovernFooter } from '../components/dashboard/GovernFooter';
+import { usePageTitle } from '../hooks/use-page-title';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 12 },
@@ -46,6 +47,7 @@ type TabFilter = 'all' | 'actionable' | 'informational' | 'warning';
    ═══════════════════════════════════════════ */
 
 export function InsightsFeed() {
+  usePageTitle('Insights');
   const [tab, setTab] = useState<TabFilter>('all');
   const [expandedId, setExpandedId] = useState<string | null>(null);
 

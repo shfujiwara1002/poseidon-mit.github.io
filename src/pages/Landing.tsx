@@ -181,7 +181,11 @@ export default function Landing() {
       <section className="relative pt-24 md:pt-32 pb-16">
         {/* Background glow */}
         <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] rounded-full bg-teal-500/[0.07] blur-[120px]" />
+          <motion.div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] rounded-full bg-teal-500/[0.07] blur-[120px]"
+            animate={{ scale: [1, 1.05, 1], opacity: [0.07, 0.12, 0.07] }}
+            transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+          />
         </div>
 
         <motion.div

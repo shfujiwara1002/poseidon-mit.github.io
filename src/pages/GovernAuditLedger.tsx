@@ -17,6 +17,7 @@ import {
   ArrowDown,
   ArrowUp,
 } from 'lucide-react';
+import { usePageTitle } from '../hooks/use-page-title';
 
 /* ═══════════════════════════════════════════
    TYPES
@@ -620,6 +621,7 @@ function GovernFooter() {
    ═══════════════════════════════════════════ */
 
 export function GovernAudit() {
+  usePageTitle('Audit Ledger');
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState<FilterTab>('All');
   const [sortField, setSortField] = useState<SortField>('timestamp');

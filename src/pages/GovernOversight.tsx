@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Eye, UserCheck, Bot, AlertTriangle, CheckCircle, XCircle, Clock, HelpCircle, Shield } from 'lucide-react';
 import { Link } from '../router';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { usePageTitle } from '../hooks/use-page-title';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 12 },
@@ -56,6 +57,7 @@ const overrideReasons = [
 ];
 
 export function GovernOversight() {
+  usePageTitle('Oversight Queue');
   return (
     <div className="min-h-screen w-full" style={{ background: '#0B1221' }}>
       <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold" style={{ background: '#3B82F6', color: '#fff' }}>Skip to main content</a>

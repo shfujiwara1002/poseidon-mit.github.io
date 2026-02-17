@@ -43,7 +43,7 @@ export function PageShell({
 
       {showGovernFooter && (
         <footer className="page-shell-footer mt-auto px-[var(--page-padding)] pb-6">
-          <GovernFooter />
+          <GovernFooter auditId="GV-2026-0211-4821" />
         </footer>
       )}
     </div>

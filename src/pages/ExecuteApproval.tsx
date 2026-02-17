@@ -4,6 +4,7 @@ import { ArrowLeft, Zap, AlertTriangle, CheckCircle2 } from 'lucide-react';
 import { Link } from '../router';
 import { GovernFooter } from '../components/dashboard/GovernFooter';
 import { Dialog, DialogContent } from '../components/ui/dialog';
+import { usePageTitle } from '../hooks/use-page-title';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 12 },
@@ -47,6 +48,7 @@ const circumference = 2 * Math.PI * 40;
    ═══════════════════════════════════════════ */
 
 export function ExecuteApproval() {
+  usePageTitle('Action Approval');
   const [expandedAction, setExpandedAction] = useState<string | null>(queueActions[0].id);
   const [confirmAction, setConfirmAction] = useState<{ id: string; type: 'approve' | 'decline' } | null>(null);
   const [processedIds, setProcessedIds] = useState<Set<string>>(new Set());

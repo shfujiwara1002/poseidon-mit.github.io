@@ -1,8 +1,8 @@
 /**
  * Framer Motion presets for the Poseidon adaptation workflow.
  *
- * Applied during the "Poseidon化" step (Architecture B, Step 3)
- * to add page transitions and micro-interactions.
+ * Convention: hidden/visible keys — matches engine page JSX
+ * (initial="hidden" animate="visible").
  */
 
 import type { Variants, Transition } from 'framer-motion'
@@ -13,6 +13,9 @@ export const easings = {
   emphasized: [0.2, 0, 0, 1] as const,
   decelerate: [0, 0, 0.2, 1] as const,
 }
+
+/* ── Spring config (natural premium feel) ── */
+const spring = { type: 'spring' as const, stiffness: 380, damping: 30 }
 
 /* ── Page Transition ── */
 export const pageTransition: Variants = {
@@ -28,41 +31,74 @@ export const pageTransitionConfig = {
 
 /* ── Card / Element Entry ── */
 export const fadeIn: Variants = {
-  initial: { opacity: 0 },
-  animate: { opacity: 1 },
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.4 } },
 }
 
 export const fadeUp: Variants = {
-  initial: { opacity: 0, y: 16 },
-  animate: { opacity: 1, y: 0 },
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: spring },
 }
 
 export const fadeScale: Variants = {
-  initial: { opacity: 0, scale: 0.96 },
-  animate: { opacity: 1, scale: 1 },
+  hidden: { opacity: 0, scale: 0.96 },
+  visible: { opacity: 1, scale: 1, transition: spring },
 }
 
 export const slideRight: Variants = {
-  initial: { opacity: 0, x: -20 },
-  animate: { opacity: 1, x: 0 },
+  hidden: { opacity: 0, x: -20 },
+  visible: { opacity: 1, x: 0, transition: spring },
 }
 
 /* ── Stagger Container ── */
 export const staggerContainer: Variants = {
-  animate: {
+  hidden: {},
+  visible: {
     transition: {
-      staggerChildren: 0.06,
+      staggerChildren: 0.1,
+    },
+  },
+}
+
+/** Delayed stagger — use on KPI grids so they animate after the hero section */
+export const staggerContainerDelayed: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.3,
     },
   },
 }
 
 export const staggerItem: Variants = {
-  initial: { opacity: 0, y: 12 },
-  animate: { opacity: 1, y: 0 },
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: spring },
 }
 
 /* ── Helper: stagger delay for index ── */
-export function staggerDelay(i: number, base = 0.06): Transition {
+export function staggerDelay(i: number, base = 0.1): Transition {
   return { delay: i * base }
 }
 
+/* ── Presentation mode variants (slower for readability) ── */
+export const staggerContainerPresentation: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.15,
+    },
+  },
+}
+
+/* ── Reduced motion variants (instant, no animation) ── */
+export const staticVariants: Variants = {
+  hidden: { opacity: 1 },
+  visible: { opacity: 1 },
+}
+
+export const staticContainer: Variants = {
+  hidden: {},
+  visible: {},
+}

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Bell, CheckCircle2, Clock, TrendingDown, Shield } from 'lucide-react';
 import { Link } from '../router';
 import { GovernFooter } from '../components/dashboard/GovernFooter';
+import { usePageTitle } from '../hooks/use-page-title';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 12 },
@@ -52,6 +53,7 @@ type EngineFilter = 'all' | 'Protect' | 'Grow' | 'Execute' | 'Govern';
    ═══════════════════════════════════════════ */
 
 export function AlertsHub() {
+  usePageTitle('Alerts');
   const [severityFilter, setSeverityFilter] = useState<SeverityFilter>('all');
   const [engineFilter, setEngineFilter] = useState<EngineFilter>('all');
   const [expandedAlert, setExpandedAlert] = useState<string | null>(alerts[0].id);

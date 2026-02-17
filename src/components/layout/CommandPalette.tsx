@@ -13,6 +13,10 @@ import {
   Scale,
   CheckSquare,
   FileText,
+  Presentation,
+  Eye,
+  LayoutGrid,
+  Database,
 } from 'lucide-react';
 import {
   CommandDialog,
@@ -25,6 +29,17 @@ import {
   CommandShortcut,
 } from '@/components/ui/command';
 import { useRouter } from '../../router';
+
+/* ── Helpers ──────────────────────────────────────────────── */
+
+/** Build a view-mode path relative to the current page. */
+function resolveViewModePath(currentPath: string, viewMode: string): string {
+  // Only apply to engine pages
+  const enginePrefixes = ['/protect', '/grow', '/execute', '/govern', '/dashboard'];
+  const base = enginePrefixes.find((p) => currentPath === p || currentPath.startsWith(p + '/'));
+  if (base) return `${base}?view=${viewMode}`;
+  return currentPath;
+}
 
 /* ── Command definitions ─────────────────────────────────── */
 
@@ -102,6 +117,68 @@ const ACTION_COMMANDS: Command[] = [
   },
 ];
 
+const PRESENTATION_COMMANDS: Command[] = [
+  {
+    id: 'present-protect',
+    label: 'Present: Protect',
+    description: 'Start presentation at Protect engine',
+    icon: Presentation,
+    color: '#22C55E',
+    path: '/protect?view=glance&mode=present',
+  },
+  {
+    id: 'present-grow',
+    label: 'Present: Grow',
+    description: 'Start presentation at Grow engine',
+    icon: Presentation,
+    color: '#8B5CF6',
+    path: '/grow?view=glance&mode=present',
+  },
+  {
+    id: 'present-execute',
+    label: 'Present: Execute',
+    description: 'Start presentation at Execute engine',
+    icon: Presentation,
+    color: '#EAB308',
+    path: '/execute?view=glance&mode=present',
+  },
+  {
+    id: 'present-govern',
+    label: 'Present: Govern',
+    description: 'Start presentation at Govern engine',
+    icon: Presentation,
+    color: '#3B82F6',
+    path: '/govern?view=glance&mode=present',
+  },
+];
+
+const VIEW_MODE_COMMANDS: { id: string; label: string; description: string; icon: React.ElementType; color: string; viewMode: string }[] = [
+  {
+    id: 'view-glance',
+    label: 'Switch to Glance',
+    description: 'Minimal KPI overview',
+    icon: Eye,
+    color: '#14B8A6',
+    viewMode: 'glance',
+  },
+  {
+    id: 'view-detail',
+    label: 'Switch to Detail',
+    description: 'Standard working view',
+    icon: LayoutGrid,
+    color: '#14B8A6',
+    viewMode: 'detail',
+  },
+  {
+    id: 'view-deep',
+    label: 'Switch to Deep',
+    description: 'Full analysis with methodology',
+    icon: Database,
+    color: '#14B8A6',
+    viewMode: 'deep',
+  },
+];
+
 /* ── Component ───────────────────────────────────────────── */
 
 interface CommandPaletteProps {
@@ -110,59 +187,75 @@ interface CommandPaletteProps {
 }
 
 export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
-  const { navigate } = useRouter();
+  const { navigate, path } = useRouter();
 
   const handleSelect = useCallback(
-    (path: string) => {
+    (navPath: string) => {
       onClose();
-      navigate(path);
+      navigate(navPath);
     },
     [navigate, onClose]
   );
 
+  const renderCommandGroup = (commands: Command[]) =>
+    commands.map((cmd) => {
+      const Icon = cmd.icon;
+      return (
+        <CommandItem
+          key={cmd.id}
+          value={`${cmd.label} ${cmd.description}`}
+          onSelect={() => handleSelect(cmd.path)}
+          className="gap-3"
+        >
+          <span
+            className="flex items-center justify-center w-7 h-7 rounded-lg flex-shrink-0"
+            style={{ background: `${cmd.color}1a` }}
+          >
+            <Icon className="w-4 h-4" style={{ color: cmd.color }} aria-hidden="true" />
+          </span>
+          <span className="flex-1">
+            <span className="block text-sm font-medium">{cmd.label}</span>
+            {cmd.description && (
+              <span className="block text-xs opacity-50">{cmd.description}</span>
+            )}
+          </span>
+          {cmd.shortcut && <CommandShortcut>{cmd.shortcut}</CommandShortcut>}
+        </CommandItem>
+      );
+    });
+
   return (
     <CommandDialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <CommandInput placeholder="Search engines, actions…" />
+      <CommandInput placeholder="Search engines, actions, presentations…" />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
 
         <CommandGroup heading="Engines">
-          {ENGINE_COMMANDS.map((cmd) => {
-            const Icon = cmd.icon;
-            return (
-              <CommandItem
-                key={cmd.id}
-                value={`${cmd.label} ${cmd.description}`}
-                onSelect={() => handleSelect(cmd.path)}
-                className="gap-3"
-              >
-                <span
-                  className="flex items-center justify-center w-7 h-7 rounded-lg flex-shrink-0"
-                  style={{ background: `${cmd.color}1a` }}
-                >
-                  <Icon className="w-4 h-4" style={{ color: cmd.color }} aria-hidden="true" />
-                </span>
-                <span className="flex-1">
-                  <span className="block text-sm font-medium">{cmd.label}</span>
-                  {cmd.description && (
-                    <span className="block text-xs opacity-50">{cmd.description}</span>
-                  )}
-                </span>
-              </CommandItem>
-            );
-          })}
+          {renderCommandGroup(ENGINE_COMMANDS)}
         </CommandGroup>
 
         <CommandSeparator />
 
         <CommandGroup heading="Quick Actions">
-          {ACTION_COMMANDS.map((cmd) => {
+          {renderCommandGroup(ACTION_COMMANDS)}
+        </CommandGroup>
+
+        <CommandSeparator />
+
+        <CommandGroup heading="Presentation">
+          {renderCommandGroup(PRESENTATION_COMMANDS)}
+        </CommandGroup>
+
+        <CommandSeparator />
+
+        <CommandGroup heading="View Mode">
+          {VIEW_MODE_COMMANDS.map((cmd) => {
             const Icon = cmd.icon;
             return (
               <CommandItem
                 key={cmd.id}
                 value={`${cmd.label} ${cmd.description}`}
-                onSelect={() => handleSelect(cmd.path)}
+                onSelect={() => handleSelect(resolveViewModePath(path, cmd.viewMode))}
                 className="gap-3"
               >
                 <span
@@ -177,7 +270,6 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
                     <span className="block text-xs opacity-50">{cmd.description}</span>
                   )}
                 </span>
-                {cmd.shortcut && <CommandShortcut>{cmd.shortcut}</CommandShortcut>}
               </CommandItem>
             );
           })}

@@ -19,6 +19,7 @@ import {
   AlertTriangle,
   CircleDot,
 } from 'lucide-react';
+import { usePageTitle } from '../hooks/use-page-title';
 
 /* ═══════════════════════════════════════════
    TYPES
@@ -529,6 +530,7 @@ function GovernFooter() {
    ═══════════════════════════════════════════ */
 
 export function Settings() {
+  usePageTitle('Settings');
   const [activeTab, setActiveTab] = useState('integrations');
 
   return (
