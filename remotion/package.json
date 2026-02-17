@@ -11,6 +11,8 @@
     "remotion:slides": "node scripts/render-all-slides.mjs",
     "remotion:charts": "node scripts/render-charts.mjs",
     "video:render": "node scripts/render-video.mjs",
+    "capture-demo": "node ../scripts/capture-demo-frames.mjs",
+    "capture-demo:skip-build": "node ../scripts/capture-demo-frames.mjs --skip-build",
     "prestill:2x": "npm run copy-assets",
     "prestation:slides": "npm run copy-assets",
     "preremotion:charts": "npm run copy-assets",
@@ -52,11 +54,18 @@
     "verify:delivery": "node scripts/verify-pptx-pipeline.mjs --profile all --pptx --delivery"
   },
   "dependencies": {
+    "@react-three/drei": "^9.122.0",
+    "@react-three/fiber": "^8.17.14",
+    "@remotion/light-leaks": "4.0.416",
+    "@remotion/media": "4.0.416",
+    "@remotion/three": "^4.0.416",
+    "@remotion/transitions": "4.0.416",
     "pptxgenjs": "^4.0.1",
     "qrcode": "^1.5.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "remotion": "^4.0.0"
+    "remotion": "^4.0.0",
+    "three": "^0.171.0"
   },
   "devDependencies": {
     "@remotion/bundler": "^4.0.0",
@@ -66,6 +75,7 @@
     "@types/qrcode": "^1.5.6",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
+    "@types/three": "^0.171.0",
     "eslint": "^9.39.2",
     "typescript": "^5.0.0",
     "typescript-eslint": "^8.54.0"

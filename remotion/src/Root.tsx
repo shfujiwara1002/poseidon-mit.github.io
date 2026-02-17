@@ -24,6 +24,10 @@ import { VideoVertical9x16 } from './VideoVertical9x16';
 import { VideoMasterWWDCv4 } from './VideoMasterWWDCv4';
 import { VideoMasterV5 } from './video/v5/VideoMasterV5';
 import { VideoMasterPoseidonIntro } from './video/poseidon-intro/VideoMasterPoseidonIntro';
+import { ProductDemo30s } from './ProductDemo30s';
+import { PoseidonHeroDemo } from './PoseidonHeroDemo';
+import { PoseidonProductDemo } from './PoseidonProductDemo';
+import { PoseidonScreenDemo } from './PoseidonScreenDemo';
 import { DEFAULT_AUDIO, VIDEO_DURATION_FRAMES } from './video/config';
 import { V5_VIDEO_DURATION_FRAMES } from './video/v5/config';
 import { VIDEO_DURATION_FRAMES as POSEIDON_INTRO_DURATION_FRAMES, DEFAULT_AUDIO as POSEIDON_INTRO_AUDIO } from './video/poseidon-intro/config';
@@ -134,6 +138,73 @@ const RemotionRoot: React.FC = () => {
         defaultProps={{
           ...DEFAULT_AUDIO,
           enableAudio: true,
+        }}
+      />
+
+      {/* ProductDemo30s - MIT Capstone Slide07 embedded demo */}
+      <Composition
+        id="ProductDemo30s"
+        component={ProductDemo30s}
+        durationInFrames={900}
+        fps={FPS}
+        width={WIDTH}
+        height={HEIGHT}
+        defaultProps={{}}
+      />
+
+      {/* PoseidonHeroDemo - Apple-quality hero demo with 3D mockups */}
+      <Composition
+        id="PoseidonHeroDemo"
+        component={PoseidonHeroDemo}
+        durationInFrames={900}
+        fps={FPS}
+        width={WIDTH}
+        height={HEIGHT}
+        defaultProps={{
+          useRecordings: false,
+          enableAudio: true,
+          musicSrc: DEFAULT_AUDIO.musicSrc,
+        }}
+      />
+      <Composition
+        id="PoseidonHeroDemoRecordings"
+        component={PoseidonHeroDemo}
+        durationInFrames={900}
+        fps={FPS}
+        width={WIDTH}
+        height={HEIGHT}
+        defaultProps={{
+          useRecordings: true,
+          enableAudio: true,
+          musicSrc: DEFAULT_AUDIO.musicSrc,
+        }}
+      />
+
+      {/* PoseidonProductDemo - Cinematic product demo with TransitionSeries + LightLeaks */}
+      <Composition
+        id="PoseidonProductDemo"
+        component={PoseidonProductDemo}
+        durationInFrames={900}
+        fps={FPS}
+        width={WIDTH}
+        height={HEIGHT}
+        defaultProps={{
+          enableAudio: true,
+          musicSrc: DEFAULT_AUDIO.musicSrc,
+        }}
+      />
+
+      {/* PoseidonScreenDemo - Screen Studio recording with cinematic effects */}
+      <Composition
+        id="PoseidonScreenDemo"
+        component={PoseidonScreenDemo}
+        durationInFrames={900}
+        fps={FPS}
+        width={WIDTH}
+        height={HEIGHT}
+        defaultProps={{
+          enableAudio: true,
+          musicSrc: DEFAULT_AUDIO.musicSrc,
         }}
       />
 
