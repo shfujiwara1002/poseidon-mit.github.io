@@ -1,3 +1,6 @@
+---
+render_with_liquid: false
+---
 # Poseidon.AI v0 Screen Prompts — Revised Edition (2026-02)
 
 > **重要な前提 (読んでから作業すること)**

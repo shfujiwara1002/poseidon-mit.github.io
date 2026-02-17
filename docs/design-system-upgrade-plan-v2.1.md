@@ -1,3 +1,6 @@
+---
+render_with_liquid: false
+---
 Poseidon.AI Design System Overhaul: Comprehensive Implementation Plan v2
 
 Language note: All implementation (code, commits, PRs, component APIs, variable names) MUST be conducted in English. Japanese is used in this document solely for narrative context where beneficial.
