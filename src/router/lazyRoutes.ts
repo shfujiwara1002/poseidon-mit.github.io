@@ -66,23 +66,7 @@ export const routeLoaders = {
   // ─── System ─────────────────────────────────────────────────────────────────
   '/help': () => import('../pages/HelpSupport'),
 
-  // ─── Design System v2 reference pages ───────────────────────────────────────
-  '/v2/settings': () => import('../pages/v2/SettingsV2'),
-  '/v2/dashboard': () => import('../pages/v2/DashboardV2'),
-  '/v2/landing': () => import('../pages/v2/LandingV2'),
-
-  // ─── v3 compatibility alias ─────────────────────────────────────────────────
-  '/v3/landing': () => import('../pages/Landing'),
-
-  // ─── Compatibility aliases ──────────────────────────────────────────────────
-  '/protect-v2': () => import('../pages/Protect'),
-  '/grow-v2': () => import('../pages/Grow'),
-  '/execute-v2': () => import('../pages/Execute'),
-  '/govern-v2': () => import('../pages/Govern'),
-  '/engines': () => import('../pages/Dashboard'),
-  '/v3': () => import('../pages/Dashboard'),
   '/onboarding': () => import('../pages/Onboarding'),
-  '/onboarding-v2': () => import('../pages/Onboarding'),
 } as const;
 
 export type RoutePath = keyof typeof routeLoaders;
@@ -188,10 +172,6 @@ export const routeUxMeta: Record<string, RouteUXMeta> = {
   '/settings/rights': { intent: 'configure', primaryActionLabel: 'Return to dashboard', primaryActionPath: '/dashboard', navGroup: 'settings', cognitiveLoad: 'high' },
   '/help': { intent: 'configure', primaryActionLabel: 'Open dashboard', primaryActionPath: '/dashboard', navGroup: 'settings', cognitiveLoad: 'low' },
   '/not-found': { intent: 'monitor', primaryActionLabel: 'Back to dashboard', primaryActionPath: '/dashboard', navGroup: 'public', cognitiveLoad: 'low' },
-  '/v2/settings': { intent: 'configure', primaryActionLabel: 'Open v1 settings', primaryActionPath: '/settings', navGroup: 'settings', cognitiveLoad: 'medium', demoPriority: 'P1', ctaBudget: 1, first5sMessage: 'DS v2 Settings reference implementation.' },
-  '/v2/dashboard': { intent: 'monitor', primaryActionLabel: 'Open v1 dashboard', primaryActionPath: '/dashboard', navGroup: 'core', cognitiveLoad: 'medium', demoPriority: 'P1', ctaBudget: 1, first5sMessage: 'DS v2 Dashboard reference implementation.' },
-  '/v2/landing': { intent: 'monitor', primaryActionLabel: 'Open v1 landing', primaryActionPath: '/', navGroup: 'public', cognitiveLoad: 'low', demoPriority: 'P1', ctaBudget: 1, first5sMessage: 'DS v2 Landing reference implementation.' },
-  '/v3/landing': { intent: 'monitor', primaryActionLabel: 'Open dashboard', primaryActionPath: '/dashboard', navGroup: 'public', cognitiveLoad: 'low', demoPriority: 'P1', ctaBudget: 1, first5sMessage: 'v3 Landing (redirects to /).' },
 };
 
 function resolveRouteUXMeta(meta: RouteUXMeta): ResolvedRouteUXMeta {

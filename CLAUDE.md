@@ -16,7 +16,9 @@ src/
 │   ├── blocks/       ← v0-generated composite blocks (post-adaptation)
 │   ├── poseidon/     ← Poseidon facade components (GlassCard, EngineBadge, etc.)
 │   ├── layout/       ← Structural wrappers (AppShell, PageShell, Section)
-│   └── ...           ← Existing domain components (100+)
+│   └── dashboard/    ← v0 Dashboard sub-components (HeroSection, KpiGrid, etc.)
+├── legacy/           ← ⛔ ARCHIVED — do NOT import from here in v0 pages
+│   └── components/   ← 135 legacy domain components (TrustIndexCard, NetWorthHero, etc.)
 ├── design-system/    ← DS v2 internals (72 components) — do NOT modify directly
 ├── styles/
 │   ├── layers/       ← Layer 1 + Layer 2 CSS
@@ -39,6 +41,8 @@ When integrating v0 output, apply **only** minimal adaptations. Do NOT alter v0'
 
 ### Prohibited:
 
+- **Do NOT import from `src/legacy/`** — archived legacy components, never use in v0 pages
+- **Do NOT import from `src/design-system/` directly** — use `components/poseidon/` facades
 - **Do NOT add old content** — never import or re-create old components (TrustIndexCard, NetWorthHero, RiskScoreDial, ScoreRing, etc.) inside v0-generated pages
 - **Do NOT wrap with PageShell** — v0 pages are self-contained, no old layout wrappers
 - **Do NOT add old context dependencies** — v0 pages should not depend on old context providers
