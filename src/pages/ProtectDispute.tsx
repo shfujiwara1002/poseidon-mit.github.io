@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { ArrowLeft, Shield, CheckCircle2 } from 'lucide-react';
 import { Link } from '../router';
-import { GovernContractSet } from '../components/GovernContractSet';
-import { MilestonesTimeline } from '../components/MilestonesTimeline';
-import { PageShell } from '../components/PageShell';
-import { ProofLine } from '../components/ProofLine';
-import { ScoreRing } from '../components/ScoreRing';
-import { getRouteScreenContract } from '../contracts/route-screen-contracts';
+import { GovernFooter } from '../components/dashboard/GovernFooter';
 
-/* ── mock data ────────────────────────────────────────────── */
+const fadeUp = {
+  hidden: { opacity: 0, y: 12 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] } },
+};
+const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
+
+/* ═══════════════════════════════════════════
+   DATA
+   ═══════════════════════════════════════════ */
 
 const transaction = {
   merchant: 'MerchantX',
@@ -33,214 +38,320 @@ const disputeSteps = [
   { title: 'Submit & Track', description: 'Submit dispute and monitor resolution.' },
 ];
 
-/* ── component ────────────────────────────────────────────── */
+const milestones = [
+  { label: 'Dispute filed', date: 'Now', done: true },
+  { label: 'Evidence reviewed', date: '24h', done: false },
+  { label: 'Provisional credit', date: '48h', done: false },
+  { label: 'Investigation complete', date: '10 days', done: false },
+  { label: 'Resolution', date: '30 days', done: false },
+];
 
-export const ProtectDispute: React.FC = () => {
-  const contract = getRouteScreenContract('protect-dispute');
+/* ═══════════════════════════════════════════
+   COMPONENT
+   ═══════════════════════════════════════════ */
+
+export function ProtectDispute() {
   const [currentStep, setCurrentStep] = useState(0);
   const [submitted, setSubmitted] = useState(false);
 
   const goNext = () => {
-    if (currentStep === disputeSteps.length - 1) {
-      setSubmitted(true);
-    } else {
-      setCurrentStep((prev) => prev + 1);
-    }
+    if (currentStep === disputeSteps.length - 1) setSubmitted(true);
+    else setCurrentStep((prev) => prev + 1);
   };
   const goBack = () => setCurrentStep((prev) => Math.max(0, prev - 1));
 
-  const milestones = [
-    { label: 'Dispute filed', date: 'Now', status: 'completed' as const },
-    { label: 'Evidence reviewed', date: '24h', status: submitted ? 'completed' as const : 'upcoming' as const },
-    { label: 'Provisional credit', date: '48h', status: 'upcoming' as const },
-    { label: 'Investigation complete', date: '10 days', status: 'upcoming' as const },
-    { label: 'Resolution', date: '30 days', status: 'upcoming' as const },
-  ];
-
-  /* ── primary feed ───────────────────────────────────────── */
-  const primaryFeed = (
-    <>
-      {/* Progress Stepper */}
-      <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-2">
-        {disputeSteps.map((step, idx) => (
-          <React.Fragment key={step.title}>
-            <div className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium whitespace-nowrap ${idx === currentStep ? 'bg-teal-500/20 text-teal-300 border border-teal-500/40' : idx < currentStep || submitted ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-white/5 text-white/40 border border-white/10'}`}>
-              <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${idx < currentStep || submitted ? 'bg-emerald-500 text-white' : idx === currentStep ? 'bg-teal-500 text-white' : 'bg-white/10 text-white/40'}`}>
-                {idx < currentStep || submitted ? '\u2713' : idx + 1}
-              </span>
-              <span className="hidden md:inline">{step.title}</span>
-            </div>
-            {idx < disputeSteps.length - 1 && <div className={`w-6 h-px ${idx < currentStep || submitted ? 'bg-emerald-500/40' : 'bg-white/10'}`} />}
-          </React.Fragment>
-        ))}
-      </div>
-
-      {/* Step Content */}
-      {!submitted && currentStep === 0 && (
-        <section className="space-y-4">
-          <div className="engine-card border-l-2 border-teal-500/50">
-            <h4 className="text-sm font-semibold text-white mb-3">Transaction Details</h4>
-            <div className="grid grid-cols-2 gap-3 text-xs">
-              <div><span className="text-white/40 block">Merchant</span><span className="text-white">{transaction.merchant}</span></div>
-              <div><span className="text-white/40 block">Amount</span><span className="text-white font-semibold">{transaction.amount}</span></div>
-              <div><span className="text-white/40 block">Date</span><span className="text-white">{transaction.date}</span></div>
-              <div><span className="text-white/40 block">Card</span><span className="text-white">{transaction.card}</span></div>
-              <div><span className="text-white/40 block">Category</span><span className="text-white">{transaction.category}</span></div>
-              <div><span className="text-white/40 block">AI confidence</span><span className="text-teal-400 font-semibold">{transaction.confidence}%</span></div>
-            </div>
-          </div>
-
-          <div className="engine-card">
-            <h4 className="text-sm font-semibold text-white mb-3">AI Analysis — SHAP Factors</h4>
-            <div className="space-y-2">
-              {shapFactors.map((f) => (
-                <div key={f.label} className="flex items-center gap-2">
-                  <span className={`text-[10px] w-4 ${f.value > 0 ? 'text-teal-400' : 'text-red-400'}`}>{f.value > 0 ? '+' : '-'}</span>
-                  <span className="text-xs text-white/50 w-36 shrink-0">{f.label}</span>
-                  <div className="flex-1 h-1.5 rounded-full bg-white/5">
-                    <div className={`h-full rounded-full ${f.value > 0 ? 'bg-teal-500/60' : 'bg-red-500/40'}`} style={{ width: `${Math.abs(f.value) * 100}%` }} />
-                  </div>
-                  <span className="text-xs text-white/40 w-10 text-right">{f.value > 0 ? '+' : ''}{f.value.toFixed(2)}</span>
-                </div>
-              ))}
-            </div>
-            <p className="text-[10px] text-white/30 mt-2">Base value 0.50 → Prediction {(0.50 + shapFactors.reduce((s, f) => s + f.value, 0)).toFixed(2)}</p>
-          </div>
-
-          <ProofLine claim="Signal confidence 0.94" evidence="5 SHAP factors analyzed | FraudDetection v3.2" source="Protect engine" basis="per-transaction" sourceType="model" />
-        </section>
-      )}
-
-      {!submitted && currentStep === 1 && (
-        <section className="space-y-4">
-          <div className="engine-card">
-            <h4 className="text-sm font-semibold text-white mb-3">Upload Evidence</h4>
-            <div className="border-2 border-dashed border-white/10 rounded-xl p-8 text-center">
-              <p className="text-sm text-white/40">Drag & drop files or click to upload</p>
-              <p className="text-xs text-white/25 mt-1">PDF, PNG, JPG up to 10MB</p>
-            </div>
-          </div>
-          <div className="engine-card border-l-2 border-violet-500/50">
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-lg bg-violet-500/20 flex items-center justify-center shrink-0"><span className="text-violet-400 text-sm">AI</span></div>
-              <div><p className="text-sm text-white">Suggested evidence: bank statement showing no authorization for this merchant.</p><p className="text-xs text-white/40 mt-1">AI-identified based on dispute pattern analysis.</p></div>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {!submitted && currentStep === 2 && (
-        <section className="space-y-4">
-          <div className="engine-card">
-            <h4 className="text-sm font-semibold text-white mb-3">AI-Generated Dispute Letter</h4>
-            <div className="rounded-lg bg-white/[0.02] border border-white/5 p-4 text-xs text-white/60 leading-relaxed font-mono">
-              <p>Dear Dispute Resolution Team,</p>
-              <p className="mt-2">I am writing to dispute a charge of $4,200.00 made on February 16, 2026, to MerchantX on my card ending in 4821. I did not authorize this transaction.</p>
-              <p className="mt-2">The AI analysis indicates this transaction has a 94% fraud confidence score based on merchant history anomaly, amount deviation (3x typical), and geographic mismatch.</p>
-              <p className="mt-2">I request that this charge be reversed and my account credited accordingly.</p>
-              <p className="mt-2">Sincerely,<br />Account Holder</p>
-            </div>
-            <div className="flex gap-2 mt-3">
-              <button className="text-xs text-teal-400 hover:underline">Regenerate</button>
-              <button className="text-xs text-white/40 hover:text-white/60">Edit manually</button>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {!submitted && currentStep === 3 && (
-        <section className="space-y-4">
-          <div className="engine-card">
-            <h4 className="text-sm font-semibold text-white mb-3">Review Summary</h4>
-            <div className="space-y-2 text-xs">
-              <div className="flex justify-between"><span className="text-white/50">Transaction</span><span className="text-white">{transaction.merchant} — {transaction.amount}</span></div>
-              <div className="flex justify-between"><span className="text-white/50">Evidence</span><span className="text-white">1 file uploaded</span></div>
-              <div className="flex justify-between"><span className="text-white/50">Dispute letter</span><span className="text-emerald-400">AI-generated, reviewed</span></div>
-              <div className="flex justify-between"><span className="text-white/50">Confidence</span><span className="text-teal-400">{transaction.confidence}%</span></div>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {submitted && (
-        <section className="space-y-4">
-          <div className="engine-card border-l-2 border-emerald-500/50 text-center py-6">
-            <div className="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-3">
-              <span className="text-emerald-400 text-xl font-bold">{'\u2713'}</span>
-            </div>
-            <h3 className="text-lg font-bold text-white">Dispute Submitted Successfully</h3>
-            <p className="text-sm text-white/50 mt-2">Case DIS-2026-0216-001 has been filed and assigned to a reviewer.</p>
-            <ProofLine claim="SLA: 48h provisional credit" evidence="Investigation completes within 10 business days | Full audit trail active" source="Dispute resolution" basis="per-case" sourceType="system" />
-          </div>
-          <div className="engine-card">
-            <h4 className="text-sm font-semibold text-white mb-3">Tracking</h4>
-            <MilestonesTimeline milestones={milestones} accentColor="var(--accent-teal)" />
-          </div>
-          <Link to="/protect" className="entry-btn entry-btn--ghost inline-block">Back to Protect</Link>
-        </section>
-      )}
-
-      {/* Bottom Navigation */}
-      {!submitted && (
-        <div className="flex justify-between mt-6">
-          <button onClick={goBack} disabled={currentStep === 0} className={`px-4 py-2.5 rounded-lg text-sm transition-colors ${currentStep === 0 ? 'text-white/20 cursor-not-allowed' : 'text-white/50 hover:text-white/70 bg-white/5 border border-white/10'}`}>Back</button>
-          <button onClick={goNext} className="px-6 py-2.5 rounded-lg bg-teal-500 text-white text-sm font-semibold hover:bg-teal-600 transition-colors">
-            {currentStep === disputeSteps.length - 1 ? 'Submit Dispute' : 'Continue'}
-          </button>
-        </div>
-      )}
-
-      <GovernContractSet auditId="GV-2026-0216-DIS1" modelVersion="DisputeFlow v1.0" explanationVersion="xai-1.1" />
-    </>
-  );
-
-  /* ── decision rail ──────────────────────────────────────── */
-  const decisionRail = (
-    <>
-      <article className="engine-card flex flex-col items-center">
-        <ScoreRing score={transaction.confidence} maxScore={100} label="Fraud confidence" size="md" color="var(--accent-teal)" />
-        <p className="text-xs text-white/40 mt-2">AI fraud detection score</p>
-      </article>
-
-      <article className="engine-card">
-        <h4 className="text-xs text-white/50 uppercase tracking-wider mb-3">Resolution Timeline</h4>
-        <MilestonesTimeline milestones={milestones} accentColor="var(--accent-teal)" />
-      </article>
-
-      <article className="engine-card">
-        <h4 className="text-xs text-white/50 uppercase tracking-wider mb-3">Dispute Stats</h4>
-        <div className="space-y-2 text-xs">
-          <div className="flex justify-between"><span className="text-white/50">Avg resolution</span><span className="text-white/70">2.5 hours</span></div>
-          <div className="flex justify-between"><span className="text-white/50">Success rate</span><span className="text-emerald-400">96%</span></div>
-          <div className="flex justify-between"><span className="text-white/50">Overturn rate</span><span className="text-white/70">7%</span></div>
-        </div>
-      </article>
-    </>
-  );
+  const circumference = 2 * Math.PI * 40;
+  const confidencePct = transaction.confidence / 100;
 
   return (
-    <PageShell
-      slug="protect"
-      contract={contract}
-      layout="engine"
-      heroVariant="focused"
-      hero={{
-        kicker: 'Protect / Dispute',
-        headline: 'Dispute Transaction',
-        subline: `Step ${currentStep + 1} of ${disputeSteps.length}: ${disputeSteps[currentStep].title}`,
-        proofLine: { claim: 'Human sovereignty', evidence: 'Every dispute gets human review | 48h provisional credit SLA', source: 'Governance policy' },
-        freshness: new Date(),
-        kpis: [
-          { label: 'Confidence', value: `${transaction.confidence}%`, accent: 'teal', definition: 'AI fraud detection confidence' },
-          { label: 'Amount', value: transaction.amount, accent: 'amber', definition: 'Disputed transaction amount' },
-          { label: 'Success rate', value: '96%', accent: 'cyan', definition: 'Historical dispute success rate' },
-          { label: 'SLA', value: '48h', accent: 'blue', definition: 'Provisional credit SLA' },
-        ],
-      }}
-      primaryFeed={primaryFeed}
-      decisionRail={decisionRail}
-    />
+    <div className="min-h-screen w-full" style={{ background: '#0B1221' }}>
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold"
+        style={{ background: '#22C55E', color: '#ffffff' }}
+      >
+        Skip to main content
+      </a>
+
+      <nav
+        className="sticky top-0 z-50 backdrop-blur-xl border-b border-white/[0.06]"
+        style={{ background: 'rgba(11,18,33,0.8)' }}
+        aria-label="Breadcrumb"
+      >
+        <div className="mx-auto px-4 md:px-6 lg:px-8 h-14 flex items-center gap-2" style={{ maxWidth: '1280px' }}>
+          <Link
+            to="/protect"
+            className="flex items-center gap-1.5 text-sm font-medium hover:opacity-80 transition-opacity"
+            style={{ color: '#22C55E' }}
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Protect
+          </Link>
+          <span className="text-white/20">/</span>
+          <span className="text-sm text-white/50">Dispute Transaction</span>
+        </div>
+      </nav>
+
+      <motion.div
+        id="main-content"
+        className="mx-auto flex flex-col gap-6 md:gap-8 px-4 py-6 md:px-6 md:py-8 lg:px-8"
+        style={{ maxWidth: '1280px' }}
+        variants={stagger}
+        initial="hidden"
+        animate="visible"
+        role="main"
+      >
+        {/* Hero */}
+        <motion.div variants={fadeUp} className="flex flex-col gap-1">
+          <div className="flex items-center gap-2 mb-1">
+            <Shield className="h-5 w-5" style={{ color: '#22C55E' }} />
+            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#22C55E' }}>
+              Protect · Dispute
+            </span>
+          </div>
+          <h1 className="text-2xl md:text-3xl font-bold text-white">Dispute Transaction</h1>
+          <p className="text-sm text-slate-400">
+            Step {currentStep + 1} of {disputeSteps.length}: {disputeSteps[currentStep].title}
+          </p>
+        </motion.div>
+
+        {/* KPI bar */}
+        <motion.div variants={fadeUp}>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { label: 'Confidence', value: `${transaction.confidence}%`, color: '#22C55E' },
+              { label: 'Amount', value: transaction.amount, color: '#EAB308' },
+              { label: 'Success rate', value: '96%', color: '#00F0FF' },
+              { label: 'SLA', value: '48h', color: '#3B82F6' },
+            ].map((kpi) => (
+              <div key={kpi.label} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
+                <p className="text-xs text-white/40 mb-1">{kpi.label}</p>
+                <p className="text-2xl font-bold" style={{ color: kpi.color }}>{kpi.value}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* 2-column layout */}
+        <div className="flex flex-col lg:flex-row gap-6">
+          {/* Main feed */}
+          <motion.div variants={fadeUp} className="flex-1 min-w-0 lg:w-2/3 flex flex-col gap-4">
+            {/* Progress stepper */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-2">
+              {disputeSteps.map((step, idx) => (
+                <React.Fragment key={step.title}>
+                  <div className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium whitespace-nowrap border ${idx === currentStep ? 'border-emerald-500/40 text-emerald-300' : idx < currentStep || submitted ? 'border-emerald-500/20 text-emerald-400' : 'border-white/10 text-white/40'}`}
+                    style={idx === currentStep ? { background: 'rgba(34,197,94,0.1)' } : idx < currentStep || submitted ? { background: 'rgba(34,197,94,0.05)' } : { background: 'rgba(255,255,255,0.03)' }}>
+                    <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${idx < currentStep || submitted ? 'bg-emerald-500 text-white' : idx === currentStep ? 'bg-emerald-600 text-white' : 'bg-white/10 text-white/40'}`}>
+                      {idx < currentStep || submitted ? '✓' : idx + 1}
+                    </span>
+                    <span className="hidden md:inline">{step.title}</span>
+                  </div>
+                  {idx < disputeSteps.length - 1 && (
+                    <div className={`w-6 h-px shrink-0 ${idx < currentStep || submitted ? 'bg-emerald-500/40' : 'bg-white/10'}`} />
+                  )}
+                </React.Fragment>
+              ))}
+            </div>
+
+            {/* Step 0: Review */}
+            {!submitted && currentStep === 0 && (
+              <div className="flex flex-col gap-4">
+                <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6" style={{ borderLeftWidth: 2, borderLeftColor: '#22C55E' }}>
+                  <h4 className="text-sm font-semibold text-white mb-3">Transaction Details</h4>
+                  <div className="grid grid-cols-2 gap-3 text-xs">
+                    <div><span className="text-white/40 block">Merchant</span><span className="text-white">{transaction.merchant}</span></div>
+                    <div><span className="text-white/40 block">Amount</span><span className="text-white font-semibold">{transaction.amount}</span></div>
+                    <div><span className="text-white/40 block">Date</span><span className="text-white">{transaction.date}</span></div>
+                    <div><span className="text-white/40 block">Card</span><span className="text-white">{transaction.card}</span></div>
+                    <div><span className="text-white/40 block">Category</span><span className="text-white">{transaction.category}</span></div>
+                    <div><span className="text-white/40 block">AI confidence</span><span className="font-semibold" style={{ color: '#22C55E' }}>{transaction.confidence}%</span></div>
+                  </div>
+                </div>
+
+                <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6">
+                  <h4 className="text-sm font-semibold text-white mb-3">AI Analysis — SHAP Factors</h4>
+                  <div className="space-y-2">
+                    {shapFactors.map((f) => (
+                      <div key={f.label} className="flex items-center gap-2">
+                        <span className={`text-[10px] w-4 ${f.value > 0 ? 'text-emerald-400' : 'text-red-400'}`}>{f.value > 0 ? '+' : '-'}</span>
+                        <span className="text-xs text-white/50 w-36 shrink-0">{f.label}</span>
+                        <div className="flex-1 h-1.5 rounded-full bg-white/10">
+                          <div className={`h-full rounded-full ${f.value > 0 ? 'bg-emerald-500/60' : 'bg-red-500/40'}`} style={{ width: `${Math.abs(f.value) * 100}%` }} />
+                        </div>
+                        <span className="text-xs text-white/40 w-10 text-right">{f.value > 0 ? '+' : ''}{f.value.toFixed(2)}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-[10px] text-white/30 mt-2">
+                    Base value 0.50 → Prediction {(0.50 + shapFactors.reduce((s, f) => s + f.value, 0)).toFixed(2)}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Step 1: Evidence */}
+            {!submitted && currentStep === 1 && (
+              <div className="flex flex-col gap-4">
+                <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6">
+                  <h4 className="text-sm font-semibold text-white mb-3">Upload Evidence</h4>
+                  <div className="border-2 border-dashed border-white/10 rounded-xl p-8 text-center">
+                    <p className="text-sm text-white/40">Drag & drop files or click to upload</p>
+                    <p className="text-xs text-white/25 mt-1">PDF, PNG, JPG up to 10MB</p>
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4" style={{ borderLeftWidth: 2, borderLeftColor: '#8B5CF6' }}>
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-violet-500/20 flex items-center justify-center shrink-0">
+                      <span className="text-violet-400 text-sm">AI</span>
+                    </div>
+                    <div>
+                      <p className="text-sm text-white">Suggested evidence: bank statement showing no authorization for this merchant.</p>
+                      <p className="text-xs text-white/40 mt-1">AI-identified based on dispute pattern analysis.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Step 2: Letter */}
+            {!submitted && currentStep === 2 && (
+              <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6">
+                <h4 className="text-sm font-semibold text-white mb-3">AI-Generated Dispute Letter</h4>
+                <div className="rounded-lg bg-white/[0.02] border border-white/5 p-4 text-xs text-white/60 leading-relaxed font-mono">
+                  <p>Dear Dispute Resolution Team,</p>
+                  <p className="mt-2">I am writing to dispute a charge of $4,200.00 made on February 16, 2026, to MerchantX on my card ending in 4821. I did not authorize this transaction.</p>
+                  <p className="mt-2">The AI analysis indicates this transaction has a 94% fraud confidence score based on merchant history anomaly, amount deviation (3x typical), and geographic mismatch.</p>
+                  <p className="mt-2">I request that this charge be reversed and my account credited accordingly.</p>
+                  <p className="mt-2">Sincerely,<br />Account Holder</p>
+                </div>
+                <div className="flex gap-2 mt-3">
+                  <button className="text-xs font-medium hover:underline" style={{ color: '#22C55E' }}>Regenerate</button>
+                  <button className="text-xs text-white/40 hover:text-white/60">Edit manually</button>
+                </div>
+              </div>
+            )}
+
+            {/* Step 3: Summary */}
+            {!submitted && currentStep === 3 && (
+              <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6">
+                <h4 className="text-sm font-semibold text-white mb-3">Review Summary</h4>
+                <div className="space-y-2 text-xs">
+                  <div className="flex justify-between"><span className="text-white/50">Transaction</span><span className="text-white">{transaction.merchant} — {transaction.amount}</span></div>
+                  <div className="flex justify-between"><span className="text-white/50">Evidence</span><span className="text-white">1 file uploaded</span></div>
+                  <div className="flex justify-between"><span className="text-white/50">Dispute letter</span><span className="text-emerald-400">AI-generated, reviewed</span></div>
+                  <div className="flex justify-between"><span className="text-white/50">Confidence</span><span style={{ color: '#22C55E' }}>{transaction.confidence}%</span></div>
+                </div>
+              </div>
+            )}
+
+            {/* Submitted */}
+            {submitted && (
+              <div className="flex flex-col gap-4">
+                <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-6 md:p-8 text-center" style={{ borderLeftWidth: 2, borderLeftColor: '#22C55E' }}>
+                  <div className="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-3">
+                    <CheckCircle2 className="h-6 w-6 text-emerald-400" />
+                  </div>
+                  <h3 className="text-lg font-bold text-white">Dispute Submitted Successfully</h3>
+                  <p className="text-sm text-white/50 mt-2">Case DIS-2026-0216-001 has been filed and assigned to a reviewer.</p>
+                  <p className="text-xs text-white/30 mt-3">SLA: 48h provisional credit · Investigation completes within 10 business days</p>
+                </div>
+                <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6">
+                  <h4 className="text-sm font-semibold text-white mb-3">Resolution Timeline</h4>
+                  <div className="space-y-3">
+                    {milestones.map((m) => (
+                      <div key={m.label} className="flex items-center gap-3">
+                        <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${m.done ? 'bg-emerald-400' : 'bg-white/20'}`} />
+                        <span className="text-xs text-white/70 flex-1">{m.label}</span>
+                        <span className="text-xs text-white/40">{m.date}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <Link to="/protect" className="text-sm font-medium hover:opacity-80 transition-opacity" style={{ color: '#22C55E' }}>← Back to Protect</Link>
+              </div>
+            )}
+
+            {/* Navigation */}
+            {!submitted && (
+              <div className="flex justify-between mt-2">
+                <button
+                  onClick={goBack}
+                  disabled={currentStep === 0}
+                  className={`px-4 py-2.5 rounded-lg text-sm transition-colors ${currentStep === 0 ? 'text-white/20 cursor-not-allowed' : 'text-white/50 hover:text-white/70 bg-white/5 border border-white/10'}`}
+                >
+                  Back
+                </button>
+                <button
+                  onClick={goNext}
+                  className="px-6 py-2.5 rounded-lg text-white text-sm font-semibold hover:opacity-90 transition-opacity"
+                  style={{ background: '#22C55E' }}
+                >
+                  {currentStep === disputeSteps.length - 1 ? 'Submit Dispute' : 'Continue'}
+                </button>
+              </div>
+            )}
+          </motion.div>
+
+          {/* Side rail */}
+          <aside className="w-full lg:w-72 shrink-0 flex flex-col gap-4" aria-label="Dispute sidebar">
+            {/* Confidence ring */}
+            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 flex flex-col items-center">
+              <div className="relative" aria-label={`Fraud confidence: ${transaction.confidence}%`}>
+                <svg width="96" height="96" viewBox="0 0 96 96" aria-hidden="true">
+                  <circle cx="48" cy="48" r="40" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="8" />
+                  <circle
+                    cx="48" cy="48" r="40" fill="none" stroke="#22C55E" strokeWidth="8"
+                    strokeLinecap="round"
+                    strokeDasharray={`${confidencePct * circumference} ${circumference}`}
+                    transform="rotate(-90 48 48)"
+                  />
+                </svg>
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <span className="text-2xl font-bold text-white">{transaction.confidence}%</span>
+                </div>
+              </div>
+              <p className="text-xs text-white/50 mt-2">Fraud confidence</p>
+              <p className="text-[10px] text-white/30">AI fraud detection score</p>
+            </div>
+
+            {/* Resolution timeline */}
+            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
+              <h3 className="text-xs font-semibold text-white/70 uppercase tracking-wider mb-3">Resolution Timeline</h3>
+              <div className="space-y-3">
+                {milestones.map((m) => (
+                  <div key={m.label} className="flex items-center gap-2">
+                    <div className={`w-2 h-2 rounded-full shrink-0 ${m.done || submitted ? 'bg-emerald-400' : 'bg-white/20'}`} />
+                    <span className="text-xs text-white/70 flex-1">{m.label}</span>
+                    <span className="text-xs text-white/40">{m.date}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Dispute stats */}
+            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
+              <h3 className="text-xs font-semibold text-white/70 uppercase tracking-wider mb-3">Dispute Stats</h3>
+              <div className="space-y-2.5">
+                {[
+                  { label: 'Avg resolution', value: '2.5 hours', color: 'text-white/70' },
+                  { label: 'Success rate', value: '96%', color: 'text-emerald-400' },
+                  { label: 'Overturn rate', value: '7%', color: 'text-white/70' },
+                ].map((row) => (
+                  <div key={row.label} className="flex justify-between">
+                    <span className="text-xs text-white/50">{row.label}</span>
+                    <span className={`text-xs font-medium ${row.color}`}>{row.value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <GovernFooter />
+      </motion.div>
+    </div>
   );
-};
+}
 
 export default ProtectDispute;

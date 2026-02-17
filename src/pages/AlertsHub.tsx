@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { ArrowLeft, Bell, CheckCircle2, Clock, TrendingDown } from 'lucide-react';
 import { Link } from '../router';
-import { CategoryScoreBar } from '../components/CategoryScoreBar';
-import { GovernContractSet } from '../components/GovernContractSet';
-import { MilestonesTimeline } from '../components/MilestonesTimeline';
-import { PageShell } from '../components/PageShell';
-import { ProofLine } from '../components/ProofLine';
-import { ScoreRing } from '../components/ScoreRing';
-import { getRouteScreenContract } from '../contracts/route-screen-contracts';
+import { GovernFooter } from '../components/dashboard/GovernFooter';
 
-/* ── mock data ────────────────────────────────────────────── */
+const fadeUp = {
+  hidden: { opacity: 0, y: 12 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] } },
+};
+const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
+
+/* ═══════════════════════════════════════════
+   TYPES & DATA
+   ═══════════════════════════════════════════ */
 
 interface Alert {
   id: string;
@@ -30,25 +34,24 @@ const alerts: Alert[] = [
   { id: 'ALT-006', severity: 'info', engine: 'Govern', title: 'Model retrained — FraudDetection v3.3 deployed', confidence: 0.99, time: '8h ago', status: 'resolved', shapFactors: [{ label: 'Model accuracy', value: 0.72 }, { label: 'Dataset coverage', value: 0.28 }] },
 ];
 
-const severityColors = { critical: 'bg-red-500', warning: 'bg-amber-500', info: 'bg-blue-500' };
-const severityText = { critical: 'text-red-400', warning: 'text-amber-400', info: 'text-blue-400' };
-const engineColors = { Protect: 'bg-teal-500/20 text-teal-400', Grow: 'bg-violet-500/20 text-violet-400', Execute: 'bg-amber-500/20 text-amber-400', Govern: 'bg-blue-500/20 text-blue-400' };
-const statusDots = { unread: 'bg-white', 'in-progress': 'bg-amber-400', resolved: 'bg-emerald-400' };
+const severityDot: Record<Alert['severity'], string> = { critical: 'bg-red-500', warning: 'bg-amber-500', info: 'bg-blue-500' };
+const severityLabel: Record<Alert['severity'], string> = { critical: 'text-red-400', warning: 'text-amber-400', info: 'text-blue-400' };
+const engineBadge: Record<Alert['engine'], string> = {
+  Protect: 'bg-emerald-500/20 text-emerald-400',
+  Grow: 'bg-violet-500/20 text-violet-400',
+  Execute: 'bg-amber-500/20 text-amber-400',
+  Govern: 'bg-blue-500/20 text-blue-400',
+};
+const statusColor: Record<Alert['status'], string> = { unread: 'bg-white', 'in-progress': 'bg-amber-400', resolved: 'bg-emerald-400' };
 
 type SeverityFilter = 'all' | 'critical' | 'warning' | 'info';
 type EngineFilter = 'all' | 'Protect' | 'Grow' | 'Execute' | 'Govern';
 
-const milestones = [
-  { label: 'Root cause identified', date: '14:28', status: 'completed' as const },
-  { label: 'Alerts correlated', date: '14:30', status: 'completed' as const },
-  { label: 'User notified', date: '14:31', status: 'current' as const },
-  { label: 'Resolution pending', date: '—', status: 'upcoming' as const },
-];
+/* ═══════════════════════════════════════════
+   COMPONENT
+   ═══════════════════════════════════════════ */
 
-/* ── component ────────────────────────────────────────────── */
-
-export const AlertsHub: React.FC = () => {
-  const contract = getRouteScreenContract('alerts-hub');
+export function AlertsHub() {
   const [severityFilter, setSeverityFilter] = useState<SeverityFilter>('all');
   const [engineFilter, setEngineFilter] = useState<EngineFilter>('all');
   const [expandedAlert, setExpandedAlert] = useState<string | null>(alerts[0].id);
@@ -68,164 +71,261 @@ export const AlertsHub: React.FC = () => {
     });
   };
 
-  /* ── primary feed ───────────────────────────────────────── */
-  const primaryFeed = (
-    <>
-      {/* AI Root Cause Insight */}
-      <div className="engine-card border-l-2 border-violet-500/50 mb-4">
-        <div className="flex items-start gap-3">
-          <div className="w-8 h-8 rounded-lg bg-violet-500/20 flex items-center justify-center shrink-0">
-            <span className="text-violet-400 text-sm">AI</span>
-          </div>
-          <div>
-            <p className="text-sm text-white">3 alerts share a common root cause: <span className="text-violet-300 font-semibold">vendor payment anomaly</span>.</p>
-            <p className="text-xs text-white/50 mt-1">Correlation detected across Protect and Execute engines.</p>
-          </div>
+  return (
+    <div className="min-h-screen w-full" style={{ background: '#0B1221' }}>
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold"
+        style={{ background: '#00F0FF', color: '#0B1221' }}
+      >
+        Skip to main content
+      </a>
+
+      <nav
+        className="sticky top-0 z-50 backdrop-blur-xl border-b border-white/[0.06]"
+        style={{ background: 'rgba(11,18,33,0.8)' }}
+        aria-label="Breadcrumb"
+      >
+        <div className="mx-auto px-4 md:px-6 lg:px-8 h-14 flex items-center gap-2" style={{ maxWidth: '1280px' }}>
+          <Link
+            to="/dashboard"
+            className="flex items-center gap-1.5 text-sm font-medium hover:opacity-80 transition-opacity"
+            style={{ color: '#00F0FF' }}
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Dashboard
+          </Link>
+          <span className="text-white/20">/</span>
+          <span className="text-sm text-white/50">Alerts Hub</span>
         </div>
-      </div>
+      </nav>
 
-      {/* Filter Bar */}
-      <div className="flex flex-wrap gap-2 mb-4">
-        {/* Engine filter chips */}
-        {(['all', 'Protect', 'Grow', 'Execute', 'Govern'] as EngineFilter[]).map((eng) => {
-          const count = eng === 'all' ? alerts.length : alerts.filter((a) => a.engine === eng).length;
-          return (
-            <button key={eng} onClick={() => setEngineFilter(eng)} className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${engineFilter === eng ? 'bg-white/15 text-white border border-white/20' : 'bg-white/5 text-white/50 border border-white/10 hover:bg-white/10'}`}>
-              {eng === 'all' ? 'All' : eng} ({count})
-            </button>
-          );
-        })}
-      </div>
-      <div className="flex flex-wrap gap-2 mb-4">
-        {(['all', 'critical', 'warning', 'info'] as SeverityFilter[]).map((sev) => (
-          <button key={sev} onClick={() => setSeverityFilter(sev)} className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors capitalize ${severityFilter === sev ? 'bg-white/15 text-white border border-white/20' : 'bg-white/5 text-white/50 border border-white/10 hover:bg-white/10'}`}>
-            {sev === 'all' ? 'All severity' : sev}
-          </button>
-        ))}
-      </div>
+      <motion.div
+        id="main-content"
+        className="mx-auto flex flex-col gap-6 md:gap-8 px-4 py-6 md:px-6 md:py-8 lg:px-8"
+        style={{ maxWidth: '1280px' }}
+        variants={stagger}
+        initial="hidden"
+        animate="visible"
+        role="main"
+      >
+        {/* Hero */}
+        <motion.div variants={fadeUp} className="flex flex-col gap-1">
+          <div className="flex items-center gap-2 mb-1">
+            <Bell className="h-5 w-5" style={{ color: '#00F0FF' }} />
+            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#00F0FF' }}>
+              Dashboard · Alerts
+            </span>
+          </div>
+          <h1 className="text-2xl md:text-3xl font-bold text-white">Alerts Hub</h1>
+          <p className="text-sm text-slate-400">
+            3 alerts share a common root cause: vendor payment anomaly.
+          </p>
+        </motion.div>
 
-      {/* Batch Actions */}
-      {selectedIds.size > 0 && (
-        <div className="flex items-center gap-3 mb-4 px-3 py-2 rounded-lg bg-white/5 border border-white/10">
-          <span className="text-xs text-white/60">{selectedIds.size} selected</span>
-          <button className="text-xs text-teal-400 hover:underline">Resolve all</button>
-          <button className="text-xs text-white/40 hover:underline">Dismiss all</button>
-        </div>
-      )}
+        {/* KPI bar */}
+        <motion.div variants={fadeUp}>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { label: 'Active', value: '12', color: '#EAB308' },
+              { label: 'Resolved (7d)', value: '35', color: '#22C55E' },
+              { label: 'MTTR', value: '25m', color: '#00F0FF' },
+              { label: 'False positive', value: '3%', color: '#3B82F6' },
+            ].map((kpi) => (
+              <div key={kpi.label} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
+                <p className="text-xs text-white/40 mb-1">{kpi.label}</p>
+                <p className="text-2xl font-bold" style={{ color: kpi.color }}>{kpi.value}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
 
-      {/* Alert List */}
-      <section className="space-y-2">
-        {filtered.map((alert) => (
-          <div key={alert.id} className="engine-card">
-            <div className="flex items-start gap-3">
-              {/* Checkbox */}
-              <input type="checkbox" checked={selectedIds.has(alert.id)} onChange={() => toggleSelect(alert.id)} className="mt-1.5 accent-teal-500" />
-
-              {/* Severity dot */}
-              <div className={`w-2 h-2 rounded-full mt-2 shrink-0 ${severityColors[alert.severity]}`} />
-
-              {/* Content */}
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${engineColors[alert.engine]}`}>{alert.engine}</span>
-                  <span className={`text-[10px] font-medium uppercase ${severityText[alert.severity]}`}>{alert.severity}</span>
-                  <span className="text-[10px] text-white/30">{alert.time}</span>
-                  <div className={`w-1.5 h-1.5 rounded-full ml-auto ${statusDots[alert.status]}`} title={alert.status} />
+        {/* 2-column layout */}
+        <div className="flex flex-col lg:flex-row gap-6">
+          {/* Main feed */}
+          <motion.div variants={fadeUp} className="flex-1 min-w-0 lg:w-2/3 flex flex-col gap-4">
+            {/* AI root cause insight */}
+            <div className="rounded-2xl border border-violet-500/30 bg-violet-500/[0.06] p-4">
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-lg bg-violet-500/20 flex items-center justify-center shrink-0">
+                  <span className="text-violet-400 text-xs font-bold">AI</span>
                 </div>
-                <button onClick={() => setExpandedAlert(expandedAlert === alert.id ? null : alert.id)} className="text-sm font-medium text-white hover:text-teal-300 transition-colors text-left mt-1">
-                  {alert.title}
-                </button>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className="text-[10px] text-white/40">Confidence {alert.confidence}</span>
+                <div>
+                  <p className="text-sm text-white">3 alerts share a common root cause: <span className="text-violet-300 font-semibold">vendor payment anomaly</span>.</p>
+                  <p className="text-xs text-white/50 mt-1">Correlation detected across Protect and Execute engines.</p>
                 </div>
-
-                {/* Expanded SHAP factors */}
-                {expandedAlert === alert.id && (
-                  <div className="mt-3 pt-3 border-t border-white/5 space-y-2">
-                    {alert.shapFactors.map((f) => (
-                      <div key={f.label} className="flex items-center gap-2">
-                        <span className="text-xs text-white/50 w-32 shrink-0">{f.label}</span>
-                        <div className="flex-1 h-1.5 rounded-full bg-white/5">
-                          <div className="h-full rounded-full bg-teal-500/60" style={{ width: `${f.value * 100}%` }} />
-                        </div>
-                        <span className="text-xs text-white/40 w-8 text-right">{f.value.toFixed(2)}</span>
-                      </div>
-                    ))}
-                    <div className="flex gap-2 mt-3">
-                      <Link to="/protect/alert-detail" className="text-xs text-teal-400 hover:underline">View detail</Link>
-                      <button className="text-xs text-white/40 hover:text-white/60">Dismiss</button>
-                    </div>
-                  </div>
-                )}
               </div>
             </div>
-          </div>
-        ))}
-      </section>
 
-      <ProofLine claim={`${filtered.length} alerts displayed`} evidence="Priority-sorted by severity and confidence | All engines reporting" source="Cross-engine composite" basis="real-time" sourceType="model" />
+            {/* Filters */}
+            <div className="flex flex-wrap gap-2">
+              {(['all', 'Protect', 'Grow', 'Execute', 'Govern'] as EngineFilter[]).map((eng) => {
+                const count = eng === 'all' ? alerts.length : alerts.filter((a) => a.engine === eng).length;
+                return (
+                  <button
+                    key={eng}
+                    onClick={() => setEngineFilter(eng)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${engineFilter === eng ? 'bg-white/15 text-white border border-white/20' : 'bg-white/5 text-white/50 border border-white/10 hover:bg-white/10'}`}
+                  >
+                    {eng === 'all' ? 'All' : eng} ({count})
+                  </button>
+                );
+              })}
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {(['all', 'critical', 'warning', 'info'] as SeverityFilter[]).map((sev) => (
+                <button
+                  key={sev}
+                  onClick={() => setSeverityFilter(sev)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium capitalize transition-colors ${severityFilter === sev ? 'bg-white/15 text-white border border-white/20' : 'bg-white/5 text-white/50 border border-white/10 hover:bg-white/10'}`}
+                >
+                  {sev === 'all' ? 'All severity' : sev}
+                </button>
+              ))}
+            </div>
 
-      <GovernContractSet auditId="GV-2026-0216-ALT1" modelVersion="v3.2" explanationVersion="xai-1.1" />
-    </>
-  );
+            {/* Batch actions */}
+            {selectedIds.size > 0 && (
+              <div className="flex items-center gap-3 px-3 py-2 rounded-xl bg-white/5 border border-white/10">
+                <span className="text-xs text-white/60">{selectedIds.size} selected</span>
+                <button className="text-xs text-cyan-400 hover:text-cyan-300 transition-colors">Resolve all</button>
+                <button className="text-xs text-white/40 hover:text-white/60 transition-colors">Dismiss all</button>
+              </div>
+            )}
 
-  /* ── decision rail ──────────────────────────────────────── */
-  const decisionRail = (
-    <>
-      <article className="engine-card flex flex-col items-center">
-        <ScoreRing score={25} maxScore={100} label="MTTR" size="md" color="var(--accent-teal)" />
-        <p className="text-xs text-white/40 mt-2">Mean time to resolve: 25 minutes</p>
-      </article>
+            {/* Alert list */}
+            <div className="space-y-2">
+              {filtered.map((alert) => (
+                <div key={alert.id} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
+                  <div className="flex items-start gap-3">
+                    <input
+                      type="checkbox"
+                      checked={selectedIds.has(alert.id)}
+                      onChange={() => toggleSelect(alert.id)}
+                      className="mt-1.5 accent-cyan-500 cursor-pointer"
+                      aria-label={`Select alert ${alert.id}`}
+                    />
+                    <div className={`w-2 h-2 rounded-full mt-2 shrink-0 ${severityDot[alert.severity]}`} />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${engineBadge[alert.engine]}`}>{alert.engine}</span>
+                        <span className={`text-[10px] font-medium uppercase ${severityLabel[alert.severity]}`}>{alert.severity}</span>
+                        <span className="text-[10px] text-white/30">{alert.time}</span>
+                        <div className={`w-1.5 h-1.5 rounded-full ml-auto ${statusColor[alert.status]}`} title={alert.status} />
+                      </div>
+                      <button
+                        onClick={() => setExpandedAlert(expandedAlert === alert.id ? null : alert.id)}
+                        className="text-sm font-medium text-white hover:text-cyan-300 transition-colors text-left mt-1 w-full"
+                        aria-expanded={expandedAlert === alert.id}
+                      >
+                        {alert.title}
+                      </button>
+                      <p className="text-[10px] text-white/40 mt-0.5">Confidence {(alert.confidence * 100).toFixed(0)}%</p>
 
-      <article className="engine-card">
-        <h4 className="text-xs text-white/50 uppercase tracking-wider mb-3">By Engine</h4>
-        <CategoryScoreBar categories={[
-          { label: 'Protect', score: 3, color: 'var(--accent-teal)' },
-          { label: 'Grow', score: 1, color: 'var(--accent-violet)' },
-          { label: 'Execute', score: 1, color: 'var(--accent-gold)' },
-          { label: 'Govern', score: 1, color: 'var(--accent-blue)' },
-        ]} />
-      </article>
+                      {expandedAlert === alert.id && (
+                        <div className="mt-3 pt-3 border-t border-white/[0.06] space-y-2">
+                          {alert.shapFactors.map((f) => (
+                            <div key={f.label} className="flex items-center gap-2">
+                              <span className="text-xs text-white/50 w-32 shrink-0">{f.label}</span>
+                              <div className="flex-1 h-1.5 rounded-full bg-white/10">
+                                <div className="h-full rounded-full bg-cyan-500/60" style={{ width: `${f.value * 100}%` }} />
+                              </div>
+                              <span className="text-xs text-white/40 w-8 text-right">{f.value.toFixed(2)}</span>
+                            </div>
+                          ))}
+                          <div className="flex gap-3 mt-3">
+                            <Link to="/protect/alert-detail" className="text-xs text-cyan-400 hover:text-cyan-300 transition-colors">View detail →</Link>
+                            <button className="text-xs text-white/40 hover:text-white/60 transition-colors">Dismiss</button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
 
-      <article className="engine-card">
-        <h4 className="text-xs text-white/50 uppercase tracking-wider mb-3">Resolution Timeline</h4>
-        <MilestonesTimeline milestones={milestones} accentColor="var(--accent-teal)" />
-      </article>
+          {/* Side rail */}
+          <aside className="w-full lg:w-72 shrink-0 flex flex-col gap-4" aria-label="Alert statistics">
+            {/* MTTR */}
+            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <Clock className="h-4 w-4 text-cyan-400" />
+                <h3 className="text-xs font-semibold text-white/70 uppercase tracking-wider">Mean Time to Resolve</h3>
+              </div>
+              <p className="text-3xl font-bold text-cyan-400">25m</p>
+              <p className="text-xs text-white/40 mt-1">Across all active alerts</p>
+            </div>
 
-      <article className="engine-card">
-        <h4 className="text-xs text-white/50 uppercase tracking-wider mb-3">Alert Stats</h4>
-        <div className="space-y-2 text-xs">
-          <div className="flex justify-between"><span className="text-white/50">Resolved this week</span><span className="text-emerald-400">35</span></div>
-          <div className="flex justify-between"><span className="text-white/50">Avg resolution</span><span className="text-white/70">2.4h</span></div>
-          <div className="flex justify-between"><span className="text-white/50">False positive rate</span><span className="text-white/70">3%</span></div>
+            {/* By engine */}
+            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
+              <h3 className="text-xs font-semibold text-white/70 uppercase tracking-wider mb-3">By Engine</h3>
+              <div className="space-y-2.5">
+                {(['Protect', 'Grow', 'Execute', 'Govern'] as Alert['engine'][]).map((eng) => {
+                  const count = alerts.filter((a) => a.engine === eng).length;
+                  const colors: Record<Alert['engine'], string> = { Protect: '#22C55E', Grow: '#8B5CF6', Execute: '#EAB308', Govern: '#3B82F6' };
+                  return (
+                    <div key={eng} className="flex items-center gap-2">
+                      <span className="text-xs text-white/50 w-16">{eng}</span>
+                      <div className="flex-1 h-1.5 rounded-full bg-white/10">
+                        <div className="h-full rounded-full" style={{ width: `${(count / alerts.length) * 100}%`, background: colors[eng] }} />
+                      </div>
+                      <span className="text-xs text-white/50 w-4 text-right">{count}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Alert stats */}
+            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <TrendingDown className="h-4 w-4 text-emerald-400" />
+                <h3 className="text-xs font-semibold text-white/70 uppercase tracking-wider">Alert Stats</h3>
+              </div>
+              <div className="space-y-2.5">
+                {[
+                  { label: 'Resolved this week', value: '35', positive: true },
+                  { label: 'Avg resolution', value: '2.4h', positive: false },
+                  { label: 'False positive rate', value: '3%', positive: false },
+                ].map((stat) => (
+                  <div key={stat.label} className="flex justify-between">
+                    <span className="text-xs text-white/50">{stat.label}</span>
+                    <span className={`text-xs font-medium ${stat.positive ? 'text-emerald-400' : 'text-white/70'}`}>{stat.value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Resolution timeline */}
+            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <CheckCircle2 className="h-4 w-4 text-cyan-400" />
+                <h3 className="text-xs font-semibold text-white/70 uppercase tracking-wider">Resolution Timeline</h3>
+              </div>
+              <div className="space-y-2">
+                {[
+                  { label: 'Root cause identified', time: '14:28', done: true },
+                  { label: 'Alerts correlated', time: '14:30', done: true },
+                  { label: 'User notified', time: '14:31', done: false },
+                  { label: 'Resolution pending', time: '—', done: false },
+                ].map((step) => (
+                  <div key={step.label} className="flex items-center gap-2.5">
+                    <div className={`w-2 h-2 rounded-full shrink-0 ${step.done ? 'bg-emerald-400' : 'bg-white/20'}`} />
+                    <span className="text-xs text-white/60 flex-1">{step.label}</span>
+                    <span className="text-xs text-white/30">{step.time}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </aside>
         </div>
-      </article>
-    </>
-  );
 
-  return (
-    <PageShell
-      slug="protect"
-      contract={contract}
-      layout="engine"
-      heroVariant="editorial"
-      hero={{
-        kicker: 'Alerts Hub',
-        headline: '3 alerts share a common root cause: vendor payment anomaly.',
-        subline: '12 active | 35 resolved this week | Avg resolution: 2.4h',
-        proofLine: { claim: '12 active alerts', evidence: 'Cross-engine priority ranking | Real-time correlation', source: 'Signal composite' },
-        freshness: new Date(Date.now() - 3 * 60 * 1000),
-        kpis: [
-          { label: 'Active', value: '12', accent: 'amber', definition: 'Unresolved alerts across all engines' },
-          { label: 'Resolved (7d)', value: '35', accent: 'teal', definition: 'Alerts resolved in the last 7 days' },
-          { label: 'MTTR', value: '25m', accent: 'cyan', definition: 'Mean time to resolve alerts' },
-          { label: 'False pos.', value: '3%', accent: 'blue', definition: 'Rate of incorrectly flagged alerts' },
-        ],
-      }}
-      primaryFeed={primaryFeed}
-      decisionRail={decisionRail}
-    />
+        <GovernFooter />
+      </motion.div>
+    </div>
   );
-};
+}
 
 export default AlertsHub;

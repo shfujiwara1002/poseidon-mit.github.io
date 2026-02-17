@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { ArrowLeft, Lightbulb, TrendingUp } from 'lucide-react';
 import { Link } from '../router';
-import { ContributionChart } from '../components/ContributionChart';
-import { GovernContractSet } from '../components/GovernContractSet';
-import { PageShell } from '../components/PageShell';
-import { ProofLine } from '../components/ProofLine';
-import { ScoreRing } from '../components/ScoreRing';
-import { getRouteScreenContract } from '../contracts/route-screen-contracts';
+import { GovernFooter } from '../components/dashboard/GovernFooter';
 
-/* ── mock data ────────────────────────────────────────────── */
+const fadeUp = {
+  hidden: { opacity: 0, y: 12 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] } },
+};
+const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
+
+/* ═══════════════════════════════════════════
+   DATA
+   ═══════════════════════════════════════════ */
 
 interface Insight {
   id: string;
@@ -30,156 +35,245 @@ const insights: Insight[] = [
   { id: 'INS-006', engine: 'Govern', category: 'informational', title: 'Weekly audit coverage at 100%', body: 'All 1,247 AI decisions this week have complete audit trails. SOC 2 compliance maintained.', confidence: 0.99, impact: 'Compliance OK', time: '6h ago', shapFactors: [{ label: 'Coverage rate', value: 1.0 }, { label: 'Completeness', value: 0.98 }] },
 ];
 
-const engineBorder = { Protect: 'border-t-teal-500', Grow: 'border-t-violet-500', Execute: 'border-t-amber-500', Govern: 'border-t-blue-500' };
-const engineBadge = { Protect: 'bg-teal-500/20 text-teal-400', Grow: 'bg-violet-500/20 text-violet-400', Execute: 'bg-amber-500/20 text-amber-400', Govern: 'bg-blue-500/20 text-blue-400' };
-const categoryBadge = { actionable: 'bg-emerald-500/20 text-emerald-400', informational: 'bg-blue-500/20 text-blue-400', warning: 'bg-amber-500/20 text-amber-400' };
+const engineColor: Record<string, string> = { Protect: '#22C55E', Grow: '#8B5CF6', Execute: '#EAB308', Govern: '#3B82F6' };
+const engineBadgeCls: Record<string, string> = { Protect: 'bg-emerald-500/20 text-emerald-400', Grow: 'bg-violet-500/20 text-violet-400', Execute: 'bg-amber-500/20 text-amber-400', Govern: 'bg-blue-500/20 text-blue-400' };
+const categoryBadgeCls: Record<string, string> = { actionable: 'bg-emerald-500/20 text-emerald-400', informational: 'bg-blue-500/20 text-blue-400', warning: 'bg-amber-500/20 text-amber-400' };
 
 type TabFilter = 'all' | 'actionable' | 'informational' | 'warning';
 
-const monthlyImpact = [
-  { month: 'Mar', amount: 40 }, { month: 'Apr', amount: 80 },
-  { month: 'May', amount: 120 }, { month: 'Jun', amount: 160 },
-  { month: 'Jul', amount: 200 }, { month: 'Aug', amount: 240 },
-];
+/* ═══════════════════════════════════════════
+   COMPONENT
+   ═══════════════════════════════════════════ */
 
-/* ── component ────────────────────────────────────────────── */
-
-export const InsightsFeed: React.FC = () => {
-  const contract = getRouteScreenContract('insights-feed');
+export function InsightsFeed() {
   const [tab, setTab] = useState<TabFilter>('all');
-  const [expandedInsight, setExpandedInsight] = useState<string | null>(null);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const filtered = tab === 'all' ? insights : insights.filter((i) => i.category === tab);
-
-  /* ── primary feed ───────────────────────────────────────── */
-  const primaryFeed = (
-    <>
-      {/* Filter tabs */}
-      <div className="flex gap-2 mb-4 overflow-x-auto pb-1">
-        {(['all', 'actionable', 'informational', 'warning'] as TabFilter[]).map((t) => (
-          <button key={t} onClick={() => setTab(t)} className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap capitalize transition-colors ${tab === t ? 'bg-white/15 text-white border border-white/20' : 'bg-white/5 text-white/50 border border-white/10 hover:bg-white/10'}`}>
-            {t === 'all' ? `All (${insights.length})` : `${t} (${insights.filter((i) => i.category === t).length})`}
-          </button>
-        ))}
-      </div>
-
-      {/* Engine filter pills */}
-      <div className="flex gap-2 mb-4">
-        {(['Protect', 'Grow', 'Execute', 'Govern'] as const).map((eng) => (
-          <span key={eng} className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${engineBadge[eng]}`}>{eng} ({insights.filter((i) => i.engine === eng).length})</span>
-        ))}
-      </div>
-
-      {/* Insight Cards */}
-      <section className="space-y-3">
-        {filtered.map((insight) => (
-          <div key={insight.id} className={`engine-card border-t-2 ${engineBorder[insight.engine]}`}>
-            <div className="flex items-center gap-2 flex-wrap mb-2">
-              <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${engineBadge[insight.engine]}`}>{insight.engine}</span>
-              <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium capitalize ${categoryBadge[insight.category]}`}>{insight.category}</span>
-              <span className="text-[10px] text-white/30 ml-auto">{insight.time}</span>
-            </div>
-
-            <h4 className="text-sm font-medium text-white mb-1">{insight.title}</h4>
-            <p className="text-xs text-white/50 mb-3">{insight.body}</p>
-
-            {/* Confidence bar */}
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-[10px] text-white/40">Confidence</span>
-              <div className="flex-1 h-1.5 rounded-full bg-white/5">
-                <div className="h-full rounded-full bg-violet-500/60" style={{ width: `${insight.confidence * 100}%` }} />
-              </div>
-              <span className="text-[10px] text-white/60">{insight.confidence}</span>
-            </div>
-
-            {/* Impact estimate */}
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-[10px] text-white/40">Est. impact:</span>
-              <span className="text-xs text-violet-300 font-medium">{insight.impact}</span>
-            </div>
-
-            {/* Expanded SHAP + actions */}
-            {expandedInsight === insight.id ? (
-              <div className="pt-3 border-t border-white/5 space-y-2">
-                {insight.shapFactors.map((f) => (
-                  <div key={f.label} className="flex items-center gap-2">
-                    <span className="text-xs text-white/50 w-32 shrink-0">{f.label}</span>
-                    <div className="flex-1 h-1.5 rounded-full bg-white/5">
-                      <div className="h-full rounded-full bg-violet-500/50" style={{ width: `${f.value * 100}%` }} />
-                    </div>
-                    <span className="text-xs text-white/40 w-8 text-right">{f.value.toFixed(2)}</span>
-                  </div>
-                ))}
-                <div className="flex gap-2 pt-2">
-                  {insight.category === 'actionable' && <Link to="/execute" className="text-xs text-amber-400 hover:underline">Send to Execute</Link>}
-                  <button className="text-xs text-white/40 hover:text-white/60">Dismiss</button>
-                  <button onClick={() => setExpandedInsight(null)} className="text-xs text-white/30 hover:text-white/50 ml-auto">Collapse</button>
-                </div>
-                <ProofLine claim={`Insight ${insight.id}`} evidence={`${insight.engine} engine | Confidence ${insight.confidence}`} source="Cross-engine analysis" basis="rolling 90d" sourceType="model" />
-              </div>
-            ) : (
-              <div className="flex gap-2">
-                {insight.category === 'actionable' && <Link to="/execute" className="text-xs text-amber-400 hover:underline">Send to Execute</Link>}
-                <button onClick={() => setExpandedInsight(insight.id)} className="text-xs text-white/30 hover:text-white/50">Expand evidence</button>
-                <button className="text-xs text-white/30 hover:text-white/50 ml-auto">Dismiss</button>
-              </div>
-            )}
-          </div>
-        ))}
-      </section>
-
-      <GovernContractSet auditId="GV-2026-0216-FEED" modelVersion="InsightComposite v3.2" explanationVersion="xai-1.1" />
-    </>
-  );
-
-  /* ── decision rail ──────────────────────────────────────── */
-  const decisionRail = (
-    <>
-      <article className="engine-card flex flex-col items-center">
-        <ScoreRing score={89} maxScore={100} label="Avg confidence" size="md" color="var(--engine-grow)" />
-        <p className="text-xs text-white/40 mt-2">Across {insights.length} insights today</p>
-      </article>
-
-      <article className="engine-card">
-        <h4 className="text-xs text-white/50 uppercase tracking-wider mb-3">Monthly Impact</h4>
-        <ContributionChart data={monthlyImpact} targetMonthly={200} accentColor="var(--engine-grow)" />
-      </article>
-
-      <article className="engine-card">
-        <h4 className="text-xs text-white/50 uppercase tracking-wider mb-3">Stats</h4>
-        <div className="space-y-2 text-xs">
-          <div className="flex justify-between"><span className="text-white/50">Insights today</span><span className="text-white/70">12</span></div>
-          <div className="flex justify-between"><span className="text-white/50">Actionable</span><span className="text-emerald-400">4</span></div>
-          <div className="flex justify-between"><span className="text-white/50">Avg confidence</span><span className="text-white/70">0.89</span></div>
-          <div className="flex justify-between"><span className="text-white/50">Acted on (30d)</span><span className="text-violet-400">78%</span></div>
-        </div>
-      </article>
-    </>
-  );
+  const actionableCount = insights.filter((i) => i.category === 'actionable').length;
+  const avgConfidence = (insights.reduce((s, i) => s + i.confidence, 0) / insights.length).toFixed(2);
 
   return (
-    <PageShell
-      slug="protect"
-      contract={contract}
-      layout="engine"
-      heroVariant="editorial"
-      hero={{
-        kicker: 'AI Insights',
-        headline: '12 insights today | 4 actionable | Avg confidence 0.89',
-        subline: 'Evidence-backed recommendations from all engines.',
-        proofLine: { claim: '12 insights generated', evidence: '4 actionable | Cross-engine verified | SHAP explained', source: 'Insight composite' },
-        freshness: new Date(Date.now() - 5 * 60 * 1000),
-        kpis: [
-          { label: 'Today', value: '12', accent: 'violet', definition: 'Insights generated today' },
-          { label: 'Actionable', value: '4', accent: 'teal', definition: 'Insights with direct actions available' },
-          { label: 'Confidence', value: '0.89', accent: 'cyan', definition: 'Average model confidence' },
-          { label: 'Impact', value: '+$280/mo', accent: 'amber', definition: 'Total estimated impact if all adopted' },
-        ],
-      }}
-      primaryFeed={primaryFeed}
-      decisionRail={decisionRail}
-    />
+    <div className="min-h-screen w-full" style={{ background: '#0B1221' }}>
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold"
+        style={{ background: '#00F0FF', color: '#0B1221' }}
+      >
+        Skip to main content
+      </a>
+
+      <nav
+        className="sticky top-0 z-50 backdrop-blur-xl border-b border-white/[0.06]"
+        style={{ background: 'rgba(11,18,33,0.8)' }}
+        aria-label="Breadcrumb"
+      >
+        <div className="mx-auto px-4 md:px-6 lg:px-8 h-14 flex items-center gap-2" style={{ maxWidth: '1280px' }}>
+          <Link
+            to="/dashboard"
+            className="flex items-center gap-1.5 text-sm font-medium hover:opacity-80 transition-opacity"
+            style={{ color: '#00F0FF' }}
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Dashboard
+          </Link>
+          <span className="text-white/20">/</span>
+          <span className="text-sm text-white/50">AI Insights</span>
+        </div>
+      </nav>
+
+      <motion.div
+        id="main-content"
+        className="mx-auto flex flex-col gap-6 md:gap-8 px-4 py-6 md:px-6 md:py-8 lg:px-8"
+        style={{ maxWidth: '1280px' }}
+        variants={stagger}
+        initial="hidden"
+        animate="visible"
+        role="main"
+      >
+        {/* Hero */}
+        <motion.div variants={fadeUp} className="flex flex-col gap-1">
+          <div className="flex items-center gap-2 mb-1">
+            <Lightbulb className="h-5 w-5" style={{ color: '#00F0FF' }} />
+            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#00F0FF' }}>
+              Dashboard · AI Insights
+            </span>
+          </div>
+          <h1 className="text-2xl md:text-3xl font-bold text-white">Insights Feed</h1>
+          <p className="text-sm text-slate-400">
+            {insights.length} insights today · {actionableCount} actionable · Avg confidence {avgConfidence}
+          </p>
+        </motion.div>
+
+        {/* KPI bar */}
+        <motion.div variants={fadeUp}>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { label: 'Today', value: String(insights.length), color: '#00F0FF' },
+              { label: 'Actionable', value: String(actionableCount), color: '#22C55E' },
+              { label: 'Avg confidence', value: avgConfidence, color: '#8B5CF6' },
+              { label: 'Est. impact', value: '+$280/mo', color: '#EAB308' },
+            ].map((kpi) => (
+              <div key={kpi.label} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
+                <p className="text-xs text-white/40 mb-1">{kpi.label}</p>
+                <p className="text-2xl font-bold" style={{ color: kpi.color }}>{kpi.value}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* 2-column layout */}
+        <div className="flex flex-col lg:flex-row gap-6">
+          {/* Main feed */}
+          <motion.div variants={fadeUp} className="flex-1 min-w-0 lg:w-2/3 flex flex-col gap-4">
+            {/* Filter tabs */}
+            <div className="flex gap-2 overflow-x-auto pb-1">
+              {(['all', 'actionable', 'informational', 'warning'] as TabFilter[]).map((t) => (
+                <button
+                  key={t}
+                  onClick={() => setTab(t)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap capitalize transition-colors ${tab === t ? 'text-white border border-white/20' : 'bg-white/5 text-white/50 border border-white/10 hover:bg-white/10'}`}
+                  style={tab === t ? { background: 'rgba(0,240,255,0.15)', borderColor: 'rgba(0,240,255,0.3)' } : {}}
+                >
+                  {t === 'all' ? `All (${insights.length})` : `${t} (${insights.filter((i) => i.category === t).length})`}
+                </button>
+              ))}
+            </div>
+
+            {/* Engine pills */}
+            <div className="flex gap-2 flex-wrap">
+              {(['Protect', 'Grow', 'Execute', 'Govern'] as const).map((eng) => (
+                <span key={eng} className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${engineBadgeCls[eng]}`}>
+                  {eng} ({insights.filter((i) => i.engine === eng).length})
+                </span>
+              ))}
+            </div>
+
+            {/* Insight cards */}
+            <div className="flex flex-col gap-3">
+              {filtered.map((insight) => (
+                <div
+                  key={insight.id}
+                  className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4"
+                  style={{ borderTopWidth: 2, borderTopColor: engineColor[insight.engine] }}
+                >
+                  <div className="flex items-center gap-2 flex-wrap mb-2">
+                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${engineBadgeCls[insight.engine]}`}>{insight.engine}</span>
+                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium capitalize ${categoryBadgeCls[insight.category]}`}>{insight.category}</span>
+                    <span className="text-[10px] text-white/30 ml-auto">{insight.time}</span>
+                  </div>
+
+                  <h4 className="text-sm font-medium text-white mb-1">{insight.title}</h4>
+                  <p className="text-xs text-white/50 mb-3">{insight.body}</p>
+
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-[10px] text-white/40">Confidence</span>
+                    <div className="flex-1 h-1.5 rounded-full bg-white/10">
+                      <div className="h-full rounded-full bg-violet-500/60" style={{ width: `${insight.confidence * 100}%` }} />
+                    </div>
+                    <span className="text-[10px] text-white/60">{insight.confidence}</span>
+                  </div>
+
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-[10px] text-white/40">Est. impact:</span>
+                    <span className="text-xs text-violet-300 font-medium">{insight.impact}</span>
+                  </div>
+
+                  {expandedId === insight.id ? (
+                    <div className="pt-3 border-t border-white/[0.06] space-y-2">
+                      {insight.shapFactors.map((f) => (
+                        <div key={f.label} className="flex items-center gap-2">
+                          <span className="text-xs text-white/50 w-32 shrink-0">{f.label}</span>
+                          <div className="flex-1 h-1.5 rounded-full bg-white/10">
+                            <div className="h-full rounded-full bg-violet-500/50" style={{ width: `${f.value * 100}%` }} />
+                          </div>
+                          <span className="text-xs text-white/40 w-8 text-right">{f.value.toFixed(2)}</span>
+                        </div>
+                      ))}
+                      <div className="flex gap-2 pt-2">
+                        {insight.category === 'actionable' && (
+                          <Link to="/execute" className="text-xs text-amber-400 hover:underline">Send to Execute</Link>
+                        )}
+                        <button className="text-xs text-white/40 hover:text-white/60">Dismiss</button>
+                        <button onClick={() => setExpandedId(null)} className="text-xs text-white/30 hover:text-white/50 ml-auto">Collapse</button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex gap-2">
+                      {insight.category === 'actionable' && (
+                        <Link to="/execute" className="text-xs text-amber-400 hover:underline">Send to Execute</Link>
+                      )}
+                      <button onClick={() => setExpandedId(insight.id)} className="text-xs text-white/30 hover:text-white/50">Expand evidence</button>
+                      <button className="text-xs text-white/30 hover:text-white/50 ml-auto">Dismiss</button>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Side rail */}
+          <aside className="w-full lg:w-72 shrink-0 flex flex-col gap-4" aria-label="Insights sidebar">
+            {/* Avg confidence ring */}
+            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 flex flex-col items-center">
+              <div className="relative" aria-label={`Average confidence: ${avgConfidence}`}>
+                <svg width="80" height="80" viewBox="0 0 80 80" aria-hidden="true">
+                  <circle cx="40" cy="40" r="32" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
+                  <circle
+                    cx="40" cy="40" r="32" fill="none" stroke="#00F0FF" strokeWidth="6"
+                    strokeLinecap="round"
+                    strokeDasharray={`${parseFloat(avgConfidence) * 2 * Math.PI * 32} ${2 * Math.PI * 32}`}
+                    transform="rotate(-90 40 40)"
+                  />
+                </svg>
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <span className="text-lg font-bold text-white">{avgConfidence}</span>
+                </div>
+              </div>
+              <p className="text-xs text-white/50 mt-2">Avg confidence</p>
+              <p className="text-[10px] text-white/30">Across {insights.length} insights today</p>
+            </div>
+
+            {/* Monthly impact */}
+            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <TrendingUp className="h-4 w-4" style={{ color: '#00F0FF' }} />
+                <h3 className="text-xs font-semibold text-white/70 uppercase tracking-wider">Monthly Impact</h3>
+              </div>
+              <div className="flex items-end gap-1 h-16">
+                {[40, 80, 120, 160, 200, 240].map((v, i) => (
+                  <div key={i} className="flex-1 rounded-sm" style={{ height: `${(v / 240) * 100}%`, background: '#00F0FF', opacity: 0.4 + i * 0.1 }} />
+                ))}
+              </div>
+              <div className="flex justify-between text-[10px] text-white/30 mt-1">
+                <span>Mar</span><span>Aug</span>
+              </div>
+            </div>
+
+            {/* Stats */}
+            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
+              <h3 className="text-xs font-semibold text-white/70 uppercase tracking-wider mb-3">Stats</h3>
+              <div className="space-y-2.5">
+                {[
+                  { label: 'Insights today', value: '12', color: 'text-white/70' },
+                  { label: 'Actionable', value: '4', color: 'text-emerald-400' },
+                  { label: 'Avg confidence', value: '0.89', color: 'text-white/70' },
+                  { label: 'Acted on (30d)', value: '78%', color: 'text-violet-400' },
+                ].map((row) => (
+                  <div key={row.label} className="flex justify-between">
+                    <span className="text-xs text-white/50">{row.label}</span>
+                    <span className={`text-xs font-medium ${row.color}`}>{row.value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <GovernFooter />
+      </motion.div>
+    </div>
   );
-};
+}
 
 export default InsightsFeed;
