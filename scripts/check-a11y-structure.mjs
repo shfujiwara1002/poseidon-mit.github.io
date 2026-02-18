@@ -12,7 +12,7 @@ function read(file) {
 const checks = [
   {
     file: 'src/pages/Dashboard.tsx',
-    test: (s) => /<main[^>]*id="main-content"/.test(s),
+    test: (s) => /<(?:motion\.)?main[^>]*id="main-content"/.test(s),
     message: 'Dashboard must expose <main id="main-content">.',
   },
   {
