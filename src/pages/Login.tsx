@@ -6,8 +6,8 @@ import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets'
 
 export function Login() {
   const { navigate } = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, _setEmail] = useState('');
+  const [password, _setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Zap, AlertTriangle, CheckCircle2 } from 'lucide-react';
 import { Link } from '../router';
@@ -33,11 +33,10 @@ const queueActions: QueueAction[] = [
   { id: 'ACT-005', engine: 'Grow', title: 'Increase emergency fund auto-save', description: 'Raise weekly auto-save from $50 to $75 based on increased income stability.', urgency: 'low', confidence: 0.81, impact: { approved: 'Reach emergency fund goal 3 weeks earlier', declined: 'Continue at current pace, May 2026 completion' }, reversible: true, expiresIn: null, factors: [{ label: 'Income stability', value: 0.94 }, { label: 'Budget headroom', value: 0.76 }, { label: 'Goal acceleration', value: 0.65 }] },
 ];
 
-const urgencyBorderColor = { high: '#EF4444', medium: 'var(--engine-execute)', low: 'var(--engine-govern)' };
+const urgencyBorderColor = { high: 'var(--state-critical)', medium: 'var(--engine-execute)', low: 'var(--engine-govern)' };
 const urgencyBadgeCls = { high: 'bg-red-500/20 text-red-400', medium: 'bg-amber-500/20 text-amber-400', low: 'bg-blue-500/20 text-blue-400' };
 const engineBadgeCls = { Protect: 'bg-emerald-500/20 text-emerald-400', Grow: 'bg-violet-500/20 text-violet-400', Execute: 'bg-amber-500/20 text-amber-400' };
 
-const circumference = 2 * Math.PI * 40;
 
 /* ═══════════════════════════════════════════
    COMPONENT
@@ -167,7 +166,7 @@ export function ExecuteApproval() {
             </button>
 
             {/* Urgency banner */}
-            <div className="rounded-2xl border border-red-500/30 bg-red-500/5 p-4" style={{ borderLeftWidth: 2, borderLeftColor: '#EF4444' }}>
+            <div className="rounded-2xl border border-red-500/30 bg-red-500/5 p-4" style={{ borderLeftWidth: 2, borderLeftColor: 'var(--state-critical)' }}>
               <div className="flex items-center gap-2">
                 <AlertTriangle className="h-4 w-4 text-red-400 shrink-0" />
                 <p className="text-sm text-white">
@@ -380,7 +379,7 @@ export function ExecuteApproval() {
                 <div>
                   <p
                     className="text-xs font-semibold uppercase tracking-widest mb-1"
-                    style={{ color: isApprove ? 'var(--engine-execute)' : '#EF4444' }}
+                    style={{ color: isApprove ? 'var(--engine-execute)' : 'var(--state-critical)' }}
                   >
                     {isApprove ? 'Confirm Approval' : 'Confirm Decline'}
                   </p>
@@ -392,11 +391,11 @@ export function ExecuteApproval() {
                 <div
                   className="rounded-xl p-3"
                   style={{
-                    background: isApprove ? 'rgba(34,197,94,0.05)' : 'rgba(239,68,68,0.05)',
-                    border: `1px solid ${isApprove ? 'rgba(34,197,94,0.2)' : 'rgba(239,68,68,0.2)'}`,
+                    background: isApprove ? 'rgba(34,197,94,0.05)' : 'rgba(var(--state-critical-rgb),0.05)',
+                    border: `1px solid ${isApprove ? 'rgba(34,197,94,0.2)' : 'rgba(var(--state-critical-rgb),0.2)'}`,
                   }}
                 >
-                  <p className="text-[10px] uppercase tracking-wider mb-1" style={{ color: isApprove ? 'var(--engine-protect)' : '#EF4444' }}>
+                  <p className="text-[10px] uppercase tracking-wider mb-1" style={{ color: isApprove ? 'var(--engine-protect)' : 'var(--state-critical)' }}>
                     {isApprove ? 'Expected outcome' : 'If declined'}
                   </p>
                   <p className="text-xs text-white/70">
@@ -408,7 +407,7 @@ export function ExecuteApproval() {
                   <button
                     className="flex-1 px-4 py-2.5 rounded-xl text-sm font-semibold transition-opacity hover:opacity-90"
                     style={{
-                      background: isApprove ? 'var(--engine-execute)' : '#EF4444',
+                      background: isApprove ? 'var(--engine-execute)' : 'var(--state-critical)',
                       color: isApprove ? '#0B1221' : '#ffffff',
                     }}
                     onClick={handleConfirm}

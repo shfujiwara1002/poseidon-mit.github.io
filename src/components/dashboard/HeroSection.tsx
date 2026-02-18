@@ -1,19 +1,11 @@
 import { motion } from 'framer-motion';
+import { fadeUp, staggerContainer } from '@/lib/motion-presets';
 import { LayoutDashboard, Info } from 'lucide-react';
 import { useRouter } from '../../router';
 import { ViewModeToggle, CitationCard } from '@/components/poseidon';
 import type { ViewMode } from '@/hooks/useViewMode';
 import type { CitationSource } from '@/types/engine-data';
 
-const stagger = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.08 } },
-};
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 16 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.2, 0.8, 0.2, 1] } },
-};
 
 const dashboardCitations: CitationSource[] = [
   {
@@ -39,7 +31,7 @@ export function HeroSection({ viewMode, onViewModeChange }: HeroSectionProps) {
   return (
     <motion.section
       className="hero-section"
-      variants={stagger}
+      variants={staggerContainer}
       initial="hidden"
       animate="visible"
       aria-label="Dashboard overview"

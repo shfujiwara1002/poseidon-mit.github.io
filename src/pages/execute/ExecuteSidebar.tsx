@@ -55,8 +55,8 @@ function EngineBadge({ engine }: { engine: Engine }) {
 
 function ExecutionStats() {
   const stats = [
-    { label: 'Approved', value: 12, color: '#10B981', icon: CheckCircle2 },
-    { label: 'Rejected', value: 3, color: '#EF4444', icon: XCircle },
+    { label: 'Approved', value: 12, color: 'var(--state-healthy)', icon: CheckCircle2 },
+    { label: 'Rejected', value: 3, color: 'var(--state-critical)', icon: XCircle },
     { label: 'Auto-executed', value: 8, color: '#14B8A6', icon: Zap },
     { label: 'Pending review', value: 4, color: 'var(--engine-execute)', icon: Clock },
   ]

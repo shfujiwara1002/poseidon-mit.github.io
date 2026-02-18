@@ -5,7 +5,6 @@ import {
   ArrowLeft,
   AlertTriangle,
   MapPin,
-  Clock,
   CreditCard,
   ChevronDown,
   ChevronUp,
@@ -101,14 +100,14 @@ const similarIncidents: SimilarIncident[] = [
    ═══════════════════════════════════════════ */
 
 function getScoreColor(s: number): string {
-  if (s >= 0.9) return '#EF4444';
-  if (s >= 0.8) return '#F59E0B';
+  if (s >= 0.9) return 'var(--state-critical)';
+  if (s >= 0.8) return 'var(--state-warning)';
   return 'var(--engine-govern)';
 }
 
 function getScoreBg(s: number): string {
-  if (s >= 0.9) return 'rgba(239,68,68,0.12)';
-  if (s >= 0.8) return 'rgba(245,158,11,0.12)';
+  if (s >= 0.9) return 'rgba(var(--state-critical-rgb),0.12)';
+  if (s >= 0.8) return 'rgba(var(--state-warning-rgb),0.12)';
   return 'rgba(59,130,246,0.12)';
 }
 
@@ -176,7 +175,7 @@ function AlertHeader() {
         </div>
         <span
           className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-wider self-start"
-          style={{ background: 'rgba(239,68,68,0.15)', color: '#EF4444' }}
+          style={{ background: 'rgba(var(--state-critical-rgb),0.15)', color: 'var(--state-critical)' }}
           aria-label="Alert status: Critical"
         >
           <AlertTriangle size={12} />
@@ -202,15 +201,15 @@ function AlertSummary() {
           </div>
           <div className="flex flex-col gap-1">
             <span className="text-[10px] uppercase tracking-wider" style={{ color: '#64748B' }}>Amount</span>
-            <span className="text-lg font-bold font-mono tabular-nums" style={{ color: '#EF4444' }}>$4,200.00</span>
+            <span className="text-lg font-bold font-mono tabular-nums" style={{ color: 'var(--state-critical)' }}>$4,200.00</span>
           </div>
           <div className="flex flex-col gap-1">
             <span className="text-[10px] uppercase tracking-wider" style={{ color: '#64748B' }}>Confidence</span>
             <div className="flex items-center gap-2">
               <div className="h-1.5 w-20 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
-                <div className="h-full rounded-full" style={{ width: '97%', background: '#EF4444' }} />
+                <div className="h-full rounded-full" style={{ width: '97%', background: 'var(--state-critical)' }} />
               </div>
-              <span className="text-sm font-mono font-semibold" style={{ color: '#EF4444' }}>97%</span>
+              <span className="text-sm font-mono font-semibold" style={{ color: 'var(--state-critical)' }}>97%</span>
             </div>
           </div>
           <div className="flex flex-col gap-1">
@@ -230,7 +229,7 @@ function AlertSummary() {
               <MapPin size={12} style={{ color: '#64748B' }} />
               <span className="text-sm" style={{ color: '#CBD5E1' }}>Online | IP: 203.0.113.42</span>
             </div>
-            <span className="text-[10px] font-semibold" style={{ color: '#EF4444' }}>Flagged region</span>
+            <span className="text-[10px] font-semibold" style={{ color: 'var(--state-critical)' }}>Flagged region</span>
           </div>
         </div>
       </GlassCard>
@@ -258,13 +257,13 @@ function AlertTimeline() {
                     height: 28,
                     background: step.status === 'complete'
                       ? 'rgba(16,185,129,0.15)'
-                      : 'rgba(245,158,11,0.15)',
+                      : 'rgba(var(--state-warning-rgb),0.15)',
                   }}
                 >
                   {step.status === 'complete' ? (
-                    <CheckCircle2 size={14} style={{ color: '#10B981' }} />
+                    <CheckCircle2 size={14} style={{ color: 'var(--state-healthy)' }} />
                   ) : (
-                    <CircleDot size={14} style={{ color: '#F59E0B' }} />
+                    <CircleDot size={14} style={{ color: 'var(--state-warning)' }} />
                   )}
                 </div>
                 <span className="text-[10px] font-medium text-center" style={{ color: '#CBD5E1' }}>{step.label}</span>
@@ -275,7 +274,7 @@ function AlertTimeline() {
                   className="flex-1 h-px mx-2"
                   style={{
                     background: i < timelineSteps.length - 2
-                      ? '#10B981'
+                      ? 'var(--state-healthy)'
                       : 'linear-gradient(to right, #10B981, #F59E0B)',
                   }}
                   aria-hidden="true"
@@ -297,13 +296,13 @@ function AlertTimeline() {
                     height: 24,
                     background: step.status === 'complete'
                       ? 'rgba(16,185,129,0.15)'
-                      : 'rgba(245,158,11,0.15)',
+                      : 'rgba(var(--state-warning-rgb),0.15)',
                   }}
                 >
                   {step.status === 'complete' ? (
-                    <CheckCircle2 size={12} style={{ color: '#10B981' }} />
+                    <CheckCircle2 size={12} style={{ color: 'var(--state-healthy)' }} />
                   ) : (
-                    <CircleDot size={12} style={{ color: '#F59E0B' }} />
+                    <CircleDot size={12} style={{ color: 'var(--state-warning)' }} />
                   )}
                 </div>
                 {i < timelineSteps.length - 1 && (
@@ -447,14 +446,14 @@ function RecommendedActions() {
         Block &amp; investigate
       </button>
       <button
-        className="w-full inline-flex items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold transition-all hover:shadow-[0_0_12px_rgba(245,158,11,0.3)] cursor-pointer"
-        style={{ borderColor: 'rgba(245,158,11,0.4)', color: '#F59E0B', background: 'transparent', minHeight: '44px' }}
+        className="w-full inline-flex items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold transition-all hover:shadow-[0_0_12px_rgba(var(--state-warning-rgb),0.3)] cursor-pointer"
+        style={{ borderColor: 'rgba(var(--state-warning-rgb),0.4)', color: 'var(--state-warning)', background: 'transparent', minHeight: '44px' }}
       >
         Request verification
       </button>
       <button
         className="w-full text-center text-sm font-medium transition-colors cursor-pointer"
-        style={{ color: '#10B981', background: 'transparent', border: 'none', padding: '8px 0', minHeight: '44px' }}
+        style={{ color: 'var(--state-healthy)', background: 'transparent', border: 'none', padding: '8px 0', minHeight: '44px' }}
         onClick={() => navigate('/protect/dispute')}
       >
         Open dispute
@@ -488,8 +487,8 @@ function SimilarIncidents() {
             <span
               className="rounded-full px-2 py-0.5 text-[10px] font-semibold"
               style={{
-                background: item.result === 'Blocked' ? 'rgba(239,68,68,0.12)' : 'rgba(16,185,129,0.12)',
-                color: item.result === 'Blocked' ? '#EF4444' : '#10B981',
+                background: item.result === 'Blocked' ? 'rgba(var(--state-critical-rgb),0.12)' : 'rgba(16,185,129,0.12)',
+                color: item.result === 'Blocked' ? 'var(--state-critical)' : 'var(--state-healthy)',
               }}
             >
               {item.result}
@@ -505,7 +504,7 @@ function AccountContext() {
   const data = [
     { label: 'Account balance', value: '$12,847' },
     { label: 'Avg monthly spend', value: '$3,200' },
-    { label: 'Risk score', value: 'Low (0.12)', color: '#10B981' },
+    { label: 'Risk score', value: 'Low (0.12)', color: 'var(--state-healthy)' },
     { label: 'Alerts this month', value: '2' },
   ];
   return (

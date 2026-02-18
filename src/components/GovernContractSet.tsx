@@ -1,4 +1,3 @@
-import React from 'react';
 import { Shield, ShieldCheck, ExternalLink, User } from 'lucide-react';
 
 export interface GovernContractSetProps {

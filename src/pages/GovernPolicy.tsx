@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, ScrollText, Shield, FileText, CheckCircle, AlertCircle, Clock, Eye as EyeIcon, Edit, ChevronDown, Plus } from 'lucide-react';
+import { ArrowLeft, ScrollText, Clock, Eye as EyeIcon, Edit, ChevronDown, Plus } from 'lucide-react';
 import { Link } from '../router';
 import { GovernFooter, AuroraPulse } from '@/components/poseidon'
 import { GOVERNANCE_META } from '@/lib/governance-meta'
 import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets'
 
-const engineColors: Record<string, string> = { Protect: 'var(--engine-protect)', Grow: 'var(--engine-grow)', Execute: 'var(--engine-execute)', Govern: 'var(--engine-govern)', All: '#94A3B8' };
 
 const policies = [
   { name: 'Data Privacy Policy', category: 'Privacy', engines: ['All'], status: 'Active' as const, reviewed: 'Feb 10, 2026', desc: 'Governs collection, storage, and processing of personal financial data.', enforcement: 'Strict', violations: 0, fullText: 'All personal data shall be encrypted at rest and in transit. Access is limited to authorized processes. Data retention follows category-specific schedules.' },
@@ -188,16 +187,6 @@ export function GovernPolicy() {
             </motion.div>
           </div>
         </div>
-
-        {/* Govern footer */}
-        <motion.footer variants={fadeUp} className="flex flex-wrap items-center gap-3 rounded-2xl border-t border-white/10 bg-white/[0.03] px-4 py-3" role="contentinfo">
-          <Shield className="h-4 w-4 text-emerald-400" />
-          <span className="text-xs font-medium text-emerald-400">Verified</span>
-          <span className="text-xs font-mono text-white/30">GV-2026-0216-POL</span>
-          <span className="text-xs text-white/20">·</span>
-          <span className="text-xs text-white/30">PolicyEngine v2.0</span>
-          <Link to="/govern/oversight" className="ml-auto text-xs text-white/40 hover:text-white/60 transition-colors">Request human review</Link>
-        </motion.footer>
 
         <GovernFooter auditId={GOVERNANCE_META['/govern/policy'].auditId} pageContext={GOVERNANCE_META['/govern/policy'].pageContext} />
       </motion.div>

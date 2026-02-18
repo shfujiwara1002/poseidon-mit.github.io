@@ -89,8 +89,8 @@ const integrations: Integration[] = [
     name: 'Coinbase',
     description: 'Crypto',
     logo: 'C',
-    logoColor: '#F59E0B',
-    logoBg: 'rgba(245,158,11,0.15)',
+    logoColor: 'var(--state-warning)',
+    logoBg: 'rgba(var(--state-warning-rgb),0.15)',
     status: 'Pending',
     details: 'Authorization required',
     actions: ['Complete setup'],
@@ -100,7 +100,7 @@ const integrations: Integration[] = [
     name: 'QuickBooks',
     description: 'Accounting',
     logo: 'Q',
-    logoColor: '#10B981',
+    logoColor: 'var(--state-healthy)',
     logoBg: 'rgba(16,185,129,0.15)',
     status: 'Not connected',
     details: 'Sync transactions automatically',
@@ -142,10 +142,10 @@ const recentChanges = [
    ═══════════════════════════════════════════ */
 
 const statusConfig: Record<IntegrationStatus, { color: string; bg: string }> = {
-  Connected: { color: '#10B981', bg: 'rgba(16,185,129,0.12)' },
-  Pending: { color: '#F59E0B', bg: 'rgba(245,158,11,0.12)' },
+  Connected: { color: 'var(--state-healthy)', bg: 'rgba(16,185,129,0.12)' },
+  Pending: { color: 'var(--state-warning)', bg: 'rgba(var(--state-warning-rgb),0.12)' },
   'Not connected': { color: '#64748B', bg: 'rgba(100,116,139,0.12)' },
-  Configured: { color: '#10B981', bg: 'rgba(16,185,129,0.12)' },
+  Configured: { color: 'var(--state-healthy)', bg: 'rgba(16,185,129,0.12)' },
 };
 
 /* ═══════════════════════════════════════════
@@ -373,8 +373,8 @@ function IntegrationCard({ integration }: { integration: Integration }) {
                       }
                     : isDisconnect
                     ? {
-                        border: '1px solid rgba(239,68,68,0.3)',
-                        color: '#EF4444',
+                        border: '1px solid rgba(var(--state-critical-rgb),0.3)',
+                        color: 'var(--state-critical)',
                         background: 'transparent',
                         minHeight: '36px',
                       }
@@ -415,8 +415,8 @@ function QuickActions() {
         Export all settings
       </button>
       <button
-        className="w-full inline-flex items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-xs font-medium transition-all hover:shadow-[0_0_8px_rgba(239,68,68,0.2)] cursor-pointer"
-        style={{ borderColor: 'rgba(239,68,68,0.3)', color: '#EF4444', background: 'transparent', minHeight: '44px' }}
+        className="w-full inline-flex items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-xs font-medium transition-all hover:shadow-[0_0_8px_rgba(var(--state-critical-rgb),0.2)] cursor-pointer"
+        style={{ borderColor: 'rgba(var(--state-critical-rgb),0.3)', color: 'var(--state-critical)', background: 'transparent', minHeight: '44px' }}
       >
         <RotateCcw size={14} />
         Reset to defaults

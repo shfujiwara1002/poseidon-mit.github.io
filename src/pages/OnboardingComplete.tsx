@@ -46,7 +46,7 @@ const stats = [
 /* ── Insight items ── */
 const insights = [
   { color: 'var(--engine-execute)', text: '2 overlapping subscriptions' },
-  { color: '#EF4444', text: '1 high-fee investment account' },
+  { color: 'var(--state-critical)', text: '1 high-fee investment account' },
   { color: 'var(--engine-dashboard)', text: '$400 emergency fund gap' },
 ];
 

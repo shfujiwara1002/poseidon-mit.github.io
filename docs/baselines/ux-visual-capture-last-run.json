@@ -1,6 +1,127 @@
 {
   "ok": true,
-  "skipped": true,
-  "reason": "playwright-not-installed",
-  "captures": []
+  "skipped": false,
+  "strict": false,
+  "captures": [
+    {
+      "route": "/",
+      "viewport": "mobile",
+      "path": "docs/baselines/screenshots/latest/root__mobile.png"
+    },
+    {
+      "route": "/",
+      "viewport": "tablet",
+      "path": "docs/baselines/screenshots/latest/root__tablet.png"
+    },
+    {
+      "route": "/",
+      "viewport": "desktop",
+      "path": "docs/baselines/screenshots/latest/root__desktop.png"
+    },
+    {
+      "route": "/",
+      "viewport": "wide",
+      "path": "docs/baselines/screenshots/latest/root__wide.png"
+    },
+    {
+      "route": "/dashboard",
+      "viewport": "mobile",
+      "path": "docs/baselines/screenshots/latest/dashboard__mobile.png"
+    },
+    {
+      "route": "/dashboard",
+      "viewport": "tablet",
+      "path": "docs/baselines/screenshots/latest/dashboard__tablet.png"
+    },
+    {
+      "route": "/dashboard",
+      "viewport": "desktop",
+      "path": "docs/baselines/screenshots/latest/dashboard__desktop.png"
+    },
+    {
+      "route": "/dashboard",
+      "viewport": "wide",
+      "path": "docs/baselines/screenshots/latest/dashboard__wide.png"
+    },
+    {
+      "route": "/protect",
+      "viewport": "mobile",
+      "path": "docs/baselines/screenshots/latest/protect__mobile.png"
+    },
+    {
+      "route": "/protect",
+      "viewport": "tablet",
+      "path": "docs/baselines/screenshots/latest/protect__tablet.png"
+    },
+    {
+      "route": "/protect",
+      "viewport": "desktop",
+      "path": "docs/baselines/screenshots/latest/protect__desktop.png"
+    },
+    {
+      "route": "/protect",
+      "viewport": "wide",
+      "path": "docs/baselines/screenshots/latest/protect__wide.png"
+    },
+    {
+      "route": "/execute",
+      "viewport": "mobile",
+      "path": "docs/baselines/screenshots/latest/execute__mobile.png"
+    },
+    {
+      "route": "/execute",
+      "viewport": "tablet",
+      "path": "docs/baselines/screenshots/latest/execute__tablet.png"
+    },
+    {
+      "route": "/execute",
+      "viewport": "desktop",
+      "path": "docs/baselines/screenshots/latest/execute__desktop.png"
+    },
+    {
+      "route": "/execute",
+      "viewport": "wide",
+      "path": "docs/baselines/screenshots/latest/execute__wide.png"
+    },
+    {
+      "route": "/govern",
+      "viewport": "mobile",
+      "path": "docs/baselines/screenshots/latest/govern__mobile.png"
+    },
+    {
+      "route": "/govern",
+      "viewport": "tablet",
+      "path": "docs/baselines/screenshots/latest/govern__tablet.png"
+    },
+    {
+      "route": "/govern",
+      "viewport": "desktop",
+      "path": "docs/baselines/screenshots/latest/govern__desktop.png"
+    },
+    {
+      "route": "/govern",
+      "viewport": "wide",
+      "path": "docs/baselines/screenshots/latest/govern__wide.png"
+    },
+    {
+      "route": "/settings",
+      "viewport": "mobile",
+      "path": "docs/baselines/screenshots/latest/settings__mobile.png"
+    },
+    {
+      "route": "/settings",
+      "viewport": "tablet",
+      "path": "docs/baselines/screenshots/latest/settings__tablet.png"
+    },
+    {
+      "route": "/settings",
+      "viewport": "desktop",
+      "path": "docs/baselines/screenshots/latest/settings__desktop.png"
+    },
+    {
+      "route": "/settings",
+      "viewport": "wide",
+      "path": "docs/baselines/screenshots/latest/settings__wide.png"
+    }
+  ]
 }

@@ -56,7 +56,7 @@ function ConfidenceTrend() {
           <TrendingUp size={14} style={{ color: 'var(--engine-govern)' }} aria-hidden="true" />
           30-Day Confidence
         </h3>
-        <span className="text-xs font-mono tabular-nums" style={{ color: '#10B981' }}>0.97</span>
+        <span className="text-xs font-mono tabular-nums" style={{ color: 'var(--state-healthy)' }}>0.97</span>
       </div>
       <div className="h-24" role="img" aria-label="Confidence trend over 30 days showing increase from 0.95 to 0.97">
         <ResponsiveContainer width="100%" height="100%">
@@ -105,8 +105,8 @@ function ComplianceStatus() {
             <span
               className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold"
               style={{
-                background: item.compliant ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)',
-                color: item.compliant ? '#10B981' : '#EF4444',
+                background: item.compliant ? 'rgba(16,185,129,0.12)' : 'rgba(var(--state-critical-rgb),0.12)',
+                color: item.compliant ? 'var(--state-healthy)' : 'var(--state-critical)',
               }}
             >
               <CheckCircle2 size={11} />

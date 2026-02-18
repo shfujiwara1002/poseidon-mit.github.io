@@ -1,5 +1,6 @@
 import React from 'react';
-import { theme } from '../../theme';
+
+const ACCENT_CYAN = 'var(--accent-cyan)';
 
 export const ChartGlowDefs: React.FC = () => (
   <defs>
@@ -101,20 +102,20 @@ export const ChartGlowDefs: React.FC = () => (
     </pattern>
 
     <linearGradient id="chart-line-gradient" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stopColor={theme.accent.cyan} stopOpacity="0.6" />
-      <stop offset="50%" stopColor={theme.accent.cyan} stopOpacity="1" />
+      <stop offset="0%" stopColor={ACCENT_CYAN} stopOpacity="0.6" />
+      <stop offset="50%" stopColor={ACCENT_CYAN} stopOpacity="1" />
       <stop offset="100%" stopColor="white" stopOpacity="1" />
     </linearGradient>
 
     <linearGradient id="chart-area-gradient" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stopColor={theme.accent.cyan} stopOpacity="0.4" />
-      <stop offset="100%" stopColor={theme.accent.cyan} stopOpacity="0" />
+      <stop offset="0%" stopColor={ACCENT_CYAN} stopOpacity="0.4" />
+      <stop offset="100%" stopColor={ACCENT_CYAN} stopOpacity="0" />
     </linearGradient>
 
     <linearGradient id="confidence-gradient" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stopColor={theme.accent.cyan} stopOpacity="0.25" />
-      <stop offset="50%" stopColor={theme.accent.cyan} stopOpacity="0.08" />
-      <stop offset="100%" stopColor={theme.accent.cyan} stopOpacity="0" />
+      <stop offset="0%" stopColor={ACCENT_CYAN} stopOpacity="0.25" />
+      <stop offset="50%" stopColor={ACCENT_CYAN} stopOpacity="0.08" />
+      <stop offset="100%" stopColor={ACCENT_CYAN} stopOpacity="0" />
     </linearGradient>
 
     <linearGradient id="bar-reflection-gradient" x1="0" y1="0" x2="0" y2="1">
@@ -123,8 +124,8 @@ export const ChartGlowDefs: React.FC = () => (
     </linearGradient>
 
     <radialGradient id="radial-heat" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stopColor={theme.accent.cyan} stopOpacity="0.3" />
-      <stop offset="100%" stopColor={theme.accent.cyan} stopOpacity="0" />
+      <stop offset="0%" stopColor={ACCENT_CYAN} stopOpacity="0.3" />
+      <stop offset="100%" stopColor={ACCENT_CYAN} stopOpacity="0" />
     </radialGradient>
 
     <linearGradient id="chart-fade-gradient" x1="0" y1="0" x2="0" y2="1">

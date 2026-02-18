@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "typecheck": "tsc --noEmit",
     "verify:dashboard-artifacts": "node scripts/verify-dashboard-artifact-freshness.mjs",
     "deploy:verify-dashboard": "npm run build && npm run verify:dashboard-artifacts",
     "check:visual-system": "node scripts/check-page-visual-system.mjs",

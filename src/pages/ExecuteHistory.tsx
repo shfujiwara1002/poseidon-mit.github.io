@@ -183,8 +183,8 @@ const historyData: DayGroup[] = [
    ═══════════════════════════════════════════ */
 
 const typeConfig: Record<ActionType, { color: string; bg: string; icon: React.ElementType }> = {
-  Approved: { color: '#10B981', bg: 'rgba(16,185,129,0.12)', icon: CheckCircle2 },
-  Rejected: { color: '#EF4444', bg: 'rgba(239,68,68,0.12)', icon: XCircle },
+  Approved: { color: 'var(--state-healthy)', bg: 'rgba(16,185,129,0.12)', icon: CheckCircle2 },
+  Rejected: { color: 'var(--state-critical)', bg: 'rgba(var(--state-critical-rgb),0.12)', icon: XCircle },
   'Auto-executed': { color: '#14B8A6', bg: 'rgba(20,184,166,0.12)', icon: Zap },
 };
 
@@ -372,7 +372,7 @@ function HistoryTimeline({ activeFilter }: { activeFilter: FilterTab }) {
                   <motion.div key={item.id} variants={fadeUp}>
                     <GlassCard
                       className="flex flex-col gap-3 transition-all hover:bg-white/[0.02]"
-                      borderColor={item.type === 'Rejected' ? '#EF4444' : undefined}
+                      borderColor={item.type === 'Rejected' ? 'var(--state-critical)' : undefined}
                     >
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className="text-xs font-mono tabular-nums" style={{ color: '#64748B' }}>
@@ -431,10 +431,10 @@ function HistoryTimeline({ activeFilter }: { activeFilter: FilterTab }) {
 function SummaryStats() {
   const stats = [
     { label: 'Total actions', value: '247', sub: 'last 30 days' },
-    { label: 'Approved', value: '32', sub: '13%', color: '#10B981' },
+    { label: 'Approved', value: '32', sub: '13%', color: 'var(--state-healthy)' },
     { label: 'Auto-executed', value: '207', sub: '84%', color: '#14B8A6' },
-    { label: 'Rejected', value: '8', sub: '3%', color: '#EF4444' },
-    { label: 'Success rate', value: '97%', color: '#10B981' },
+    { label: 'Rejected', value: '8', sub: '3%', color: 'var(--state-critical)' },
+    { label: 'Success rate', value: '97%', color: 'var(--state-healthy)' },
   ];
 
   return (

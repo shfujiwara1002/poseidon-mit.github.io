@@ -39,7 +39,7 @@ export function GovernGlance() {
         <motion.div variants={fadeUp}>
           <GlassCard className="flex flex-col items-center gap-1 py-4 glass-hover-govern">
             <span className="text-xs uppercase tracking-wider" style={{ color: '#64748B' }}>Confidence</span>
-            <span className="text-2xl font-bold" style={{ color: '#10B981' }}>
+            <span className="text-2xl font-bold" style={{ color: 'var(--state-healthy)' }}>
               <CountUp value={97} suffix="%" />
             </span>
           </GlassCard>
@@ -55,7 +55,7 @@ export function GovernGlance() {
         <motion.div variants={fadeUp}>
           <GlassCard className="flex flex-col items-center gap-1 py-4 glass-hover-govern">
             <span className="text-xs uppercase tracking-wider" style={{ color: '#64748B' }}>Pending</span>
-            <span className="text-2xl font-bold" style={{ color: '#F59E0B' }}>
+            <span className="text-2xl font-bold" style={{ color: 'var(--state-warning)' }}>
               <CountUp value={28} />
             </span>
           </GlassCard>
@@ -63,7 +63,7 @@ export function GovernGlance() {
         <motion.div variants={fadeUp}>
           <GlassCard className="flex flex-col items-center gap-1 py-4 glass-hover-govern">
             <span className="text-xs uppercase tracking-wider" style={{ color: '#64748B' }}>Flagged</span>
-            <span className="text-2xl font-bold" style={{ color: '#EF4444' }}>
+            <span className="text-2xl font-bold" style={{ color: 'var(--state-critical)' }}>
               <CountUp value={7} />
             </span>
           </GlassCard>

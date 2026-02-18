@@ -28,6 +28,7 @@
     "src/**/__tests__/**",
     "src/**/*.stories.tsx",
     "src/**/*.stories.ts",
-    "src/design-system/quality/eslint-plugin-poseidon/**"
+    "src/design-system/quality/eslint-plugin-poseidon/**",
+    "src/legacy/**"
   ]
 }

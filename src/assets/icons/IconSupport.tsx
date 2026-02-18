@@ -1,6 +1,4 @@
 import React from 'react';
-import { theme } from '../../theme';
-
 interface IconProps {
   size?: number;
   type: 'check' | 'cross' | 'play';
@@ -9,7 +7,7 @@ interface IconProps {
 }
 
 export const IconSupport: React.FC<IconProps> = ({ size = 24, type, color, style }) => {
-  const finalColor = color || (type === 'check' ? theme.semantic.growth : type === 'cross' ? theme.semantic.threat : 'white');
+  const finalColor = color || (type === 'check' ? 'var(--engine-grow)' : type === 'cross' ? 'var(--engine-protect)' : 'white');
 
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={style}>

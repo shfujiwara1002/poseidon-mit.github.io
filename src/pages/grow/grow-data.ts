@@ -27,9 +27,9 @@ export interface ActivityItem {
 /* ── Status configuration ── */
 
 export const statusConfig: Record<GoalStatus, { color: string; bg: string }> = {
-  'On track': { color: '#10B981', bg: 'rgba(16,185,129,0.12)' },
-  Behind: { color: '#F59E0B', bg: 'rgba(245,158,11,0.12)' },
-  Ahead: { color: '#10B981', bg: 'rgba(16,185,129,0.12)' },
+  'On track': { color: 'var(--state-healthy)', bg: 'rgba(16,185,129,0.12)' },
+  Behind: { color: 'var(--state-warning)', bg: 'rgba(var(--state-warning-rgb),0.12)' },
+  Ahead: { color: 'var(--state-healthy)', bg: 'rgba(16,185,129,0.12)' },
 }
 
 /* ── Goals ── */
@@ -118,19 +118,19 @@ export const kpiData: (KpiCardData & { numeric?: KpiNumeric })[] = [
     label: 'Net Worth',
     value: '$847k',
     numeric: { prefix: '$', value: 847, suffix: 'k' },
-    trend: { text: '+$12.4k (+1.5%)', color: '#10B981' },
+    trend: { text: '+$12.4k (+1.5%)', color: 'var(--state-healthy)' },
   },
   {
     label: 'Goal Progress',
     value: '67%',
     numeric: { value: 67, suffix: '%' },
-    badge: { text: 'on track', color: '#10B981', bg: 'rgba(16,185,129,0.12)' },
+    badge: { text: 'on track', color: 'var(--state-healthy)', bg: 'rgba(16,185,129,0.12)' },
   },
   {
     label: 'Projected Growth',
     value: '+8.2%',
     numeric: { prefix: '+', value: 8.2, decimals: 1, suffix: '%' },
-    trend: { text: 'annualized', color: '#10B981' },
+    trend: { text: 'annualized', color: 'var(--state-healthy)' },
   },
   {
     label: 'Risk-adjusted Return',

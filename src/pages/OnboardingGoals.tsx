@@ -68,8 +68,8 @@ const goals: GoalDef[] = [
   { id: 'home', icon: Home, color: 'var(--engine-dashboard)', label: 'Buy a Home', desc: 'Down payment savings', target: '$80,000' },
   { id: 'debt', icon: GraduationCap, color: 'var(--engine-execute)', label: 'Pay Off Debt', desc: 'Student loans & credit cards', target: '$24,500' },
   { id: 'retire', icon: Briefcase, color: 'var(--engine-grow)', label: 'Retirement', desc: 'FIRE or 401k maximization', target: '$1.2M by 65' },
-  { id: 'travel', icon: Plane, color: '#F59E0B', label: 'Dream Vacation', desc: 'Travel fund', target: '$8,000' },
-  { id: 'purchase', icon: ShoppingBag, color: '#EF4444', label: 'Major Purchase', desc: 'Car, gadgets, etc.', target: 'Custom' },
+  { id: 'travel', icon: Plane, color: 'var(--state-warning)', label: 'Dream Vacation', desc: 'Travel fund', target: '$8,000' },
+  { id: 'purchase', icon: ShoppingBag, color: 'var(--state-critical)', label: 'Major Purchase', desc: 'Car, gadgets, etc.', target: 'Custom' },
 ];
 
 export function OnboardingGoals() {

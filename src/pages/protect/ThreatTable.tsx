@@ -115,7 +115,7 @@ export function ThreatTable({ navigate, viewMode = 'detail' }: ThreatTableProps)
           </h2>
           <span
             className="rounded-full px-2.5 py-1 text-xs font-semibold"
-            style={{ background: 'rgba(245,158,11,0.15)', color: '#F59E0B', border: '1px solid rgba(245,158,11,0.3)' }}
+            style={{ background: 'rgba(var(--state-warning-rgb),0.15)', color: 'var(--state-warning)', border: '1px solid rgba(var(--state-warning-rgb),0.3)' }}
           >
             3 active
           </span>
@@ -219,7 +219,7 @@ export function ThreatTable({ navigate, viewMode = 'detail' }: ThreatTableProps)
                 style={{
                   background: 'rgba(255,255,255,0.03)',
                   border: '1px solid rgba(255,255,255,0.06)',
-                  borderLeft: `3px solid ${s.severity === 'critical' ? '#EF4444' : s.severity === 'warning' ? '#F59E0B' : '#38BDF8'}`,
+                  borderLeft: `3px solid ${s.severity === 'critical' ? 'var(--state-critical)' : s.severity === 'warning' ? 'var(--state-warning)' : '#38BDF8'}`,
                 }}
                 role="button"
                 tabIndex={0}

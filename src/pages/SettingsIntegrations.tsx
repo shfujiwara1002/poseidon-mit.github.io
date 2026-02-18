@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Link2, Building2, CreditCard, TrendingUp, Wallet, CheckCircle, AlertCircle, RefreshCw, Trash2, Lock, Plus, Shield } from 'lucide-react';
 import { Link } from '../router';
@@ -220,16 +220,6 @@ export function SettingsIntegrations() {
             </motion.div>
           </div>
         </div>
-
-        {/* Govern footer */}
-        <motion.footer variants={fadeUp} className="flex flex-wrap items-center gap-3 rounded-2xl border-t border-white/10 bg-white/[0.03] px-4 py-3" role="contentinfo">
-          <Shield className="h-4 w-4 text-emerald-400" />
-          <span className="text-xs font-medium text-emerald-400">Verified</span>
-          <span className="text-xs font-mono text-white/30">GV-2026-0216-INT</span>
-          <span className="text-xs text-white/20">·</span>
-          <span className="text-xs text-white/30">DataSync v2.1</span>
-          <Link to="/govern/oversight" className="ml-auto text-xs text-white/40 hover:text-white/60 transition-colors">Request human review</Link>
-        </motion.footer>
 
         <GovernFooter auditId={GOVERNANCE_META['/settings/integrations'].auditId} pageContext={GOVERNANCE_META['/settings/integrations'].pageContext} />
       </motion.div>

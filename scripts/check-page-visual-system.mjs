@@ -45,7 +45,7 @@ const BASELINE = {
 
 const STYLE_RE = /style=\{\{/g;
 const CLASSNAME_RE = /className="([^"]*)"/g;
-const SHELL_RE = /CommandCenterShell|EnginePageShell/g;
+const SHELL_RE = /CommandCenterShell|EnginePageShell|AppNavShell/g;
 
 function isUtilityToken(token) {
   return (

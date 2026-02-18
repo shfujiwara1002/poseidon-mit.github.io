@@ -1,5 +1,4 @@
 import React from 'react';
-import { theme } from '../../theme';
 import { ChartGlowDefs } from './ChartGlowDefs';
 
 interface ChartTimelineProps {
@@ -70,15 +69,15 @@ export const ChartTimeline: React.FC<ChartTimelineProps> = ({
         const x = startX + i * gap;
         return (
           <g key={i}>
-            <circle cx={x} cy={centerY} r={8} fill={theme.background.deepNavy} stroke={p.color} strokeWidth="2" filter="url(#neon-glow-small)" />
+            <circle cx={x} cy={centerY} r={8} fill={'var(--bg)'} stroke={p.color} strokeWidth="2" filter="url(#neon-glow-small)" />
             {(p.progress === 1 || p.progress === undefined) && <circle cx={x} cy={centerY} r={3} fill={p.color} />}
 
-            <text x={x} y={centerY + 25} fill="white" fillOpacity="0.8" fontFamily={theme.typography.fontUi} fontSize="13" textAnchor="middle">
+            <text x={x} y={centerY + 25} fill="white" fillOpacity="0.8" fontFamily={'var(--font-body)'} fontSize="13" textAnchor="middle">
               {p.label}
             </text>
 
             {p.value && (
-              <text x={x} y={centerY + 40} fill={p.color} fontFamily={theme.typography.fontMono} fontSize="11" textAnchor="middle">
+              <text x={x} y={centerY + 40} fill={p.color} fontFamily={'var(--font-mono)'} fontSize="11" textAnchor="middle">
                 {p.value}
               </text>
             )}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Bell, CheckCircle2, Clock, TrendingDown, Shield } from 'lucide-react';
 import { Link } from '../router';

@@ -33,25 +33,25 @@ const metricsData = [
   {
     label: 'System Confidence',
     value: '0.92',
-    color: '#00F0FF',
+    color: 'var(--engine-dashboard)',
     spark: [4, 6, 5, 7, 8, 7, 9, 8, 9, 9.2],
   },
   {
     label: 'Decisions Audited',
     value: '1,247',
-    color: '#3B82F6',
+    color: 'var(--engine-govern)',
     spark: [2, 4, 5, 7, 8, 9, 10, 11, 12, 12.5],
   },
   {
     label: 'Threats Blocked',
     value: '23',
-    color: '#22C55E',
+    color: 'var(--engine-protect)',
     spark: [8, 7, 5, 6, 4, 3, 3, 2, 2, 2.3],
   },
   {
     label: 'Response Time',
     value: '<200ms',
-    color: '#8B5CF6',
+    color: 'var(--engine-grow)',
     spark: [5, 4, 5, 4, 3, 4, 3, 3, 2, 2],
   },
 ];
@@ -235,7 +235,7 @@ export default function Landing() {
             </Link>
             <Link
               to="/signup"
-              className="text-sm font-medium px-5 py-2 rounded-xl bg-gradient-to-r from-teal-500 to-cyan-400 text-slate-950 shadow-[0_0_20px_rgba(0,240,255,0.15)] hover:shadow-[0_0_30px_rgba(0,240,255,0.25)] hover:brightness-110 transition-all"
+              className="text-sm font-medium px-5 py-2 rounded-xl border border-white/[0.12] text-white hover:bg-white/[0.04] transition-all"
             >
               Get Started
             </Link>
@@ -251,7 +251,7 @@ export default function Landing() {
           className="relative z-10 max-w-4xl mx-auto px-6 text-center py-24 md:py-32"
           initial="hidden"
           animate="visible"
-          variants={{ visible: { transition: { staggerChildren: 0.15 } } }}
+          variants={mp.staggerContainer}
         >
           {/* Badge pill */}
           <motion.div
@@ -395,7 +395,7 @@ export default function Landing() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: '-60px' }}
-            variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
+            variants={mp.staggerContainer}
           >
             <motion.h2
               variants={mp.fadeUp}
@@ -467,7 +467,7 @@ export default function Landing() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: '-60px' }}
-            variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
+            variants={mp.staggerContainer}
           >
             <motion.h2
               variants={mp.fadeUp}

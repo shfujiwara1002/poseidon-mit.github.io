@@ -85,16 +85,16 @@ export const milestones: Milestone[] = [
 ]
 
 export const quickActions: QuickAction[] = [
-  { title: 'Freeze card', priority: 'urgent', color: '#EF4444', route: '/protect/dispute' },
-  { title: 'Investigate MerchantX', priority: 'normal', color: '#F59E0B', route: '/protect/alert-detail' },
-  { title: 'Update alert rules', priority: 'low', color: '#10B981', route: null },
+  { title: 'Freeze card', priority: 'urgent', color: 'var(--state-critical)', route: '/protect/dispute' },
+  { title: 'Investigate MerchantX', priority: 'normal', color: 'var(--state-warning)', route: '/protect/alert-detail' },
+  { title: 'Update alert rules', priority: 'low', color: 'var(--state-healthy)', route: null },
 ]
 
 export const kpis: Kpi[] = [
-  { label: 'Active signals', value: '3', accent: '#F59E0B', status: 'amber' },
-  { label: 'Blocked today', value: '1', accent: '#10B981', status: 'green' },
-  { label: 'False positive rate', value: '2.1%', accent: '#10B981', status: 'green' },
-  { label: 'Coverage', value: '100%', accent: '#10B981', status: 'green' },
+  { label: 'Active signals', value: '3', accent: 'var(--state-warning)', status: 'amber' },
+  { label: 'Blocked today', value: '1', accent: 'var(--state-healthy)', status: 'green' },
+  { label: 'False positive rate', value: '2.1%', accent: 'var(--state-healthy)', status: 'green' },
+  { label: 'Coverage', value: '100%', accent: 'var(--state-healthy)', status: 'green' },
 ]
 
 /* ─── AI Credibility Layer Data ──────────────────────────── */

@@ -34,7 +34,6 @@ export function ScoreRing({
         {/* Colored segments */}
         {segments.map((seg, i) => {
           const segLen = (seg.value / total) * circumference * (score / 100);
-          const offset = circumference - segLen;
           const rotation = (cumulativeOffset / total) * 360 * (score / 100);
           cumulativeOffset += seg.value;
           return (

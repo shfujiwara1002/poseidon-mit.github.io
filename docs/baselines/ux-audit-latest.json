@@ -1,5 +1,5 @@
 {
-  "baselineDate": "2026-02-15",
+  "baselineDate": "2026-02-18",
   "strict": false,
   "demoFlow": [
     "/",
@@ -71,14 +71,123 @@
       "note": "All gates passed. Verify visually for narrative quality."
     }
   ],
-  "issues": [],
+  "issues": [
+    {
+      "id": "UX-AUTO-001",
+      "route": "/",
+      "criteria": "oneCta",
+      "layer": "shell",
+      "severity": "P0",
+      "demoImpact": "high",
+      "effort": "S",
+      "symptom": "Expected <= 1 primary CTA; found 3.",
+      "fixHypothesis": "Demote secondary CTA variants to ghost/minor.",
+      "owner": "frontend",
+      "status": "open",
+      "detectedBy": "rule",
+      "confidence": 0.9,
+      "autofixable": true,
+      "autofixRule": "engine-core-nav-cta-demotion",
+      "priorityScore": 24
+    },
+    {
+      "id": "UX-AUTO-002",
+      "route": "/dashboard",
+      "criteria": "oneCta",
+      "layer": "shell",
+      "severity": "P0",
+      "demoImpact": "high",
+      "effort": "S",
+      "symptom": "Expected <= 1 primary CTA; found 3.",
+      "fixHypothesis": "Demote secondary CTA variants to ghost/minor.",
+      "owner": "frontend",
+      "status": "open",
+      "detectedBy": "rule",
+      "confidence": 0.9,
+      "autofixable": true,
+      "autofixRule": "engine-core-nav-cta-demotion",
+      "priorityScore": 24
+    },
+    {
+      "id": "UX-AUTO-003",
+      "route": "/protect",
+      "criteria": "oneCta",
+      "layer": "shell",
+      "severity": "P0",
+      "demoImpact": "high",
+      "effort": "S",
+      "symptom": "Expected <= 1 primary CTA; found 3.",
+      "fixHypothesis": "Demote secondary CTA variants to ghost/minor.",
+      "owner": "frontend",
+      "status": "open",
+      "detectedBy": "rule",
+      "confidence": 0.9,
+      "autofixable": true,
+      "autofixRule": "engine-core-nav-cta-demotion",
+      "priorityScore": 24
+    },
+    {
+      "id": "UX-AUTO-004",
+      "route": "/execute",
+      "criteria": "oneCta",
+      "layer": "shell",
+      "severity": "P0",
+      "demoImpact": "high",
+      "effort": "S",
+      "symptom": "Expected <= 1 primary CTA; found 3.",
+      "fixHypothesis": "Demote secondary CTA variants to ghost/minor.",
+      "owner": "frontend",
+      "status": "open",
+      "detectedBy": "rule",
+      "confidence": 0.9,
+      "autofixable": true,
+      "autofixRule": "engine-core-nav-cta-demotion",
+      "priorityScore": 24
+    },
+    {
+      "id": "UX-AUTO-005",
+      "route": "/govern",
+      "criteria": "oneCta",
+      "layer": "shell",
+      "severity": "P0",
+      "demoImpact": "high",
+      "effort": "S",
+      "symptom": "Expected <= 1 primary CTA; found 3.",
+      "fixHypothesis": "Demote secondary CTA variants to ghost/minor.",
+      "owner": "frontend",
+      "status": "open",
+      "detectedBy": "rule",
+      "confidence": 0.9,
+      "autofixable": true,
+      "autofixRule": "engine-core-nav-cta-demotion",
+      "priorityScore": 24
+    },
+    {
+      "id": "UX-AUTO-006",
+      "route": "/settings",
+      "criteria": "oneCta",
+      "layer": "shell",
+      "severity": "P0",
+      "demoImpact": "high",
+      "effort": "S",
+      "symptom": "Expected <= 1 primary CTA; found 2.",
+      "fixHypothesis": "Demote secondary CTA variants to ghost/minor.",
+      "owner": "frontend",
+      "status": "open",
+      "detectedBy": "rule",
+      "confidence": 0.9,
+      "autofixable": true,
+      "autofixRule": "engine-core-nav-cta-demotion",
+      "priorityScore": 24
+    }
+  ],
   "meta": {
     "checks": [
       {
         "script": "check:design-system",
         "ok": true,
         "status": 0,
-        "stdout": "> poseidon-prototype@0.1.0 check:design-system\n> npm run check:design-system:strict\n\n\n> poseidon-prototype@0.1.0 check:design-system:strict\n> node scripts/check-design-system-usage.mjs --strict && node scripts/check-design-token-hygiene.mjs --strict\n\n[design-system] reachable files: 132\n[design-system] reachable pages: 42\n[design-system] reachable components: 59\n[design-system] usage checks passed.\n[token-hygiene] scanned 4173 lines across 11 page CSS files\n[token-hygiene] checks passed.",
+        "stdout": "> poseidon-prototype@0.1.0 check:design-system\n> npm run check:design-system:strict\n\n\n> poseidon-prototype@0.1.0 check:design-system:strict\n> node scripts/check-design-system-usage.mjs --strict && node scripts/check-design-token-hygiene.mjs --strict\n\n[design-system] reachable files: 91\n[design-system] reachable pages: 71\n[design-system] reachable components: 1\n[design-system] usage checks passed.\n[token-hygiene] scanned 4767 lines across 11 page CSS files\n[token-hygiene] checks passed.",
         "stderr": ""
       },
       {
@@ -113,7 +222,7 @@
         "script": "check:bundle-budget",
         "ok": true,
         "status": 0,
-        "stdout": "> poseidon-prototype@0.1.0 check:bundle-budget\n> node scripts/check-bundle-budget.mjs\n\n{\n  \"css\": {\n    \"raw\": 164798,\n    \"gzip\": 29340\n  },\n  \"indexJs\": {\n    \"file\": \"index-B5JVX-iw.js\",\n    \"raw\": 117934,\n    \"gzip\": 26720\n  },\n  \"budgets\": {\n    \"cssRawMax\": 175000,\n    \"cssGzipMax\": 32000,\n    \"indexJsRawMax\": 130000,\n    \"indexJsGzipMax\": 45000\n  }\n}\n\nBundle budget checks passed.",
+        "stdout": "> poseidon-prototype@0.1.0 check:bundle-budget\n> node scripts/check-bundle-budget.mjs\n\n{\n  \"css\": {\n    \"raw\": 166048,\n    \"gzip\": 24584\n  },\n  \"indexJs\": {\n    \"file\": \"index-h92niCpJ.js\",\n    \"raw\": 41250,\n    \"gzip\": 11182\n  },\n  \"budgets\": {\n    \"cssRawMax\": 195000,\n    \"cssGzipMax\": 34000,\n    \"indexJsRawMax\": 130000,\n    \"indexJsGzipMax\": 45000\n  }\n}\n\nBundle budget checks passed.",
         "stderr": ""
       },
       {
@@ -126,28 +235,299 @@
     ],
     "visualCapture": {
       "ok": true,
-      "skipped": true,
-      "reason": "playwright-not-installed",
-      "captures": []
+      "skipped": false,
+      "strict": false,
+      "captures": [
+        {
+          "route": "/",
+          "viewport": "mobile",
+          "path": "docs/baselines/screenshots/latest/root__mobile.png"
+        },
+        {
+          "route": "/",
+          "viewport": "tablet",
+          "path": "docs/baselines/screenshots/latest/root__tablet.png"
+        },
+        {
+          "route": "/",
+          "viewport": "desktop",
+          "path": "docs/baselines/screenshots/latest/root__desktop.png"
+        },
+        {
+          "route": "/",
+          "viewport": "wide",
+          "path": "docs/baselines/screenshots/latest/root__wide.png"
+        },
+        {
+          "route": "/dashboard",
+          "viewport": "mobile",
+          "path": "docs/baselines/screenshots/latest/dashboard__mobile.png"
+        },
+        {
+          "route": "/dashboard",
+          "viewport": "tablet",
+          "path": "docs/baselines/screenshots/latest/dashboard__tablet.png"
+        },
+        {
+          "route": "/dashboard",
+          "viewport": "desktop",
+          "path": "docs/baselines/screenshots/latest/dashboard__desktop.png"
+        },
+        {
+          "route": "/dashboard",
+          "viewport": "wide",
+          "path": "docs/baselines/screenshots/latest/dashboard__wide.png"
+        },
+        {
+          "route": "/protect",
+          "viewport": "mobile",
+          "path": "docs/baselines/screenshots/latest/protect__mobile.png"
+        },
+        {
+          "route": "/protect",
+          "viewport": "tablet",
+          "path": "docs/baselines/screenshots/latest/protect__tablet.png"
+        },
+        {
+          "route": "/protect",
+          "viewport": "desktop",
+          "path": "docs/baselines/screenshots/latest/protect__desktop.png"
+        },
+        {
+          "route": "/protect",
+          "viewport": "wide",
+          "path": "docs/baselines/screenshots/latest/protect__wide.png"
+        },
+        {
+          "route": "/execute",
+          "viewport": "mobile",
+          "path": "docs/baselines/screenshots/latest/execute__mobile.png"
+        },
+        {
+          "route": "/execute",
+          "viewport": "tablet",
+          "path": "docs/baselines/screenshots/latest/execute__tablet.png"
+        },
+        {
+          "route": "/execute",
+          "viewport": "desktop",
+          "path": "docs/baselines/screenshots/latest/execute__desktop.png"
+        },
+        {
+          "route": "/execute",
+          "viewport": "wide",
+          "path": "docs/baselines/screenshots/latest/execute__wide.png"
+        },
+        {
+          "route": "/govern",
+          "viewport": "mobile",
+          "path": "docs/baselines/screenshots/latest/govern__mobile.png"
+        },
+        {
+          "route": "/govern",
+          "viewport": "tablet",
+          "path": "docs/baselines/screenshots/latest/govern__tablet.png"
+        },
+        {
+          "route": "/govern",
+          "viewport": "desktop",
+          "path": "docs/baselines/screenshots/latest/govern__desktop.png"
+        },
+        {
+          "route": "/govern",
+          "viewport": "wide",
+          "path": "docs/baselines/screenshots/latest/govern__wide.png"
+        },
+        {
+          "route": "/settings",
+          "viewport": "mobile",
+          "path": "docs/baselines/screenshots/latest/settings__mobile.png"
+        },
+        {
+          "route": "/settings",
+          "viewport": "tablet",
+          "path": "docs/baselines/screenshots/latest/settings__tablet.png"
+        },
+        {
+          "route": "/settings",
+          "viewport": "desktop",
+          "path": "docs/baselines/screenshots/latest/settings__desktop.png"
+        },
+        {
+          "route": "/settings",
+          "viewport": "wide",
+          "path": "docs/baselines/screenshots/latest/settings__wide.png"
+        }
+      ]
     },
     "visualDiff": {
       "ok": true,
-      "skipped": true,
-      "reason": "no-latest-captures",
+      "bootstrap": true,
+      "reason": "baseline-created",
       "diffs": []
     },
     "domHeuristics": {
       "ok": true,
-      "skipped": true,
-      "reason": "playwright-not-installed",
-      "checks": []
+      "skipped": false,
+      "checks": [
+        {
+          "route": "/",
+          "key": "single-h1",
+          "criteria": "first5s",
+          "ok": true,
+          "severity": "P1",
+          "demoImpact": "high",
+          "effort": "S",
+          "message": "Expected exactly one h1; found 1.",
+          "fixHypothesis": "Ensure one and only one primary page heading exists.",
+          "autofixable": false
+        },
+        {
+          "route": "/",
+          "key": "cta-budget",
+          "criteria": "oneCta",
+          "ok": false,
+          "severity": "P0",
+          "demoImpact": "high",
+          "effort": "S",
+          "message": "Expected <= 1 primary CTA; found 3.",
+          "fixHypothesis": "Demote secondary CTA variants to ghost/minor.",
+          "autofixable": true,
+          "autofixRule": "engine-core-nav-cta-demotion"
+        },
+        {
+          "route": "/dashboard",
+          "key": "single-h1",
+          "criteria": "first5s",
+          "ok": true,
+          "severity": "P1",
+          "demoImpact": "high",
+          "effort": "S",
+          "message": "Expected exactly one h1; found 1.",
+          "fixHypothesis": "Ensure one and only one primary page heading exists.",
+          "autofixable": false
+        },
+        {
+          "route": "/dashboard",
+          "key": "cta-budget",
+          "criteria": "oneCta",
+          "ok": false,
+          "severity": "P0",
+          "demoImpact": "high",
+          "effort": "S",
+          "message": "Expected <= 1 primary CTA; found 3.",
+          "fixHypothesis": "Demote secondary CTA variants to ghost/minor.",
+          "autofixable": true,
+          "autofixRule": "engine-core-nav-cta-demotion"
+        },
+        {
+          "route": "/protect",
+          "key": "single-h1",
+          "criteria": "first5s",
+          "ok": true,
+          "severity": "P1",
+          "demoImpact": "high",
+          "effort": "S",
+          "message": "Expected exactly one h1; found 1.",
+          "fixHypothesis": "Ensure one and only one primary page heading exists.",
+          "autofixable": false
+        },
+        {
+          "route": "/protect",
+          "key": "cta-budget",
+          "criteria": "oneCta",
+          "ok": false,
+          "severity": "P0",
+          "demoImpact": "high",
+          "effort": "S",
+          "message": "Expected <= 1 primary CTA; found 3.",
+          "fixHypothesis": "Demote secondary CTA variants to ghost/minor.",
+          "autofixable": true,
+          "autofixRule": "engine-core-nav-cta-demotion"
+        },
+        {
+          "route": "/execute",
+          "key": "single-h1",
+          "criteria": "first5s",
+          "ok": true,
+          "severity": "P1",
+          "demoImpact": "high",
+          "effort": "S",
+          "message": "Expected exactly one h1; found 1.",
+          "fixHypothesis": "Ensure one and only one primary page heading exists.",
+          "autofixable": false
+        },
+        {
+          "route": "/execute",
+          "key": "cta-budget",
+          "criteria": "oneCta",
+          "ok": false,
+          "severity": "P0",
+          "demoImpact": "high",
+          "effort": "S",
+          "message": "Expected <= 1 primary CTA; found 3.",
+          "fixHypothesis": "Demote secondary CTA variants to ghost/minor.",
+          "autofixable": true,
+          "autofixRule": "engine-core-nav-cta-demotion"
+        },
+        {
+          "route": "/govern",
+          "key": "single-h1",
+          "criteria": "first5s",
+          "ok": true,
+          "severity": "P1",
+          "demoImpact": "high",
+          "effort": "S",
+          "message": "Expected exactly one h1; found 1.",
+          "fixHypothesis": "Ensure one and only one primary page heading exists.",
+          "autofixable": false
+        },
+        {
+          "route": "/govern",
+          "key": "cta-budget",
+          "criteria": "oneCta",
+          "ok": false,
+          "severity": "P0",
+          "demoImpact": "high",
+          "effort": "S",
+          "message": "Expected <= 1 primary CTA; found 3.",
+          "fixHypothesis": "Demote secondary CTA variants to ghost/minor.",
+          "autofixable": true,
+          "autofixRule": "engine-core-nav-cta-demotion"
+        },
+        {
+          "route": "/settings",
+          "key": "single-h1",
+          "criteria": "first5s",
+          "ok": true,
+          "severity": "P1",
+          "demoImpact": "high",
+          "effort": "S",
+          "message": "Expected exactly one h1; found 1.",
+          "fixHypothesis": "Ensure one and only one primary page heading exists.",
+          "autofixable": false
+        },
+        {
+          "route": "/settings",
+          "key": "cta-budget",
+          "criteria": "oneCta",
+          "ok": false,
+          "severity": "P0",
+          "demoImpact": "high",
+          "effort": "S",
+          "message": "Expected <= 1 primary CTA; found 2.",
+          "fixHypothesis": "Demote secondary CTA variants to ghost/minor.",
+          "autofixable": true,
+          "autofixRule": "engine-core-nav-cta-demotion"
+        }
+      ]
     }
   },
   "summary": {
     "overallScore": 5,
-    "openIssues": 0,
+    "openIssues": 6,
     "verifyOk": true,
     "verifyFailedChecks": 0,
-    "generatedAt": "2026-02-15T13:05:52.384Z"
+    "generatedAt": "2026-02-18T19:50:39.319Z"
   }
 }

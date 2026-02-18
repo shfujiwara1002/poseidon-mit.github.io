@@ -1,5 +1,4 @@
 import React from 'react';
-import { theme } from '../../theme';
 import { ChartGlowDefs } from './ChartGlowDefs';
 
 interface ChartRadarProps {
@@ -37,9 +36,9 @@ export const ChartRadar: React.FC<ChartRadarProps> = ({
   rings = 4,
   showLabels = true,
   showValues = true,
-  fillColor = theme.accent.teal,
+  fillColor = 'var(--accent-teal)',
   fillOpacity = 0.2,
-  strokeColor = theme.accent.teal,
+  strokeColor = 'var(--accent-teal)',
   style,
 }) => {
   const cx = width / 2;
@@ -80,7 +79,7 @@ export const ChartRadar: React.FC<ChartRadarProps> = ({
           <g key={i}>
             <circle cx={p.x} cy={p.y} r={3} fill={axis.color || strokeColor} stroke="white" strokeWidth="1" filter="url(#neon-glow-small)" />
             {showLabels && (
-              <text x={labelPos.x} y={labelPos.y} fill="white" fillOpacity="0.7" fontFamily={theme.typography.fontMono} fontSize="11" textAnchor="middle" dominantBaseline="middle">
+              <text x={labelPos.x} y={labelPos.y} fill="white" fillOpacity="0.7" fontFamily={'var(--font-mono)'} fontSize="11" textAnchor="middle" dominantBaseline="middle">
                 {axis.label}
               </text>
             )}
@@ -89,7 +88,7 @@ export const ChartRadar: React.FC<ChartRadarProps> = ({
                 x={p.x + (p.x > cx ? 10 : -10)}
                 y={p.y + (p.y > cy ? 10 : -10)}
                 fill={axis.color || strokeColor}
-                fontFamily={theme.typography.fontMono}
+                fontFamily={'var(--font-mono)'}
                 fontSize="10"
                 textAnchor={p.x > cx ? 'start' : 'end'}
                 dominantBaseline="middle"

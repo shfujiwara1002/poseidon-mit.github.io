@@ -1,6 +1,7 @@
 import type React from 'react';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { fadeUp } from '@/lib/motion-presets';
 
 interface EngineChip {
   name: string;
@@ -16,10 +17,6 @@ const engines: EngineChip[] = [
   { name: 'Govern', color: 'var(--engine-govern)', status: 'All policies current', confidence: 0.97 },
 ];
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] } },
-};
 
 export function EngineHealthStrip() {
   const [selected, setSelected] = useState(0);

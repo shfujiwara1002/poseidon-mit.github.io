@@ -1,6 +1,4 @@
 import React from 'react';
-import { theme } from '../../theme';
-
 interface VisualWealthWaveProps {
   width?: number;
   height?: number;
@@ -11,7 +9,7 @@ interface VisualWealthWaveProps {
 export const VisualWealthWave: React.FC<VisualWealthWaveProps> = ({
   width: _width = 400,
   height = 200,
-  color = theme.semantic.growth,
+  color = 'var(--engine-grow)',
   style,
 }) => {
   const pathD = 'M0 150 C 100 150, 100 50, 200 50 C 300 50, 300 100, 400 20';

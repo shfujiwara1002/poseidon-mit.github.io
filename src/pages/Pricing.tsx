@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Shield, Check, X, CheckCircle, Lock, Star, ChevronDown, ArrowRight, Zap } from 'lucide-react';
+import { Shield, Check, X, CheckCircle, Lock, Star, ChevronDown, ArrowRight } from 'lucide-react';
 import { Link } from '../router';
 import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets'
 
