@@ -1,6 +1,7 @@
 import { useState, useEffect, memo, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { AreaChart, Area, ResponsiveContainer } from 'recharts';
+import { CountUp } from '@/components/poseidon';
 
 const stagger = {
   hidden: {},
@@ -15,13 +16,17 @@ const fadeUp = {
 interface StatCardProps {
   label: string;
   value: string;
+  countUpValue?: number;
+  countUpDecimals?: number;
+  countUpPrefix?: string;
+  countUpSuffix?: string;
   delta: string;
   deltaPositive: boolean;
   sparkData: number[];
   sparkColor: string;
 }
 
-const StatCard = memo(function StatCard({ label, value, delta, deltaPositive, sparkData, sparkColor }: StatCardProps) {
+const StatCard = memo(function StatCard({ label, value, countUpValue, countUpDecimals, countUpPrefix, countUpSuffix, delta, deltaPositive, sparkData, sparkColor }: StatCardProps) {
   const data = useMemo(() => sparkData.map((v, i) => ({ i, v })), [sparkData]);
   return (
     <motion.div variants={fadeUp} className="stat-card glass-surface">
@@ -48,7 +53,18 @@ const StatCard = memo(function StatCard({ label, value, delta, deltaPositive, sp
           </ResponsiveContainer>
         </div>
       </div>
-      <span className="stat-card__value">{value}</span>
+      <span className="stat-card__value">
+        {countUpValue !== undefined ? (
+          <CountUp
+            value={countUpValue}
+            decimals={countUpDecimals}
+            prefix={countUpPrefix}
+            suffix={countUpSuffix}
+          />
+        ) : (
+          value
+        )}
+      </span>
       <span className={`stat-card__delta ${deltaPositive ? 'stat-card__delta--up' : 'stat-card__delta--down'}`}>
         {delta}
       </span>
@@ -97,6 +113,9 @@ export function KpiGrid() {
       <StatCard
         label="Net position"
         value="$847k"
+        countUpValue={847}
+        countUpPrefix="$"
+        countUpSuffix="k"
         delta="+8.2%"
         deltaPositive
         sparkData={[30, 35, 28, 40, 38, 50, 55, 60]}
@@ -105,6 +124,10 @@ export function KpiGrid() {
       <StatCard
         label="Cash flow"
         value="+$4.1k"
+        countUpValue={4.1}
+        countUpDecimals={1}
+        countUpPrefix="+$"
+        countUpSuffix="k"
         delta="+12%"
         deltaPositive
         sparkData={cashSpark}
@@ -121,6 +144,7 @@ export function KpiGrid() {
       <StatCard
         label="Alerts"
         value={String(alertCount)}
+        countUpValue={alertCount}
         delta={alertCount <= 2 ? '-3 resolved' : `+${alertCount - 2} new`}
         deltaPositive={alertCount <= 2}
         sparkData={alertSpark}

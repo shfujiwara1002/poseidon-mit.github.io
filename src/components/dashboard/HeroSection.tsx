@@ -1,6 +1,9 @@
 import { motion } from 'framer-motion';
-import { LayoutDashboard, Sparkles, ChevronRight, Info } from 'lucide-react';
+import { LayoutDashboard, Info } from 'lucide-react';
 import { useRouter } from '../../router';
+import { ViewModeToggle, CitationCard } from '@/components/poseidon';
+import type { ViewMode } from '@/hooks/useViewMode';
+import type { CitationSource } from '@/types/engine-data';
 
 const stagger = {
   hidden: {},
@@ -12,7 +15,26 @@ const fadeUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.2, 0.8, 0.2, 1] } },
 };
 
-export function HeroSection() {
+const dashboardCitations: CitationSource[] = [
+  {
+    id: 'dash-1',
+    label: 'Subscription analysis',
+    excerpt: '3 overlapping subscriptions detected — Adobe, Figma, Creative Cloud.',
+    url: '/execute',
+  },
+  {
+    id: 'dash-2',
+    label: 'Cash flow model',
+    excerpt: 'Projected $140/mo savings based on 90-day usage pattern.',
+  },
+];
+
+interface HeroSectionProps {
+  viewMode: ViewMode;
+  onViewModeChange: (mode: ViewMode) => void;
+}
+
+export function HeroSection({ viewMode, onViewModeChange }: HeroSectionProps) {
   const { navigate } = useRouter();
   return (
     <motion.section
@@ -22,12 +44,15 @@ export function HeroSection() {
       animate="visible"
       aria-label="Dashboard overview"
     >
-      {/* Kicker badge */}
-      <motion.div variants={fadeUp} className="hero-kicker">
-        <span className="hero-kicker__icon">
-          <LayoutDashboard size={14} />
-        </span>
-        <span>Dashboard</span>
+      {/* Kicker badge + ViewModeToggle */}
+      <motion.div variants={fadeUp} className="flex items-center justify-between hero-kicker">
+        <div className="flex items-center gap-2">
+          <span className="hero-kicker__icon">
+            <LayoutDashboard size={14} />
+          </span>
+          <span>Dashboard</span>
+        </div>
+        <ViewModeToggle value={viewMode} onChange={onViewModeChange} accentColor="#00F0FF" />
       </motion.div>
 
       {/* Headline */}
@@ -40,20 +65,15 @@ export function HeroSection() {
         One unresolved alert. Three actions queued. Cash buffer at 14 days.
       </motion.p>
 
-      {/* AI insight banner */}
-      <motion.div variants={fadeUp} className="hero-insight glass-surface" role="status">
-        <div className="hero-insight__icon">
-          <Sparkles size={18} />
-        </div>
-        <div className="hero-insight__body">
-          <p className="hero-insight__text">
-            <strong>Top recommendation:</strong> Consolidate 3 overlapping subscriptions — projected save $140/mo (92% confidence)
-          </p>
-        </div>
-        <button className="hero-insight__cta" type="button" onClick={() => navigate('/execute')}>
-          Review in Execute
-          <ChevronRight size={14} />
-        </button>
+      {/* AI Insight — CitationCard */}
+      <motion.div variants={fadeUp}>
+        <CitationCard
+          summary="Top recommendation: Consolidate 3 overlapping subscriptions — projected save $140/mo (92% confidence)"
+          sources={dashboardCitations}
+          confidence={0.92}
+          accentColor="#00F0FF"
+          viewMode={viewMode}
+        />
       </motion.div>
 
       {/* Proof line */}
