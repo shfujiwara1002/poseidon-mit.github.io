@@ -4,12 +4,7 @@ import {
   Scale, Shield, TrendingUp, Zap, Lock, Check,
 } from 'lucide-react';
 import { Link, useRouter } from '../router';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] } },
-};
-const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets'
 
 /* ── Step progress bar ── */
 const stepsMeta = [
@@ -28,9 +23,9 @@ function StepProgress({ current }: { current: number }) {
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
                 idx < current
-                  ? 'bg-[#22C55E] text-white'
+                  ? 'bg-[var(--engine-protect)] text-white'
                   : idx === current
-                    ? 'border-2 border-[#3B82F6] text-[#3B82F6]'
+                    ? 'border-2 border-[var(--engine-govern)] text-[var(--engine-govern)]'
                     : 'border border-white/20 text-white/30'
               }`}
               style={idx === current ? { animation: 'pulse 2s infinite' } : {}}
@@ -40,7 +35,7 @@ function StepProgress({ current }: { current: number }) {
             <span
               className={`text-xs font-medium hidden md:inline ${
                 idx < current
-                  ? 'text-[#22C55E]'
+                  ? 'text-[var(--engine-protect)]'
                   : idx === current
                     ? 'text-white'
                     : 'text-white/30'
@@ -50,7 +45,7 @@ function StepProgress({ current }: { current: number }) {
             </span>
           </div>
           {idx < stepsMeta.length - 1 && (
-            <div className={`w-8 md:w-12 h-px flex-shrink-0 ${idx < current ? 'bg-[#22C55E]/40' : 'bg-white/10'}`} />
+            <div className={`w-8 md:w-12 h-px flex-shrink-0 ${idx < current ? 'bg-[var(--engine-protect)]/40' : 'bg-white/10'}`} />
           )}
         </React.Fragment>
       ))}
@@ -111,7 +106,7 @@ const engines: EngineDef[] = [
   {
     id: 'protect',
     icon: Shield,
-    color: '#22C55E',
+    color: 'var(--engine-protect)',
     name: 'Protect',
     defaultOn: true,
     abilities: [
@@ -124,7 +119,7 @@ const engines: EngineDef[] = [
   {
     id: 'grow',
     icon: TrendingUp,
-    color: '#8B5CF6',
+    color: 'var(--engine-grow)',
     name: 'Grow',
     defaultOn: true,
     abilities: [
@@ -137,7 +132,7 @@ const engines: EngineDef[] = [
   {
     id: 'execute',
     icon: Zap,
-    color: '#EAB308',
+    color: 'var(--engine-execute)',
     name: 'Execute',
     defaultOn: false,
     abilities: [
@@ -151,7 +146,7 @@ const engines: EngineDef[] = [
   {
     id: 'govern',
     icon: Scale,
-    color: '#3B82F6',
+    color: 'var(--engine-govern)',
     name: 'Govern',
     defaultOn: true,
     locked: true,
@@ -193,8 +188,8 @@ export function OnboardingConsent() {
         {/* Hero */}
         <motion.div variants={fadeUp} className="flex flex-col items-center text-center gap-2">
           <div className="flex items-center gap-1.5 mb-2">
-            <Scale className="h-4 w-4" style={{ color: '#3B82F6' }} />
-            <span className="text-xs font-mono" style={{ color: '#3B82F6' }}>Step 3 of 4</span>
+            <Scale className="h-4 w-4" style={{ color: 'var(--engine-govern)' }} />
+            <span className="text-xs font-mono" style={{ color: 'var(--engine-govern)' }}>Step 3 of 4</span>
           </div>
           <h1 className="text-2xl font-bold text-white text-balance">Your AI, your rules.</h1>
           <p className="text-sm text-white/50 max-w-sm">
@@ -275,7 +270,7 @@ export function OnboardingConsent() {
         <motion.div
           variants={fadeUp}
           className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 border-l-2"
-          style={{ borderLeftColor: '#3B82F6' }}
+          style={{ borderLeftColor: 'var(--engine-govern)' }}
         >
           <p className="text-xs font-mono text-white/40 mb-1">Audit ID: GV-2026-0216-CONSENT</p>
           <p className="text-sm text-white/50">
@@ -294,7 +289,7 @@ export function OnboardingConsent() {
           <button
             onClick={() => navigate('/onboarding/complete')}
             className="px-6 py-2.5 rounded-xl text-sm font-bold transition-opacity hover:opacity-90"
-            style={{ background: '#3B82F6', color: '#FFFFFF' }}
+            style={{ background: 'var(--engine-govern)', color: '#FFFFFF' }}
           >
             {'Activate Poseidon \u2192'}
           </button>

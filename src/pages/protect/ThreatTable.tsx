@@ -41,13 +41,13 @@ function MiniScoreRing({ value }: { value: number }) {
         <svg viewBox="0 0 36 36" className="h-8 w-8 -rotate-90" aria-hidden="true">
           <circle cx="18" cy="18" r="14" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="3" />
           <circle
-            cx="18" cy="18" r="14" fill="none" stroke="#22C55E" strokeWidth="3"
+            cx="18" cy="18" r="14" fill="none" stroke="var(--engine-protect)" strokeWidth="3"
             strokeLinecap="round"
             strokeDasharray={`${pct * 0.88} ${88 - pct * 0.88}`}
           />
         </svg>
       </div>
-      <span className="font-mono text-sm font-semibold" style={{ color: '#22C55E' }}>
+      <span className="font-mono text-sm font-semibold" style={{ color: 'var(--engine-protect)' }}>
         {pct}{'%'}
       </span>
     </div>
@@ -60,7 +60,7 @@ function SHAPPanel() {
   return (
     <div className="flex flex-col gap-4 rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
       <div className="flex items-center gap-2">
-        <Brain className="h-4 w-4" style={{ color: '#22C55E' }} />
+        <Brain className="h-4 w-4" style={{ color: 'var(--engine-protect)' }} />
         <span className="text-sm font-semibold" style={{ color: '#F1F5F9' }}>SHAP Factor Analysis</span>
       </div>
       <div className="flex flex-col gap-3">
@@ -68,12 +68,12 @@ function SHAPPanel() {
           <div key={f.label} className="flex flex-col gap-1.5">
             <div className="flex items-center justify-between">
               <span className="text-sm" style={{ color: '#CBD5E1' }}>{f.label}</span>
-              <span className="font-mono text-sm font-semibold" style={{ color: '#22C55E' }}>{f.value.toFixed(2)}</span>
+              <span className="font-mono text-sm font-semibold" style={{ color: 'var(--engine-protect)' }}>{f.value.toFixed(2)}</span>
             </div>
             <div className="h-2 overflow-hidden rounded-full" style={{ background: 'rgba(255,255,255,0.06)' }}>
               <motion.div
                 className="h-full rounded-full"
-                style={{ background: 'linear-gradient(90deg, #22C55E, rgba(34,197,94,0.5))' }}
+                style={{ background: 'linear-gradient(90deg, var(--engine-protect), rgba(34,197,94,0.5))' }}
                 initial={{ width: 0 }}
                 animate={{ width: `${f.value * 100}%` }}
                 transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
@@ -102,7 +102,7 @@ export function ThreatTable({ navigate, viewMode = 'detail' }: ThreatTableProps)
     <motion.div variants={fadeUp} className="flex min-w-0 flex-[2] flex-col gap-5">
       {/* Threat Table */}
       <GlassCard
-        borderColor="#22C55E"
+        borderColor="var(--engine-protect)"
         style={{
           background: 'rgba(255,255,255,0.05)',
           border: '1px solid rgba(255,255,255,0.1)',
@@ -110,7 +110,7 @@ export function ThreatTable({ navigate, viewMode = 'detail' }: ThreatTableProps)
       >
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold flex items-center gap-2" style={{ color: '#F1F5F9' }}>
-            <AlertTriangle size={18} style={{ color: '#22C55E' }} aria-hidden="true" />
+            <AlertTriangle size={18} style={{ color: 'var(--engine-protect)' }} aria-hidden="true" />
             Threat Signals
           </h2>
           <span
@@ -176,7 +176,7 @@ export function ThreatTable({ navigate, viewMode = 'detail' }: ThreatTableProps)
                         style={{
                           background: 'rgba(34,197,94,0.1)',
                           border: '1px solid rgba(34,197,94,0.3)',
-                          color: '#22C55E',
+                          color: 'var(--engine-protect)',
                         }}
                         onClick={(e) => { e.stopPropagation(); navigate('/protect/alert-detail'); }}
                       >
@@ -198,7 +198,7 @@ export function ThreatTable({ navigate, viewMode = 'detail' }: ThreatTableProps)
                         >
                           <SHAPPanel />
                           {viewMode === 'deep' && (
-                            <ReasoningChain steps={protectReasoningSteps} accentColor="#22C55E" />
+                            <ReasoningChain steps={protectReasoningSteps} accentColor="var(--engine-protect)" />
                           )}
                         </motion.div>
                       </td>
@@ -242,7 +242,7 @@ export function ThreatTable({ navigate, viewMode = 'detail' }: ThreatTableProps)
                 <div className="flex items-center justify-between">
                   <button
                     className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold"
-                    style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.3)', color: '#22C55E' }}
+                    style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.3)', color: 'var(--engine-protect)' }}
                     onClick={(e) => { e.stopPropagation(); navigate('/protect/alert-detail'); }}
                   >
                     <Eye className="h-3.5 w-3.5" />
@@ -266,7 +266,7 @@ export function ThreatTable({ navigate, viewMode = 'detail' }: ThreatTableProps)
                 >
                   <SHAPPanel />
                   {viewMode === 'deep' && (
-                    <ReasoningChain steps={protectReasoningSteps} accentColor="#22C55E" />
+                    <ReasoningChain steps={protectReasoningSteps} accentColor="var(--engine-protect)" />
                   )}
                 </motion.div>
               )}
@@ -287,14 +287,14 @@ export function ThreatTable({ navigate, viewMode = 'detail' }: ThreatTableProps)
 
       {/* Quick Actions */}
       <GlassCard
-        borderColor="#22C55E"
+        borderColor="var(--engine-protect)"
         style={{
           background: 'rgba(255,255,255,0.05)',
           border: '1px solid rgba(255,255,255,0.1)',
         }}
       >
         <h2 className="mb-4 text-lg font-semibold flex items-center gap-2" style={{ color: '#F1F5F9' }}>
-          <Zap size={18} style={{ color: '#22C55E' }} aria-hidden="true" />
+          <Zap size={18} style={{ color: 'var(--engine-protect)' }} aria-hidden="true" />
           Quick Actions
         </h2>
         <div className="flex flex-col gap-3">

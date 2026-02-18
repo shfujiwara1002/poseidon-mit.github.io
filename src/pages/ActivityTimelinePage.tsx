@@ -2,13 +2,9 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Activity, CheckCircle2 } from 'lucide-react';
 import { Link } from '../router';
-import { GovernFooter } from '../components/dashboard/GovernFooter';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] } },
-};
-const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
+import { GovernFooter, AuroraPulse } from '@/components/poseidon'
+import { GOVERNANCE_META } from '@/lib/governance-meta'
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets'
 
 /* ═══════════════════════════════════════════
    DATA
@@ -37,7 +33,7 @@ const events: TimelineEvent[] = [
   { id: 'TE-008', engine: 'Govern', type: 'Policy', title: 'Trust score updated to 92', description: 'System trust score recalculated after model accuracy improvement.', confidence: 0.97, time: '09:00', day: 'Feb 14', auditId: 'GV-2026-0214-001' },
 ];
 
-const engineDotColor: Record<string, string> = { Protect: '#22C55E', Grow: '#8B5CF6', Execute: '#EAB308', Govern: '#3B82F6' };
+const engineDotColor: Record<string, string> = { Protect: 'var(--engine-protect)', Grow: 'var(--engine-grow)', Execute: 'var(--engine-execute)', Govern: 'var(--engine-govern)' };
 const engineBadgeCls: Record<string, string> = { Protect: 'bg-emerald-500/20 text-emerald-400', Grow: 'bg-violet-500/20 text-violet-400', Execute: 'bg-amber-500/20 text-amber-400', Govern: 'bg-blue-500/20 text-blue-400' };
 const typeBadgeCls: Record<string, string> = { Alert: 'bg-red-500/20 text-red-400', Action: 'bg-amber-500/20 text-amber-400', Update: 'bg-blue-500/20 text-blue-400', Audit: 'bg-blue-500/20 text-blue-400', Resolution: 'bg-emerald-500/20 text-emerald-400', Insight: 'bg-violet-500/20 text-violet-400', Policy: 'bg-blue-500/20 text-blue-400' };
 
@@ -55,11 +51,12 @@ export function ActivityTimelinePage() {
   }, {});
 
   return (
-    <div className="min-h-screen w-full" style={{ background: '#0B1221' }}>
+    <div className="relative min-h-screen w-full" style={{ background: '#0B1221' }}>
+      <AuroraPulse color="var(--engine-dashboard)" intensity="subtle" />
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold"
-        style={{ background: '#00F0FF', color: '#0B1221' }}
+        style={{ background: 'var(--engine-dashboard)', color: '#0B1221' }}
       >
         Skip to main content
       </a>
@@ -73,7 +70,7 @@ export function ActivityTimelinePage() {
           <Link
             to="/dashboard"
             className="flex items-center gap-1.5 text-sm font-medium hover:opacity-80 transition-opacity"
-            style={{ color: '#00F0FF' }}
+            style={{ color: 'var(--engine-dashboard)' }}
           >
             <ArrowLeft className="h-4 w-4" />
             Dashboard
@@ -95,8 +92,8 @@ export function ActivityTimelinePage() {
         {/* Hero */}
         <motion.div variants={fadeUp} className="flex flex-col gap-1">
           <div className="flex items-center gap-2 mb-1">
-            <Activity className="h-5 w-5" style={{ color: '#00F0FF' }} />
-            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#00F0FF' }}>
+            <Activity className="h-5 w-5" style={{ color: 'var(--engine-dashboard)' }} />
+            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--engine-dashboard)' }}>
               Dashboard · Timeline
             </span>
           </div>
@@ -108,10 +105,10 @@ export function ActivityTimelinePage() {
         <motion.div variants={fadeUp}>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { label: 'Events (7d)', value: '22', color: '#00F0FF' },
-              { label: 'Engines active', value: '4/4', color: '#3B82F6' },
-              { label: 'Success rate', value: '99%', color: '#22C55E' },
-              { label: 'Audit coverage', value: '100%', color: '#EAB308' },
+              { label: 'Events (7d)', value: '22', color: 'var(--engine-dashboard)' },
+              { label: 'Engines active', value: '4/4', color: 'var(--engine-govern)' },
+              { label: 'Success rate', value: '99%', color: 'var(--engine-protect)' },
+              { label: 'Audit coverage', value: '100%', color: 'var(--engine-execute)' },
             ].map((kpi) => (
               <div key={kpi.label} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
                 <p className="text-xs text-white/40 mb-1">{kpi.label}</p>
@@ -214,7 +211,7 @@ export function ActivityTimelinePage() {
             {/* Key milestones */}
             <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
               <div className="flex items-center gap-2 mb-3">
-                <CheckCircle2 className="h-4 w-4" style={{ color: '#00F0FF' }} />
+                <CheckCircle2 className="h-4 w-4" style={{ color: 'var(--engine-dashboard)' }} />
                 <h3 className="text-xs font-semibold text-white/70 uppercase tracking-wider">Key Milestones</h3>
               </div>
               <div className="space-y-3">
@@ -245,7 +242,7 @@ export function ActivityTimelinePage() {
           </aside>
         </div>
 
-        <GovernFooter />
+        <GovernFooter auditId={GOVERNANCE_META['/dashboard/timeline'].auditId} pageContext={GOVERNANCE_META['/dashboard/timeline'].pageContext} />
       </motion.div>
     </div>
   );

@@ -24,7 +24,7 @@ export function GrowGlance() {
           <span className="text-4xl md:text-5xl font-bold tabular-nums" style={{ fontFamily: 'var(--font-display)', color: '#F1F5F9' }}>
             <CountUp value={2.4} decimals={1} prefix="$" suffix="M" />
           </span>
-          <span className="text-sm" style={{ color: '#8B5CF6' }}>On track for 2 of 3 goals</span>
+          <span className="text-sm" style={{ color: 'var(--engine-grow)' }}>On track for 2 of 3 goals</span>
         </GlassCard>
       </motion.div>
 
@@ -39,7 +39,7 @@ export function GrowGlance() {
                   className="text-[10px] font-semibold uppercase tracking-wider rounded-full px-2 py-0.5"
                   style={{
                     background: goal.status === 'On track' ? 'rgba(16,185,129,0.12)' : goal.status === 'Ahead' ? 'rgba(139,92,246,0.12)' : 'rgba(245,158,11,0.12)',
-                    color: goal.status === 'On track' ? '#10B981' : goal.status === 'Ahead' ? '#8B5CF6' : '#F59E0B',
+                    color: goal.status === 'On track' ? '#10B981' : goal.status === 'Ahead' ? 'var(--engine-grow)' : '#F59E0B',
                   }}
                 >
                   {goal.status}
@@ -48,12 +48,12 @@ export function GrowGlance() {
               <div className="h-2 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
                 <div
                   className="h-full rounded-full transition-all"
-                  style={{ width: `${goal.progress}%`, background: '#8B5CF6' }}
+                  style={{ width: `${goal.progress}%`, background: 'var(--engine-grow)' }}
                 />
               </div>
               <div className="flex items-center justify-between text-xs" style={{ color: '#64748B' }}>
                 <span>{goal.current} / {goal.target}</span>
-                <ConfidenceIndicator value={goal.confidence} accentColor="#8B5CF6" />
+                <ConfidenceIndicator value={goal.confidence} accentColor="var(--engine-grow)" />
               </div>
             </GlassCard>
           </motion.div>

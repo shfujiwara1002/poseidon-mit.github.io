@@ -2,14 +2,10 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Bell, CheckCircle2, Clock, TrendingDown, Shield } from 'lucide-react';
 import { Link } from '../router';
-import { GovernFooter } from '../components/dashboard/GovernFooter';
+import { GovernFooter, AuroraPulse } from '@/components/poseidon'
+import { GOVERNANCE_META } from '@/lib/governance-meta'
 import { usePageTitle } from '../hooks/use-page-title';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] } },
-};
-const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets'
 
 /* ═══════════════════════════════════════════
    TYPES & DATA
@@ -74,11 +70,12 @@ export function AlertsHub() {
   };
 
   return (
-    <div className="min-h-screen w-full" style={{ background: '#0B1221' }}>
+    <div className="relative min-h-screen w-full" style={{ background: '#0B1221' }}>
+      <AuroraPulse color="var(--engine-dashboard)" intensity="subtle" />
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold"
-        style={{ background: '#00F0FF', color: '#0B1221' }}
+        style={{ background: 'var(--engine-dashboard)', color: '#0B1221' }}
       >
         Skip to main content
       </a>
@@ -92,7 +89,7 @@ export function AlertsHub() {
           <Link
             to="/dashboard"
             className="flex items-center gap-1.5 text-sm font-medium hover:opacity-80 transition-opacity"
-            style={{ color: '#00F0FF' }}
+            style={{ color: 'var(--engine-dashboard)' }}
           >
             <ArrowLeft className="h-4 w-4" />
             Dashboard
@@ -114,8 +111,8 @@ export function AlertsHub() {
         {/* Hero */}
         <motion.div variants={fadeUp} className="flex flex-col gap-1">
           <div className="flex items-center gap-2 mb-1">
-            <Bell className="h-5 w-5" style={{ color: '#00F0FF' }} />
-            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#00F0FF' }}>
+            <Bell className="h-5 w-5" style={{ color: 'var(--engine-dashboard)' }} />
+            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--engine-dashboard)' }}>
               Dashboard · Alerts
             </span>
           </div>
@@ -129,10 +126,10 @@ export function AlertsHub() {
         <motion.div variants={fadeUp}>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { label: 'Active', value: '12', color: '#EAB308' },
-              { label: 'Resolved (7d)', value: '35', color: '#22C55E' },
-              { label: 'MTTR', value: '25m', color: '#00F0FF' },
-              { label: 'False positive', value: '3%', color: '#3B82F6' },
+              { label: 'Active', value: '12', color: 'var(--engine-execute)' },
+              { label: 'Resolved (7d)', value: '35', color: 'var(--engine-protect)' },
+              { label: 'MTTR', value: '25m', color: 'var(--engine-dashboard)' },
+              { label: 'False positive', value: '3%', color: 'var(--engine-govern)' },
             ].map((kpi) => (
               <div key={kpi.label} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
                 <p className="text-xs text-white/40 mb-1">{kpi.label}</p>
@@ -199,7 +196,7 @@ export function AlertsHub() {
             <div className="space-y-2">
               {filtered.length === 0 && (
                 <div className="flex flex-col items-center gap-3 py-16">
-                  <Shield className="w-12 h-12 opacity-30" style={{ color: '#22C55E' }} />
+                  <Shield className="w-12 h-12 opacity-30" style={{ color: 'var(--engine-protect)' }} />
                   <p className="text-sm text-white/50">No alerts match your filters.</p>
                   <p className="text-xs text-white/30">System is operating normally.</p>
                 </div>
@@ -273,7 +270,7 @@ export function AlertsHub() {
               <div className="space-y-2.5">
                 {(['Protect', 'Grow', 'Execute', 'Govern'] as Alert['engine'][]).map((eng) => {
                   const count = alerts.filter((a) => a.engine === eng).length;
-                  const colors: Record<Alert['engine'], string> = { Protect: '#22C55E', Grow: '#8B5CF6', Execute: '#EAB308', Govern: '#3B82F6' };
+                  const colors: Record<Alert['engine'], string> = { Protect: 'var(--engine-protect)', Grow: 'var(--engine-grow)', Execute: 'var(--engine-execute)', Govern: 'var(--engine-govern)' };
                   return (
                     <div key={eng} className="flex items-center gap-2">
                       <span className="text-xs text-white/50 w-16">{eng}</span>
@@ -331,7 +328,7 @@ export function AlertsHub() {
           </aside>
         </div>
 
-        <GovernFooter />
+        <GovernFooter auditId={GOVERNANCE_META['/dashboard/alerts'].auditId} pageContext={GOVERNANCE_META['/dashboard/alerts'].pageContext} />
       </motion.div>
     </div>
   );

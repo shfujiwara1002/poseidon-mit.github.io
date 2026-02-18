@@ -2,12 +2,9 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Shield, Download, PauseCircle, Trash2, Lock, FileText, Database, ChevronDown } from 'lucide-react';
 import { Link } from '../router';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] } },
-};
-const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
+import { GovernFooter } from '@/components/poseidon'
+import { GOVERNANCE_META } from '@/lib/governance-meta'
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets'
 
 const dataInventory = [
   { category: 'Transactions', records: '1,247', retention: '2 years' },
@@ -36,7 +33,7 @@ export function SettingsRights() {
 
   return (
     <div className="min-h-screen w-full" style={{ background: '#0B1221' }}>
-      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold" style={{ background: '#3B82F6', color: '#fff' }}>Skip to main content</a>
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold" style={{ background: 'var(--engine-govern)', color: '#fff' }}>Skip to main content</a>
 
       <nav className="sticky top-0 z-50 backdrop-blur-xl border-b border-white/[0.06]" style={{ background: 'rgba(11,18,33,0.8)' }} aria-label="Breadcrumb">
         <div className="mx-auto px-4 md:px-6 lg:px-8 h-14 flex items-center gap-2" style={{ maxWidth: '1280px' }}>
@@ -53,25 +50,25 @@ export function SettingsRights() {
         <motion.div variants={fadeUp} className="flex flex-col gap-1">
           <div className="flex items-center gap-2 mb-1">
             <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'rgba(59,130,246,0.15)' }}>
-              <Shield className="h-4 w-4" style={{ color: '#3B82F6' }} />
+              <Shield className="h-4 w-4" style={{ color: 'var(--engine-govern)' }} />
             </div>
-            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#3B82F6' }}>Settings · Data Rights</span>
+            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--engine-govern)' }}>Settings · Data Rights</span>
           </div>
           <h1 className="text-2xl md:text-3xl font-bold text-white">Your Data Rights</h1>
           <div className="flex flex-wrap items-center gap-2 mt-1">
             <p className="text-sm text-slate-400">GDPR · CCPA compliant · Exercise your rights at any time.</p>
-            <span className="text-[10px] px-2 py-0.5 rounded-full border font-semibold" style={{ borderColor: '#3B82F6', color: '#3B82F6' }}>GDPR</span>
-            <span className="text-[10px] px-2 py-0.5 rounded-full border font-semibold" style={{ borderColor: '#3B82F6', color: '#3B82F6' }}>CCPA</span>
+            <span className="text-[10px] px-2 py-0.5 rounded-full border font-semibold" style={{ borderColor: 'var(--engine-govern)', color: 'var(--engine-govern)' }}>GDPR</span>
+            <span className="text-[10px] px-2 py-0.5 rounded-full border font-semibold" style={{ borderColor: 'var(--engine-govern)', color: 'var(--engine-govern)' }}>CCPA</span>
           </div>
         </motion.div>
 
         {/* KPI bar */}
         <motion.div variants={fadeUp} className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { label: 'Data stored', value: '847 MB', color: '#3B82F6' },
-            { label: 'Active requests', value: '0', color: '#22C55E' },
+            { label: 'Data stored', value: '847 MB', color: 'var(--engine-govern)' },
+            { label: 'Active requests', value: '0', color: 'var(--engine-protect)' },
             { label: 'Retention', value: '2 years', color: '#94A3B8' },
-            { label: 'Last export', value: 'Never', color: '#EAB308' },
+            { label: 'Last export', value: 'Never', color: 'var(--engine-execute)' },
           ].map((kpi) => (
             <div key={kpi.label} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
               <p className="text-xs text-white/40 mb-1">{kpi.label}</p>
@@ -84,22 +81,22 @@ export function SettingsRights() {
         <motion.div variants={fadeUp} className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6 flex flex-col gap-3">
             <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: 'rgba(59,130,246,0.15)' }}>
-              <Download className="h-5 w-5" style={{ color: '#3B82F6' }} />
+              <Download className="h-5 w-5" style={{ color: 'var(--engine-govern)' }} />
             </div>
             <h3 className="text-sm font-semibold text-white">Export My Data</h3>
             <p className="text-xs text-slate-400">Download a copy of your data</p>
             <div className="mt-auto flex flex-col gap-2">
-              <button className="w-full px-4 py-2 rounded-xl text-xs font-semibold text-white hover:opacity-90 transition-opacity" style={{ background: '#3B82F6' }}>Export as JSON</button>
-              <button className="w-full px-4 py-2 rounded-xl text-xs font-semibold border hover:bg-blue-500/10 transition-colors" style={{ borderColor: 'rgba(59,130,246,0.3)', color: '#3B82F6' }}>Export as CSV</button>
+              <button className="w-full px-4 py-2 rounded-xl text-xs font-semibold text-white hover:opacity-90 transition-opacity" style={{ background: 'var(--engine-govern)' }}>Export as JSON</button>
+              <button className="w-full px-4 py-2 rounded-xl text-xs font-semibold border hover:bg-blue-500/10 transition-colors" style={{ borderColor: 'rgba(59,130,246,0.3)', color: 'var(--engine-govern)' }}>Export as CSV</button>
             </div>
           </div>
           <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6 flex flex-col gap-3">
             <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: 'rgba(234,179,8,0.15)' }}>
-              <PauseCircle className="h-5 w-5" style={{ color: '#EAB308' }} />
+              <PauseCircle className="h-5 w-5" style={{ color: 'var(--engine-execute)' }} />
             </div>
             <h3 className="text-sm font-semibold text-white">Restrict Processing</h3>
             <p className="text-xs text-slate-400">Pause AI analysis</p>
-            <button className="mt-auto px-4 py-2 rounded-xl text-xs font-semibold border hover:bg-amber-500/10 transition-colors" style={{ borderColor: 'rgba(234,179,8,0.3)', color: '#EAB308' }}>Restrict processing</button>
+            <button className="mt-auto px-4 py-2 rounded-xl text-xs font-semibold border hover:bg-amber-500/10 transition-colors" style={{ borderColor: 'rgba(234,179,8,0.3)', color: 'var(--engine-execute)' }}>Restrict processing</button>
           </div>
           <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6 flex flex-col gap-3">
             <div className="w-10 h-10 rounded-full flex items-center justify-center bg-red-500/10">
@@ -200,7 +197,7 @@ export function SettingsRights() {
                 <button
                   onClick={() => toggleConsent(idx)}
                   className={`w-10 h-5 rounded-full relative transition-colors ${c.enabled ? '' : 'bg-white/10'}`}
-                  style={c.enabled ? { background: '#3B82F6' } : {}}
+                  style={c.enabled ? { background: 'var(--engine-govern)' } : {}}
                   role="switch"
                   aria-checked={c.enabled}
                   aria-label={`Toggle ${c.label}`}
@@ -221,6 +218,8 @@ export function SettingsRights() {
           <span className="text-xs text-white/30">DataGovernance v1.2</span>
           <Link to="/govern/oversight" className="ml-auto text-xs text-white/40 hover:text-white/60 transition-colors">Request human review</Link>
         </motion.footer>
+
+        <GovernFooter auditId={GOVERNANCE_META['/settings/rights'].auditId} pageContext={GOVERNANCE_META['/settings/rights'].pageContext} />
       </motion.div>
     </div>
   );

@@ -47,7 +47,7 @@ function GoalCard({ goal, navigate, viewMode = 'detail' }: { goal: Goal; navigat
         <div className="flex flex-col gap-1.5">
           <div className="flex items-center justify-between">
             <span className="text-xs" style={{ color: '#64748B' }}>Progress</span>
-            <span className="text-xs font-mono tabular-nums" style={{ color: '#8B5CF6' }}>{goal.progress}%</span>
+            <span className="text-xs font-mono tabular-nums" style={{ color: 'var(--engine-grow)' }}>{goal.progress}%</span>
           </div>
           <div
             className="h-2 w-full rounded-full overflow-hidden"
@@ -60,7 +60,7 @@ function GoalCard({ goal, navigate, viewMode = 'detail' }: { goal: Goal; navigat
           >
             <motion.div
               className="h-full rounded-full"
-              style={{ background: '#8B5CF6' }}
+              style={{ background: 'var(--engine-grow)' }}
               initial={{ width: 0 }}
               animate={{ width: `${goal.progress}%` }}
               transition={{ duration: 1, ease: 'easeOut' }}
@@ -95,12 +95,12 @@ function GoalCard({ goal, navigate, viewMode = 'detail' }: { goal: Goal; navigat
           className="rounded-xl px-3 py-2.5 flex items-start gap-2"
           style={{ background: 'rgba(139,92,246,0.06)', border: '1px solid rgba(139,92,246,0.15)' }}
         >
-          <CircleDot size={12} className="mt-0.5 shrink-0" style={{ color: '#8B5CF6' }} />
+          <CircleDot size={12} className="mt-0.5 shrink-0" style={{ color: 'var(--engine-grow)' }} />
           <div className="flex flex-col gap-1">
             <span className="text-xs font-medium" style={{ color: '#CBD5E1' }}>
               AI recommendation: {goal.recommendation}
             </span>
-            <ConfidenceIndicator value={goal.confidence} accentColor="#8B5CF6" />
+            <ConfidenceIndicator value={goal.confidence} accentColor="var(--engine-grow)" />
           </div>
         </div>
 
@@ -110,7 +110,7 @@ function GoalCard({ goal, navigate, viewMode = 'detail' }: { goal: Goal; navigat
             summary={goal.recommendation}
             sources={[{ id: `goal-${goal.id}`, label: 'GrowthOptimizer v2.8', excerpt: `Based on Monte Carlo analysis of ${goal.name} trajectory.` }]}
             confidence={goal.confidence}
-            accentColor="#8B5CF6"
+            accentColor="var(--engine-grow)"
             viewMode="deep"
             className="mt-2"
           />
@@ -127,7 +127,7 @@ function GoalCard({ goal, navigate, viewMode = 'detail' }: { goal: Goal; navigat
               style={
                 i === 0
                   ? {
-                      background: 'linear-gradient(135deg, #8B5CF6, #7C3AED)',
+                      background: 'linear-gradient(135deg, var(--engine-grow), #7C3AED)',
                       color: '#ffffff',
                       minHeight: '44px',
                     }

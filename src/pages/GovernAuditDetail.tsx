@@ -2,13 +2,9 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, FileText, CheckCircle2, AlertTriangle, User, ChevronDown } from 'lucide-react';
 import { Link } from '../router';
-import { GovernFooter } from '../components/dashboard/GovernFooter';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] } },
-};
-const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
+import { GovernFooter, AuroraPulse } from '@/components/poseidon'
+import { GOVERNANCE_META } from '@/lib/governance-meta'
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets';
 
 /* ═══════════════════════════════════════════
    DATA
@@ -56,11 +52,12 @@ const complianceFlags = [
 
 export function GovernAuditDetail() {
   return (
-    <div className="min-h-screen w-full" style={{ background: '#0B1221' }}>
+    <div className="relative min-h-screen w-full" style={{ background: '#0B1221' }}>
+      <AuroraPulse color="var(--engine-govern)" intensity="subtle" />
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold"
-        style={{ background: '#3B82F6', color: '#ffffff' }}
+        style={{ background: 'var(--engine-govern)', color: '#ffffff' }}
       >
         Skip to main content
       </a>
@@ -74,7 +71,7 @@ export function GovernAuditDetail() {
           <Link
             to="/govern/audit"
             className="flex items-center gap-1.5 text-sm font-medium hover:opacity-80 transition-opacity"
-            style={{ color: '#3B82F6' }}
+            style={{ color: 'var(--engine-govern)' }}
           >
             <ArrowLeft className="h-4 w-4" />
             Audit Ledger
@@ -96,8 +93,8 @@ export function GovernAuditDetail() {
         {/* Hero */}
         <motion.div variants={fadeUp} className="flex flex-col gap-1">
           <div className="flex items-center gap-2 mb-1">
-            <FileText className="h-5 w-5" style={{ color: '#3B82F6' }} />
-            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#3B82F6' }}>
+            <FileText className="h-5 w-5" style={{ color: 'var(--engine-govern)' }} />
+            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--engine-govern)' }}>
               Govern · Audit Detail
             </span>
           </div>
@@ -111,10 +108,10 @@ export function GovernAuditDetail() {
         <motion.div variants={fadeUp}>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { label: 'Confidence', value: `${auditEntry.explanation.confidence}%`, color: '#3B82F6' },
-              { label: 'Factors', value: String(auditEntry.topFactors.length), color: '#00F0FF' },
-              { label: 'Model accuracy', value: `${auditEntry.model.accuracy}%`, color: '#22C55E' },
-              { label: 'Feedback rate', value: '95%', color: '#EAB308' },
+              { label: 'Confidence', value: `${auditEntry.explanation.confidence}%`, color: 'var(--engine-govern)' },
+              { label: 'Factors', value: String(auditEntry.topFactors.length), color: 'var(--engine-dashboard)' },
+              { label: 'Model accuracy', value: `${auditEntry.model.accuracy}%`, color: 'var(--engine-protect)' },
+              { label: 'Feedback rate', value: '95%', color: 'var(--engine-execute)' },
             ].map((kpi) => (
               <div key={kpi.label} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
                 <p className="text-xs text-white/40 mb-1">{kpi.label}</p>
@@ -142,7 +139,7 @@ export function GovernAuditDetail() {
             </div>
 
             {/* Decision reconstruction */}
-            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6" style={{ borderLeftWidth: 3, borderLeftColor: '#3B82F6' }}>
+            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6" style={{ borderLeftWidth: 3, borderLeftColor: 'var(--engine-govern)' }}>
               <h2 className="text-sm font-semibold text-white mb-3">Decision Reconstruction</h2>
               <p className="text-sm text-slate-300 leading-relaxed mb-4">{auditEntry.explanation.summary}</p>
               <div className="flex items-center gap-3 mb-4">
@@ -238,7 +235,7 @@ export function GovernAuditDetail() {
           </aside>
         </div>
 
-        <GovernFooter />
+        <GovernFooter auditId={GOVERNANCE_META['/govern/audit-detail'].auditId} pageContext={GOVERNANCE_META['/govern/audit-detail'].pageContext} />
       </motion.div>
     </div>
   );

@@ -44,14 +44,14 @@ function HeroSection({ navigate, viewMode = 'detail', onViewModeChange }: Govern
             style={{
               borderColor: 'rgba(59,130,246,0.3)',
               background: 'rgba(59,130,246,0.08)',
-              color: '#3B82F6',
+              color: 'var(--engine-govern)',
             }}
           >
             <ShieldCheck size={12} />
             Govern Engine
           </span>
           {onViewModeChange && (
-            <ViewModeToggle value={viewMode} onChange={onViewModeChange} accentColor="#3B82F6" />
+            <ViewModeToggle value={viewMode} onChange={onViewModeChange} accentColor="var(--engine-govern)" />
           )}
         </div>
       </motion.div>
@@ -75,14 +75,14 @@ function HeroSection({ navigate, viewMode = 'detail', onViewModeChange }: Govern
           summary="Decision GV-2026-0214-42 verified — portfolio rebalance approved with 12 evidence points. Full provenance chain intact."
           sources={governCitations}
           confidence={0.97}
-          accentColor="#3B82F6"
+          accentColor="var(--engine-govern)"
           viewMode={viewMode}
         />
         <div className="flex flex-wrap gap-2 mt-4">
           <button
             className="inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
             style={{
-              background: 'linear-gradient(135deg, #3B82F6, #2563EB)',
+              background: 'linear-gradient(135deg, var(--engine-govern), #2563EB)',
               color: '#ffffff',
               minHeight: '44px',
             }}

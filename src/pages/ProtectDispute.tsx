@@ -2,13 +2,9 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Shield, CheckCircle2 } from 'lucide-react';
 import { Link } from '../router';
-import { GovernFooter } from '../components/dashboard/GovernFooter';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] } },
-};
-const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
+import { GovernFooter, AuroraPulse } from '@/components/poseidon'
+import { GOVERNANCE_META } from '@/lib/governance-meta'
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets';
 
 /* ═══════════════════════════════════════════
    DATA
@@ -64,11 +60,12 @@ export function ProtectDispute() {
   const confidencePct = transaction.confidence / 100;
 
   return (
-    <div className="min-h-screen w-full" style={{ background: '#0B1221' }}>
+    <div className="relative min-h-screen w-full" style={{ background: '#0B1221' }}>
+      <AuroraPulse color="var(--engine-protect)" intensity="subtle" />
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold"
-        style={{ background: '#22C55E', color: '#ffffff' }}
+        style={{ background: 'var(--engine-protect)', color: '#ffffff' }}
       >
         Skip to main content
       </a>
@@ -82,7 +79,7 @@ export function ProtectDispute() {
           <Link
             to="/protect"
             className="flex items-center gap-1.5 text-sm font-medium hover:opacity-80 transition-opacity"
-            style={{ color: '#22C55E' }}
+            style={{ color: 'var(--engine-protect)' }}
           >
             <ArrowLeft className="h-4 w-4" />
             Protect
@@ -104,8 +101,8 @@ export function ProtectDispute() {
         {/* Hero */}
         <motion.div variants={fadeUp} className="flex flex-col gap-1">
           <div className="flex items-center gap-2 mb-1">
-            <Shield className="h-5 w-5" style={{ color: '#22C55E' }} />
-            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#22C55E' }}>
+            <Shield className="h-5 w-5" style={{ color: 'var(--engine-protect)' }} />
+            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--engine-protect)' }}>
               Protect · Dispute
             </span>
           </div>
@@ -119,10 +116,10 @@ export function ProtectDispute() {
         <motion.div variants={fadeUp}>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { label: 'Confidence', value: `${transaction.confidence}%`, color: '#22C55E' },
-              { label: 'Amount', value: transaction.amount, color: '#EAB308' },
-              { label: 'Success rate', value: '96%', color: '#00F0FF' },
-              { label: 'SLA', value: '48h', color: '#3B82F6' },
+              { label: 'Confidence', value: `${transaction.confidence}%`, color: 'var(--engine-protect)' },
+              { label: 'Amount', value: transaction.amount, color: 'var(--engine-execute)' },
+              { label: 'Success rate', value: '96%', color: 'var(--engine-dashboard)' },
+              { label: 'SLA', value: '48h', color: 'var(--engine-govern)' },
             ].map((kpi) => (
               <div key={kpi.label} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
                 <p className="text-xs text-white/40 mb-1">{kpi.label}</p>
@@ -157,7 +154,7 @@ export function ProtectDispute() {
             {/* Step 0: Review */}
             {!submitted && currentStep === 0 && (
               <div className="flex flex-col gap-4">
-                <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6" style={{ borderLeftWidth: 2, borderLeftColor: '#22C55E' }}>
+                <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6" style={{ borderLeftWidth: 2, borderLeftColor: 'var(--engine-protect)' }}>
                   <h4 className="text-sm font-semibold text-white mb-3">Transaction Details</h4>
                   <div className="grid grid-cols-2 gap-3 text-xs">
                     <div><span className="text-white/40 block">Merchant</span><span className="text-white">{transaction.merchant}</span></div>
@@ -165,7 +162,7 @@ export function ProtectDispute() {
                     <div><span className="text-white/40 block">Date</span><span className="text-white">{transaction.date}</span></div>
                     <div><span className="text-white/40 block">Card</span><span className="text-white">{transaction.card}</span></div>
                     <div><span className="text-white/40 block">Category</span><span className="text-white">{transaction.category}</span></div>
-                    <div><span className="text-white/40 block">AI confidence</span><span className="font-semibold" style={{ color: '#22C55E' }}>{transaction.confidence}%</span></div>
+                    <div><span className="text-white/40 block">AI confidence</span><span className="font-semibold" style={{ color: 'var(--engine-protect)' }}>{transaction.confidence}%</span></div>
                   </div>
                 </div>
 
@@ -200,7 +197,7 @@ export function ProtectDispute() {
                     <p className="text-xs text-white/25 mt-1">PDF, PNG, JPG up to 10MB</p>
                   </div>
                 </div>
-                <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4" style={{ borderLeftWidth: 2, borderLeftColor: '#8B5CF6' }}>
+                <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4" style={{ borderLeftWidth: 2, borderLeftColor: 'var(--engine-grow)' }}>
                   <div className="flex items-start gap-3">
                     <div className="w-8 h-8 rounded-lg bg-violet-500/20 flex items-center justify-center shrink-0">
                       <span className="text-violet-400 text-sm">AI</span>
@@ -226,7 +223,7 @@ export function ProtectDispute() {
                   <p className="mt-2">Sincerely,<br />Account Holder</p>
                 </div>
                 <div className="flex gap-2 mt-3">
-                  <button className="text-xs font-medium hover:underline" style={{ color: '#22C55E' }}>Regenerate</button>
+                  <button className="text-xs font-medium hover:underline" style={{ color: 'var(--engine-protect)' }}>Regenerate</button>
                   <button className="text-xs text-white/40 hover:text-white/60">Edit manually</button>
                 </div>
               </div>
@@ -240,7 +237,7 @@ export function ProtectDispute() {
                   <div className="flex justify-between"><span className="text-white/50">Transaction</span><span className="text-white">{transaction.merchant} — {transaction.amount}</span></div>
                   <div className="flex justify-between"><span className="text-white/50">Evidence</span><span className="text-white">1 file uploaded</span></div>
                   <div className="flex justify-between"><span className="text-white/50">Dispute letter</span><span className="text-emerald-400">AI-generated, reviewed</span></div>
-                  <div className="flex justify-between"><span className="text-white/50">Confidence</span><span style={{ color: '#22C55E' }}>{transaction.confidence}%</span></div>
+                  <div className="flex justify-between"><span className="text-white/50">Confidence</span><span style={{ color: 'var(--engine-protect)' }}>{transaction.confidence}%</span></div>
                 </div>
               </div>
             )}
@@ -248,7 +245,7 @@ export function ProtectDispute() {
             {/* Submitted */}
             {submitted && (
               <div className="flex flex-col gap-4">
-                <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-6 md:p-8 text-center" style={{ borderLeftWidth: 2, borderLeftColor: '#22C55E' }}>
+                <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-6 md:p-8 text-center" style={{ borderLeftWidth: 2, borderLeftColor: 'var(--engine-protect)' }}>
                   <div className="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-3">
                     <CheckCircle2 className="h-6 w-6 text-emerald-400" />
                   </div>
@@ -268,7 +265,7 @@ export function ProtectDispute() {
                     ))}
                   </div>
                 </div>
-                <Link to="/protect" className="text-sm font-medium hover:opacity-80 transition-opacity" style={{ color: '#22C55E' }}>← Back to Protect</Link>
+                <Link to="/protect" className="text-sm font-medium hover:opacity-80 transition-opacity" style={{ color: 'var(--engine-protect)' }}>← Back to Protect</Link>
               </div>
             )}
 
@@ -285,7 +282,7 @@ export function ProtectDispute() {
                 <button
                   onClick={goNext}
                   className="px-6 py-2.5 rounded-lg text-white text-sm font-semibold hover:opacity-90 transition-opacity"
-                  style={{ background: '#22C55E' }}
+                  style={{ background: 'var(--engine-protect)' }}
                 >
                   {currentStep === disputeSteps.length - 1 ? 'Submit Dispute' : 'Continue'}
                 </button>
@@ -301,7 +298,7 @@ export function ProtectDispute() {
                 <svg width="96" height="96" viewBox="0 0 96 96" aria-hidden="true">
                   <circle cx="48" cy="48" r="40" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="8" />
                   <circle
-                    cx="48" cy="48" r="40" fill="none" stroke="#22C55E" strokeWidth="8"
+                    cx="48" cy="48" r="40" fill="none" stroke="var(--engine-protect)" strokeWidth="8"
                     strokeLinecap="round"
                     strokeDasharray={`${confidencePct * circumference} ${circumference}`}
                     transform="rotate(-90 48 48)"
@@ -348,7 +345,7 @@ export function ProtectDispute() {
           </aside>
         </div>
 
-        <GovernFooter />
+        <GovernFooter auditId={GOVERNANCE_META['/protect/dispute'].auditId} pageContext={GOVERNANCE_META['/protect/dispute'].pageContext} />
       </motion.div>
     </div>
   );

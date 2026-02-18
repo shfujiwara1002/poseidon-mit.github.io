@@ -4,12 +4,7 @@ import {
   CheckCircle2, Building2, Target, Scale, Sparkles, Check,
 } from 'lucide-react';
 import { Link } from '../router';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] } },
-};
-const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets'
 
 /* ── Step progress bar (all complete) ── */
 const stepsMeta = [
@@ -25,15 +20,15 @@ function StepProgress() {
       {stepsMeta.map((step, idx) => (
         <React.Fragment key={step.label}>
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold bg-[#22C55E] text-white">
+            <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold bg-[var(--engine-protect)] text-white">
               <Check className="h-4 w-4" />
             </div>
-            <span className="text-xs font-medium hidden md:inline text-[#22C55E]">
+            <span className="text-xs font-medium hidden md:inline text-[var(--engine-protect)]">
               {step.label}
             </span>
           </div>
           {idx < stepsMeta.length - 1 && (
-            <div className="w-8 md:w-12 h-px flex-shrink-0 bg-[#22C55E]/40" />
+            <div className="w-8 md:w-12 h-px flex-shrink-0 bg-[var(--engine-protect)]/40" />
           )}
         </React.Fragment>
       ))}
@@ -43,16 +38,16 @@ function StepProgress() {
 
 /* ── Summary stats ── */
 const stats = [
-  { icon: Building2, color: '#22C55E', label: '1 account connected' },
-  { icon: Target, color: '#8B5CF6', label: '3 goals set' },
-  { icon: Scale, color: '#3B82F6', label: 'Govern active', sub: '100% audit coverage' },
+  { icon: Building2, color: 'var(--engine-protect)', label: '1 account connected' },
+  { icon: Target, color: 'var(--engine-grow)', label: '3 goals set' },
+  { icon: Scale, color: 'var(--engine-govern)', label: 'Govern active', sub: '100% audit coverage' },
 ];
 
 /* ── Insight items ── */
 const insights = [
-  { color: '#EAB308', text: '2 overlapping subscriptions' },
+  { color: 'var(--engine-execute)', text: '2 overlapping subscriptions' },
   { color: '#EF4444', text: '1 high-fee investment account' },
-  { color: '#00F0FF', text: '$400 emergency fund gap' },
+  { color: 'var(--engine-dashboard)', text: '$400 emergency fund gap' },
 ];
 
 export function OnboardingComplete() {
@@ -82,7 +77,7 @@ export function OnboardingComplete() {
               background: 'radial-gradient(circle, rgba(0,240,255,0.2) 0%, transparent 70%)',
             }}
           >
-            <CheckCircle2 className="h-14 w-14" style={{ color: '#00F0FF' }} />
+            <CheckCircle2 className="h-14 w-14" style={{ color: 'var(--engine-dashboard)' }} />
           </div>
         </motion.div>
 
@@ -129,8 +124,8 @@ export function OnboardingComplete() {
           style={{ animationDelay: '0.6s' }}
         >
           <div className="flex items-center gap-1.5 mb-3">
-            <Sparkles className="h-4 w-4" style={{ color: '#00F0FF' }} />
-            <span className="text-xs" style={{ color: '#00F0FF' }}>
+            <Sparkles className="h-4 w-4" style={{ color: 'var(--engine-dashboard)' }} />
+            <span className="text-xs" style={{ color: 'var(--engine-dashboard)' }}>
               {'First insight \u2014 ready now'}
             </span>
           </div>
@@ -151,7 +146,7 @@ export function OnboardingComplete() {
           <Link
             to="/dashboard"
             className="text-sm font-medium hover:opacity-80 transition-opacity"
-            style={{ color: '#00F0FF' }}
+            style={{ color: 'var(--engine-dashboard)' }}
           >
             {'View full analysis \u2192'}
           </Link>
@@ -170,7 +165,7 @@ export function OnboardingComplete() {
           <Link
             to="/dashboard"
             className="block w-full rounded-xl font-bold py-3.5 text-sm text-center transition-opacity hover:opacity-90"
-            style={{ background: '#00F0FF', color: '#0B1221' }}
+            style={{ background: 'var(--engine-dashboard)', color: '#0B1221' }}
           >
             {'Enter Dashboard \u2192'}
           </Link>

@@ -22,7 +22,7 @@ const groups: { title: string; swatches: Swatch[] }[] = [
     { label: 'Healthy',  token: '--state-healthy',  oklch: '#14B8A6' },
     { label: 'Warning',  token: '--state-warning',  oklch: '#F59E0B' },
     { label: 'Critical', token: '--state-critical', oklch: '#EF4444' },
-    { label: 'Primary',  token: '--state-primary',  oklch: '#3B82F6' },
+    { label: 'Primary',  token: '--state-primary',  oklch: 'var(--engine-govern)' },
   ]},
   { title: 'Surface / Glass', swatches: [
     { label: 'Surface BG',     token: '--ds-surface-bg',     oklch: 'oklch(0.18 0.02 250 / 0.6)' },

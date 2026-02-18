@@ -58,13 +58,13 @@ function ExecutionStats() {
     { label: 'Approved', value: 12, color: '#10B981', icon: CheckCircle2 },
     { label: 'Rejected', value: 3, color: '#EF4444', icon: XCircle },
     { label: 'Auto-executed', value: 8, color: '#14B8A6', icon: Zap },
-    { label: 'Pending review', value: 4, color: '#EAB308', icon: Clock },
+    { label: 'Pending review', value: 4, color: 'var(--engine-execute)', icon: Clock },
   ]
 
   return (
     <GlassCard className="flex flex-col gap-4">
       <h3 className="text-sm font-semibold flex items-center gap-2" style={{ fontFamily: 'var(--font-display)', color: '#F1F5F9' }}>
-        <Calendar size={14} style={{ color: '#EAB308' }} aria-hidden="true" />
+        <Calendar size={14} style={{ color: 'var(--engine-execute)' }} aria-hidden="true" />
         {"Today's Activity"}
       </h3>
       <div className="flex flex-col gap-3">
@@ -103,7 +103,7 @@ function ConfidenceChart() {
   return (
     <GlassCard className="flex flex-col gap-4">
       <h3 className="text-sm font-semibold flex items-center gap-2" style={{ fontFamily: 'var(--font-display)', color: '#F1F5F9' }}>
-        <Gauge size={14} style={{ color: '#EAB308' }} aria-hidden="true" />
+        <Gauge size={14} style={{ color: 'var(--engine-execute)' }} aria-hidden="true" />
         Confidence Scores
       </h3>
       <div className="h-36" role="img" aria-label="Confidence score distribution chart">
@@ -153,7 +153,7 @@ function RecentExecutionsTimeline() {
   return (
     <GlassCard className="flex flex-col gap-4">
       <h3 className="text-sm font-semibold flex items-center gap-2" style={{ fontFamily: 'var(--font-display)', color: '#F1F5F9' }}>
-        <History size={14} style={{ color: '#EAB308' }} aria-hidden="true" />
+        <History size={14} style={{ color: 'var(--engine-execute)' }} aria-hidden="true" />
         Recent Executions
       </h3>
       <div className="flex flex-col gap-0">
@@ -218,7 +218,7 @@ export function ExecuteSidebar({ viewMode = 'detail' }: ExecuteSidebarProps) {
           modelVersion={executeMethodology.modelVersion}
           accuracy={executeMethodology.accuracy}
           description={executeMethodology.description}
-          accentColor="#EAB308"
+          accentColor="var(--engine-execute)"
         />
       )}
     </aside>

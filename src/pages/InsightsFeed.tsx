@@ -2,14 +2,10 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Lightbulb, TrendingUp, Sparkles } from 'lucide-react';
 import { Link } from '../router';
-import { GovernFooter } from '../components/dashboard/GovernFooter';
+import { GovernFooter, AuroraPulse } from '@/components/poseidon'
+import { GOVERNANCE_META } from '@/lib/governance-meta'
 import { usePageTitle } from '../hooks/use-page-title';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] } },
-};
-const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets'
 
 /* ═══════════════════════════════════════════
    DATA
@@ -36,7 +32,7 @@ const insights: Insight[] = [
   { id: 'INS-006', engine: 'Govern', category: 'informational', title: 'Weekly audit coverage at 100%', body: 'All 1,247 AI decisions this week have complete audit trails. SOC 2 compliance maintained.', confidence: 0.99, impact: 'Compliance OK', time: '6h ago', shapFactors: [{ label: 'Coverage rate', value: 1.0 }, { label: 'Completeness', value: 0.98 }] },
 ];
 
-const engineColor: Record<string, string> = { Protect: '#22C55E', Grow: '#8B5CF6', Execute: '#EAB308', Govern: '#3B82F6' };
+const engineColor: Record<string, string> = { Protect: 'var(--engine-protect)', Grow: 'var(--engine-grow)', Execute: 'var(--engine-execute)', Govern: 'var(--engine-govern)' };
 const engineBadgeCls: Record<string, string> = { Protect: 'bg-emerald-500/20 text-emerald-400', Grow: 'bg-violet-500/20 text-violet-400', Execute: 'bg-amber-500/20 text-amber-400', Govern: 'bg-blue-500/20 text-blue-400' };
 const categoryBadgeCls: Record<string, string> = { actionable: 'bg-emerald-500/20 text-emerald-400', informational: 'bg-blue-500/20 text-blue-400', warning: 'bg-amber-500/20 text-amber-400' };
 
@@ -56,11 +52,12 @@ export function InsightsFeed() {
   const avgConfidence = (insights.reduce((s, i) => s + i.confidence, 0) / insights.length).toFixed(2);
 
   return (
-    <div className="min-h-screen w-full" style={{ background: '#0B1221' }}>
+    <div className="relative min-h-screen w-full" style={{ background: '#0B1221' }}>
+      <AuroraPulse color="var(--engine-dashboard)" intensity="subtle" />
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold"
-        style={{ background: '#00F0FF', color: '#0B1221' }}
+        style={{ background: 'var(--engine-dashboard)', color: '#0B1221' }}
       >
         Skip to main content
       </a>
@@ -74,7 +71,7 @@ export function InsightsFeed() {
           <Link
             to="/dashboard"
             className="flex items-center gap-1.5 text-sm font-medium hover:opacity-80 transition-opacity"
-            style={{ color: '#00F0FF' }}
+            style={{ color: 'var(--engine-dashboard)' }}
           >
             <ArrowLeft className="h-4 w-4" />
             Dashboard
@@ -96,8 +93,8 @@ export function InsightsFeed() {
         {/* Hero */}
         <motion.div variants={fadeUp} className="flex flex-col gap-1">
           <div className="flex items-center gap-2 mb-1">
-            <Lightbulb className="h-5 w-5" style={{ color: '#00F0FF' }} />
-            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#00F0FF' }}>
+            <Lightbulb className="h-5 w-5" style={{ color: 'var(--engine-dashboard)' }} />
+            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--engine-dashboard)' }}>
               Dashboard · AI Insights
             </span>
           </div>
@@ -111,10 +108,10 @@ export function InsightsFeed() {
         <motion.div variants={fadeUp}>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { label: 'Today', value: String(insights.length), color: '#00F0FF' },
-              { label: 'Actionable', value: String(actionableCount), color: '#22C55E' },
-              { label: 'Avg confidence', value: avgConfidence, color: '#8B5CF6' },
-              { label: 'Est. impact', value: '+$280/mo', color: '#EAB308' },
+              { label: 'Today', value: String(insights.length), color: 'var(--engine-dashboard)' },
+              { label: 'Actionable', value: String(actionableCount), color: 'var(--engine-protect)' },
+              { label: 'Avg confidence', value: avgConfidence, color: 'var(--engine-grow)' },
+              { label: 'Est. impact', value: '+$280/mo', color: 'var(--engine-execute)' },
             ].map((kpi) => (
               <div key={kpi.label} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
                 <p className="text-xs text-white/40 mb-1">{kpi.label}</p>
@@ -155,7 +152,7 @@ export function InsightsFeed() {
             <div className="flex flex-col gap-3">
               {filtered.length === 0 && (
                 <div className="flex flex-col items-center gap-3 py-16">
-                  <Sparkles className="w-12 h-12 opacity-30" style={{ color: '#8B5CF6' }} />
+                  <Sparkles className="w-12 h-12 opacity-30" style={{ color: 'var(--engine-grow)' }} />
                   <p className="text-sm text-white/50">No insights match your filter.</p>
                   <p className="text-xs text-white/30">Try selecting a different category.</p>
                 </div>
@@ -229,7 +226,7 @@ export function InsightsFeed() {
                 <svg width="80" height="80" viewBox="0 0 80 80" aria-hidden="true">
                   <circle cx="40" cy="40" r="32" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
                   <circle
-                    cx="40" cy="40" r="32" fill="none" stroke="#00F0FF" strokeWidth="6"
+                    cx="40" cy="40" r="32" fill="none" stroke="var(--engine-dashboard)" strokeWidth="6"
                     strokeLinecap="round"
                     strokeDasharray={`${parseFloat(avgConfidence) * 2 * Math.PI * 32} ${2 * Math.PI * 32}`}
                     transform="rotate(-90 40 40)"
@@ -246,12 +243,12 @@ export function InsightsFeed() {
             {/* Monthly impact */}
             <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
               <div className="flex items-center gap-2 mb-3">
-                <TrendingUp className="h-4 w-4" style={{ color: '#00F0FF' }} />
+                <TrendingUp className="h-4 w-4" style={{ color: 'var(--engine-dashboard)' }} />
                 <h3 className="text-xs font-semibold text-white/70 uppercase tracking-wider">Monthly Impact</h3>
               </div>
               <div className="flex items-end gap-1 h-16">
                 {[40, 80, 120, 160, 200, 240].map((v, i) => (
-                  <div key={i} className="flex-1 rounded-sm" style={{ height: `${(v / 240) * 100}%`, background: '#00F0FF', opacity: 0.4 + i * 0.1 }} />
+                  <div key={i} className="flex-1 rounded-sm" style={{ height: `${(v / 240) * 100}%`, background: 'var(--engine-dashboard)', opacity: 0.4 + i * 0.1 }} />
                 ))}
               </div>
               <div className="flex justify-between text-[10px] text-white/30 mt-1">
@@ -279,7 +276,7 @@ export function InsightsFeed() {
           </aside>
         </div>
 
-        <GovernFooter />
+        <GovernFooter auditId={GOVERNANCE_META['/dashboard/insights'].auditId} pageContext={GOVERNANCE_META['/dashboard/insights'].pageContext} />
       </motion.div>
     </div>
   );

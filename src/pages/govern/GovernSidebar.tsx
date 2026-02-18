@@ -21,7 +21,7 @@ function EvidenceDistribution() {
   return (
     <GlassCard className="flex flex-col gap-4">
       <h3 className="text-sm font-semibold flex items-center gap-2" style={{ fontFamily: 'var(--font-display)', color: '#F1F5F9' }}>
-        <Database size={14} style={{ color: '#3B82F6' }} aria-hidden="true" />
+        <Database size={14} style={{ color: 'var(--engine-govern)' }} aria-hidden="true" />
         Evidence Types
       </h3>
       <div className="flex flex-col gap-3">
@@ -29,12 +29,12 @@ function EvidenceDistribution() {
           <div key={e.label} className="flex flex-col gap-1.5">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium" style={{ color: '#CBD5E1' }}>{e.label}</span>
-              <span className="text-xs font-mono tabular-nums" style={{ color: '#3B82F6' }}>{e.pct}%</span>
+              <span className="text-xs font-mono tabular-nums" style={{ color: 'var(--engine-govern)' }}>{e.pct}%</span>
             </div>
             <div className="h-1.5 w-full rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
               <div
                 className="h-full rounded-full transition-all"
-                style={{ width: `${e.pct}%`, background: '#3B82F6' }}
+                style={{ width: `${e.pct}%`, background: 'var(--engine-govern)' }}
               />
             </div>
           </div>
@@ -53,7 +53,7 @@ function ConfidenceTrend() {
     <GlassCard className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-semibold flex items-center gap-2" style={{ fontFamily: 'var(--font-display)', color: '#F1F5F9' }}>
-          <TrendingUp size={14} style={{ color: '#3B82F6' }} aria-hidden="true" />
+          <TrendingUp size={14} style={{ color: 'var(--engine-govern)' }} aria-hidden="true" />
           30-Day Confidence
         </h3>
         <span className="text-xs font-mono tabular-nums" style={{ color: '#10B981' }}>0.97</span>
@@ -64,10 +64,10 @@ function ConfidenceTrend() {
             <Line
               type="monotone"
               dataKey="value"
-              stroke="#3B82F6"
+              stroke="var(--engine-govern)"
               strokeWidth={2}
               dot={false}
-              activeDot={{ r: 4, fill: '#3B82F6', stroke: '#0B1221', strokeWidth: 2 }}
+              activeDot={{ r: 4, fill: 'var(--engine-govern)', stroke: '#0B1221', strokeWidth: 2 }}
             />
             <Tooltip
               contentStyle={{
@@ -95,7 +95,7 @@ function ComplianceStatus() {
   return (
     <GlassCard className="flex flex-col gap-4">
       <h3 className="text-sm font-semibold flex items-center gap-2" style={{ fontFamily: 'var(--font-display)', color: '#F1F5F9' }}>
-        <ShieldCheck size={14} style={{ color: '#3B82F6' }} aria-hidden="true" />
+        <ShieldCheck size={14} style={{ color: 'var(--engine-govern)' }} aria-hidden="true" />
         Compliance Status
       </h3>
       <div className="flex flex-col gap-3">
@@ -143,7 +143,7 @@ export function GovernSidebar({ viewMode = 'detail' }: GovernSidebarProps) {
           modelVersion={governMethodology.modelVersion}
           accuracy={governMethodology.accuracy}
           description={governMethodology.description}
-          accentColor="#3B82F6"
+          accentColor="var(--engine-govern)"
         />
       )}
     </aside>

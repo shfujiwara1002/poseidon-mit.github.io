@@ -28,25 +28,25 @@ function GrowthProjection() {
     <GlassCard className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-semibold flex items-center gap-2" style={{ fontFamily: 'var(--font-display)', color: '#F1F5F9' }}>
-          <TrendingUpIcon size={14} style={{ color: '#8B5CF6' }} aria-hidden="true" />
+          <TrendingUpIcon size={14} style={{ color: 'var(--engine-grow)' }} aria-hidden="true" />
           30-Year Projection
         </h3>
       </div>
       <div className="flex items-center justify-between">
         <span className="text-xs" style={{ color: '#64748B' }}>$847k</span>
-        <span className="text-xs font-semibold" style={{ color: '#8B5CF6' }}>$2.8M (2054)</span>
+        <span className="text-xs font-semibold" style={{ color: 'var(--engine-grow)' }}>$2.8M (2054)</span>
       </div>
       <div className="h-32" role="img" aria-label="Growth projection chart showing net worth growing from $847k to projected $2.8M by 2054">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={projectionData}>
             <defs>
               <linearGradient id="growGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.3} />
-                <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0} />
+                <stop offset="5%" stopColor="var(--engine-grow)" stopOpacity={0.3} />
+                <stop offset="95%" stopColor="var(--engine-grow)" stopOpacity={0} />
               </linearGradient>
               <linearGradient id="growBand" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.1} />
-                <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0.02} />
+                <stop offset="5%" stopColor="var(--engine-grow)" stopOpacity={0.1} />
+                <stop offset="95%" stopColor="var(--engine-grow)" stopOpacity={0.02} />
               </linearGradient>
             </defs>
             <XAxis
@@ -67,7 +67,7 @@ function GrowthProjection() {
               formatter={(value) => [`$${value}k`, '']}
             />
             <Area type="monotone" dataKey="high" stackId="1" stroke="none" fill="url(#growBand)" />
-            <Area type="monotone" dataKey="value" stroke="#8B5CF6" strokeWidth={2} fill="url(#growGrad)" />
+            <Area type="monotone" dataKey="value" stroke="var(--engine-grow)" strokeWidth={2} fill="url(#growGrad)" />
           </AreaChart>
         </ResponsiveContainer>
       </div>
@@ -81,7 +81,7 @@ function AssetAllocation() {
   return (
     <GlassCard className="flex flex-col gap-4">
       <h3 className="text-sm font-semibold flex items-center gap-2" style={{ fontFamily: 'var(--font-display)', color: '#F1F5F9' }}>
-        <PieChartIcon size={14} style={{ color: '#8B5CF6' }} aria-hidden="true" />
+        <PieChartIcon size={14} style={{ color: 'var(--engine-grow)' }} aria-hidden="true" />
         Asset Allocation
       </h3>
       <div className="flex items-center gap-4">
@@ -132,7 +132,7 @@ function RecentActivity() {
   return (
     <GlassCard className="flex flex-col gap-4">
       <h3 className="text-sm font-semibold flex items-center gap-2" style={{ fontFamily: 'var(--font-display)', color: '#F1F5F9' }}>
-        <Activity size={14} style={{ color: '#8B5CF6' }} aria-hidden="true" />
+        <Activity size={14} style={{ color: 'var(--engine-grow)' }} aria-hidden="true" />
         Recent Activity
       </h3>
       <div className="flex flex-col gap-0">
@@ -146,7 +146,7 @@ function RecentActivity() {
           >
             <div
               className="mt-0.5 h-2 w-2 rounded-full shrink-0"
-              style={{ background: '#8B5CF6' }}
+              style={{ background: 'var(--engine-grow)' }}
               aria-hidden="true"
             />
             <div className="flex flex-col gap-0.5 min-w-0">
@@ -178,7 +178,7 @@ export function GrowSidebar({ viewMode = 'detail' }: GrowSidebarProps) {
           modelVersion={growMethodology.modelVersion}
           accuracy={growMethodology.accuracy}
           description={growMethodology.description}
-          accentColor="#8B5CF6"
+          accentColor="var(--engine-grow)"
         />
       )}
     </aside>

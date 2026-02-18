@@ -1,23 +1,22 @@
 import React, { useState } from 'react';
-import { useRouter } from '../router';
 import { motion } from 'framer-motion';
 import {
-  Shield,
   ShieldCheck,
-  ExternalLink,
   Search,
   CheckCircle2,
   Clock,
   AlertTriangle,
   Download,
   ArrowUpDown,
-  User,
   CircleDot,
   FileText,
   ArrowDown,
   ArrowUp,
 } from 'lucide-react';
 import { usePageTitle } from '../hooks/use-page-title';
+import { GovernFooter, AuroraPulse } from '@/components/poseidon';
+import { GOVERNANCE_META } from '@/lib/governance-meta';
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets';
 
 /* ═══════════════════════════════════════════
    TYPES
@@ -63,29 +62,14 @@ const auditEntries: AuditEntry[] = [
 ];
 
 /* ═══════════════════════════════════════════
-   ANIMATION VARIANTS
-   ═══════════════════════════════════════════ */
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 },
-};
-
-const stagger = {
-  visible: {
-    transition: { staggerChildren: 0.08 },
-  },
-};
-
-/* ═══════════════════════════════════════════
    UTILITY HELPERS
    ═══════════════════════════════════════════ */
 
 const typeColor: Record<DecisionType, string> = {
-  Protect: '#22C55E',
-  Grow: '#8B5CF6',
-  Execute: '#EAB308',
-  Govern: '#3B82F6',
+  Protect: 'var(--engine-protect)',
+  Grow: 'var(--engine-grow)',
+  Execute: 'var(--engine-execute)',
+  Govern: 'var(--engine-govern)',
 };
 
 const typeBg: Record<DecisionType, string> = {
@@ -96,14 +80,14 @@ const typeBg: Record<DecisionType, string> = {
 };
 
 const statusConfig: Record<DecisionStatus, { color: string; bg: string; icon: React.ElementType }> = {
-  Verified: { color: '#3B82F6', bg: 'rgba(59,130,246,0.12)', icon: CheckCircle2 },
+  Verified: { color: 'var(--engine-govern)', bg: 'rgba(59,130,246,0.12)', icon: CheckCircle2 },
   'Pending review': { color: '#F59E0B', bg: 'rgba(245,158,11,0.12)', icon: Clock },
   Flagged: { color: '#EF4444', bg: 'rgba(239,68,68,0.12)', icon: AlertTriangle },
 };
 
 function getConfidenceColor(c: number): string {
   if (c >= 0.9) return '#10B981';
-  if (c >= 0.8) return '#3B82F6';
+  if (c >= 0.8) return 'var(--engine-govern)';
   if (c >= 0.7) return '#F59E0B';
   return '#EF4444';
 }
@@ -194,7 +178,7 @@ function HeroSection({
           style={{
             borderColor: 'rgba(59,130,246,0.3)',
             background: 'rgba(59,130,246,0.08)',
-            color: '#3B82F6',
+            color: 'var(--engine-govern)',
           }}
         >
           <ShieldCheck size={12} />
@@ -246,14 +230,14 @@ function HeroSection({
               className="inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-semibold transition-all cursor-pointer"
               style={{
                 background: isActive ? 'rgba(59,130,246,0.15)' : 'rgba(255,255,255,0.05)',
-                color: isActive ? '#3B82F6' : '#94A3B8',
+                color: isActive ? 'var(--engine-govern)' : '#94A3B8',
                 border: isActive ? '1px solid rgba(59,130,246,0.3)' : '1px solid transparent',
                 minHeight: '44px',
               }}
             >
               {f.label}
               {f.count != null && (
-                <span className="text-[10px]" style={{ color: isActive ? '#3B82F6' : '#64748B' }}>
+                <span className="text-[10px]" style={{ color: isActive ? 'var(--engine-govern)' : '#64748B' }}>
                   ({f.count})
                 </span>
               )}
@@ -283,9 +267,9 @@ function AuditTable({
   const SortIndicator = ({ field }: { field: SortField }) => {
     if (sortField !== field) return <ArrowUpDown size={11} style={{ color: '#475569' }} />;
     return sortDir === 'asc' ? (
-      <ArrowUp size={11} style={{ color: '#3B82F6' }} />
+      <ArrowUp size={11} style={{ color: 'var(--engine-govern)' }} />
     ) : (
-      <ArrowDown size={11} style={{ color: '#3B82F6' }} />
+      <ArrowDown size={11} style={{ color: 'var(--engine-govern)' }} />
     );
   };
 
@@ -351,7 +335,7 @@ function AuditTable({
                     <td className="px-4 py-3.5">
                       <button
                         className="text-sm font-mono font-medium transition-colors hover:underline cursor-pointer"
-                        style={{ color: '#3B82F6', background: 'transparent', border: 'none' }}
+                        style={{ color: 'var(--engine-govern)', background: 'transparent', border: 'none' }}
                         aria-label={`View details for ${entry.id}`}
                       >
                         {entry.id}
@@ -378,7 +362,7 @@ function AuditTable({
                         <button
                           className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
                           style={{
-                            background: 'linear-gradient(135deg, #3B82F6, #2563EB)',
+                            background: 'linear-gradient(135deg, var(--engine-govern), #2563EB)',
                             color: '#ffffff',
                             minHeight: '32px',
                           }}
@@ -415,7 +399,7 @@ function AuditTable({
               </div>
               <button
                 className="text-sm font-mono font-medium text-left transition-colors hover:underline cursor-pointer"
-                style={{ color: '#3B82F6', background: 'transparent', border: 'none', padding: 0 }}
+                style={{ color: 'var(--engine-govern)', background: 'transparent', border: 'none', padding: 0 }}
                 aria-label={`View details for ${entry.id}`}
               >
                 {entry.id}
@@ -429,7 +413,7 @@ function AuditTable({
               <div className="flex gap-2">
                 <button
                   className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
-                  style={{ background: 'linear-gradient(135deg, #3B82F6, #2563EB)', color: '#ffffff', minHeight: '44px' }}
+                  style={{ background: 'linear-gradient(135deg, var(--engine-govern), #2563EB)', color: '#ffffff', minHeight: '44px' }}
                   aria-label={`View details for ${entry.id}`}
                 >
                   Details
@@ -499,7 +483,7 @@ function EvidenceFlowDiagram() {
             </div>
             {i < steps.length - 1 && (
               <div className="flex items-center justify-center py-1" aria-hidden="true">
-                <ArrowDown size={14} style={{ color: '#3B82F6' }} />
+                <ArrowDown size={14} style={{ color: 'var(--engine-govern)' }} />
               </div>
             )}
           </React.Fragment>
@@ -549,7 +533,7 @@ function ExportOptionsPanel() {
       </button>
       <button
         className="w-full inline-flex items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-xs font-medium transition-all hover:bg-white/[0.04] cursor-pointer"
-        style={{ borderColor: 'rgba(255,255,255,0.1)', color: pdfState === 'done' ? '#22C55E' : '#CBD5E1', background: 'transparent', minHeight: '44px' }}
+        style={{ borderColor: 'rgba(255,255,255,0.1)', color: pdfState === 'done' ? 'var(--engine-protect)' : '#CBD5E1', background: 'transparent', minHeight: '44px' }}
         onClick={handlePDFExport}
         disabled={pdfState === 'generating'}
       >
@@ -561,58 +545,6 @@ function ExportOptionsPanel() {
         <span className="text-xs font-mono" style={{ color: '#94A3B8' }}>2 hours ago</span>
       </div>
     </GlassCard>
-  );
-}
-
-/* ═══════════════════════════════════════════
-   GOVERNANCE FOOTER
-   ═══════════════════════════════════════════ */
-
-function GovernFooter() {
-  const { navigate } = useRouter();
-  return (
-    <footer
-      className="mt-8 flex flex-col gap-3 md:flex-row md:items-center md:justify-between rounded-2xl border border-white/[0.06] px-4 py-3 md:px-6 md:py-4"
-      style={{ background: 'rgba(255,255,255,0.03)' }}
-      role="contentinfo"
-      aria-label="Governance verification footer"
-    >
-      <div className="flex items-center gap-2">
-        <div
-          className="flex items-center justify-center rounded-full"
-          style={{ width: 28, height: 28, background: 'rgba(59,130,246,0.12)' }}
-        >
-          <ShieldCheck size={14} style={{ color: '#3B82F6' }} />
-        </div>
-        <span
-          className="mission-govern-badge inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider"
-          style={{ background: 'rgba(16,185,129,0.12)', color: '#10B981' }}
-        >
-          <Shield size={10} />
-          Verified
-        </span>
-      </div>
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-mono" style={{ color: '#64748B' }}>
-            GV-2026-0216-AUDIT
-          </span>
-          <ExternalLink size={12} style={{ color: '#64748B' }} aria-hidden="true" />
-        </div>
-        <span className="text-[10px] font-mono" style={{ color: '#475569' }}>
-          0x4f2a...8b3c
-        </span>
-      </div>
-      <button
-        className="inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-xs font-medium transition-all hover:bg-white/[0.04] cursor-pointer"
-        style={{ borderColor: 'rgba(255,255,255,0.08)', color: '#CBD5E1', background: 'transparent', minHeight: '44px' }}
-        aria-label="Request human review of audit records"
-        onClick={() => navigate('/govern/oversight')}
-      >
-        <User size={14} />
-        Request human review
-      </button>
-    </footer>
   );
 }
 
@@ -672,11 +604,12 @@ export function GovernAudit() {
   });
 
   return (
-    <div className="min-h-screen w-full" style={{ background: '#0B1221' }}>
+    <div className="relative min-h-screen w-full" style={{ background: '#0B1221' }}>
+      <AuroraPulse color="var(--engine-govern)" intensity="subtle" />
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-1/2 focus:-translate-x-1/2 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold"
-        style={{ background: '#3B82F6', color: '#ffffff' }}
+        style={{ background: 'var(--engine-govern)', color: '#ffffff' }}
       >
         Skip to main content
       </a>
@@ -705,7 +638,7 @@ export function GovernAudit() {
           </aside>
         </div>
 
-        <GovernFooter />
+        <GovernFooter auditId={GOVERNANCE_META['/govern/audit'].auditId} pageContext={GOVERNANCE_META['/govern/audit'].pageContext} />
       </div>
     </div>
   );

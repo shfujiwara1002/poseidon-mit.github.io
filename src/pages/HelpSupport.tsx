@@ -2,18 +2,15 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, HelpCircle, Search, Rocket, Cpu, Brain, Shield, BookOpen, Code2, ScrollText, Lock, Database, FileText, ThumbsUp, ThumbsDown, ChevronDown, ExternalLink, Send } from 'lucide-react';
 import { Link } from '../router';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] } },
-};
-const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
+import { GovernFooter, AuroraPulse } from '@/components/poseidon'
+import { GOVERNANCE_META } from '@/lib/governance-meta'
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets'
 
 const quickLinks = [
-  { title: 'Getting Started', icon: Rocket, iconColor: '#22C55E', iconBg: 'rgba(34,197,94,0.15)', desc: 'Setup guide and first steps' },
-  { title: 'Engine Guides', icon: Cpu, iconColor: '#8B5CF6', iconBg: 'rgba(139,92,246,0.15)', desc: 'Protect, Grow, Execute, Govern docs' },
-  { title: 'AI & Trust', icon: Brain, iconColor: '#3B82F6', iconBg: 'rgba(59,130,246,0.15)', desc: 'How AI decisions are made' },
-  { title: 'Account & Security', icon: Shield, iconColor: '#EAB308', iconBg: 'rgba(234,179,8,0.15)', desc: 'Authentication and privacy' },
+  { title: 'Getting Started', icon: Rocket, iconColor: 'var(--engine-protect)', iconBg: 'rgba(34,197,94,0.15)', desc: 'Setup guide and first steps' },
+  { title: 'Engine Guides', icon: Cpu, iconColor: 'var(--engine-grow)', iconBg: 'rgba(139,92,246,0.15)', desc: 'Protect, Grow, Execute, Govern docs' },
+  { title: 'AI & Trust', icon: Brain, iconColor: 'var(--engine-govern)', iconBg: 'rgba(59,130,246,0.15)', desc: 'How AI decisions are made' },
+  { title: 'Account & Security', icon: Shield, iconColor: 'var(--engine-execute)', iconBg: 'rgba(234,179,8,0.15)', desc: 'Authentication and privacy' },
 ];
 
 const faqItems = [
@@ -46,12 +43,13 @@ export function HelpSupport() {
     : faqItems;
 
   return (
-    <div className="min-h-screen w-full" style={{ background: '#0B1221' }}>
-      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold" style={{ background: '#3B82F6', color: '#fff' }}>Skip to main content</a>
+    <div className="relative min-h-screen w-full" style={{ background: '#0B1221' }}>
+      <AuroraPulse color="var(--engine-dashboard)" intensity="subtle" />
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold" style={{ background: 'var(--engine-govern)', color: '#fff' }}>Skip to main content</a>
 
       <nav className="sticky top-0 z-50 backdrop-blur-xl border-b border-white/[0.06]" style={{ background: 'rgba(11,18,33,0.8)' }} aria-label="Breadcrumb">
         <div className="mx-auto px-4 md:px-6 lg:px-8 h-14 flex items-center gap-2" style={{ maxWidth: '1280px' }}>
-          <Link to="/dashboard" className="flex items-center gap-1.5 text-sm font-medium hover:opacity-80 transition-opacity" style={{ color: '#00F0FF' }}>
+          <Link to="/dashboard" className="flex items-center gap-1.5 text-sm font-medium hover:opacity-80 transition-opacity" style={{ color: 'var(--engine-dashboard)' }}>
             <ArrowLeft className="h-4 w-4" />Dashboard
           </Link>
           <span className="text-white/20">/</span>
@@ -64,9 +62,9 @@ export function HelpSupport() {
         <motion.div variants={fadeUp} className="flex flex-col gap-3">
           <div className="flex items-center gap-2 mb-1">
             <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'rgba(59,130,246,0.15)' }}>
-              <HelpCircle className="h-4 w-4" style={{ color: '#3B82F6' }} />
+              <HelpCircle className="h-4 w-4" style={{ color: 'var(--engine-govern)' }} />
             </div>
-            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#3B82F6' }}>Help Center</span>
+            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--engine-govern)' }}>Help Center</span>
           </div>
           <h1 className="text-2xl md:text-3xl font-bold text-white">How can we help?</h1>
           <div className="relative mt-2">
@@ -76,7 +74,7 @@ export function HelpSupport() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search help articles..."
-              className="w-full rounded-2xl bg-white/5 border border-white/10 pl-12 pr-4 py-4 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#3B82F6]/50 transition-colors"
+              className="w-full rounded-2xl bg-white/5 border border-white/10 pl-12 pr-4 py-4 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[var(--engine-govern)]/50 transition-colors"
             />
           </div>
         </motion.div>
@@ -135,7 +133,7 @@ export function HelpSupport() {
               <button key={dl.title} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 text-left hover:bg-white/[0.06] hover:border-white/[0.15] transition-all">
                 <div className="flex items-center justify-between mb-1">
                   <div className="flex items-center gap-2">
-                    <dl.icon className="h-4 w-4" style={{ color: '#3B82F6' }} />
+                    <dl.icon className="h-4 w-4" style={{ color: 'var(--engine-govern)' }} />
                     <span className="text-sm font-medium text-white">{dl.title}</span>
                   </div>
                   <ExternalLink className="h-3 w-3 text-white/20" />
@@ -152,12 +150,12 @@ export function HelpSupport() {
           <div className="flex flex-col gap-4">
             <div>
               <label className="text-xs text-white/50 block mb-1.5">Subject</label>
-              <input type="text" placeholder="Brief summary of your issue" className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#3B82F6]/50 transition-colors" />
+              <input type="text" placeholder="Brief summary of your issue" className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[var(--engine-govern)]/50 transition-colors" />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="text-xs text-white/50 block mb-1.5">Category</label>
-                <select className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-sm text-white/60 focus:outline-none focus:border-[#3B82F6]/50">
+                <select className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-sm text-white/60 focus:outline-none focus:border-[var(--engine-govern)]/50">
                   <option>Technical</option><option>Billing</option><option>Security</option><option>Other</option>
                 </select>
               </div>
@@ -174,26 +172,18 @@ export function HelpSupport() {
             </div>
             <div>
               <label className="text-xs text-white/50 block mb-1.5">Description</label>
-              <textarea rows={4} placeholder="Describe your issue in detail..." className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#3B82F6]/50 resize-none transition-colors" />
+              <textarea rows={4} placeholder="Describe your issue in detail..." className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[var(--engine-govern)]/50 resize-none transition-colors" />
             </div>
             <div className="flex items-center justify-between">
               <span className="text-xs text-white/30">Avg response time: 2 hours</span>
-              <button className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90 transition-opacity" style={{ background: '#3B82F6' }}>
+              <button className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-semibold text-white hover:opacity-90 transition-opacity" style={{ background: 'var(--engine-govern)' }}>
                 <Send className="h-3.5 w-3.5" />Submit ticket
               </button>
             </div>
           </div>
         </motion.div>
 
-        {/* Govern footer */}
-        <motion.footer variants={fadeUp} className="flex flex-wrap items-center gap-3 rounded-2xl border-t border-white/10 bg-white/[0.03] px-4 py-3" role="contentinfo">
-          <Shield className="h-4 w-4 text-emerald-400" />
-          <span className="text-xs font-medium text-emerald-400">Verified</span>
-          <span className="text-xs font-mono text-white/30">GV-2026-0216-HELP</span>
-          <span className="text-xs text-white/20">·</span>
-          <span className="text-xs text-white/30">HelpSystem v1.0</span>
-          <Link to="/govern/oversight" className="ml-auto text-xs text-white/40 hover:text-white/60 transition-colors">Request human review</Link>
-        </motion.footer>
+        <GovernFooter auditId={GOVERNANCE_META['/help'].auditId} pageContext={GOVERNANCE_META['/help'].pageContext} />
       </motion.div>
     </div>
   );

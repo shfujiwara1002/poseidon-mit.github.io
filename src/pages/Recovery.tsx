@@ -2,12 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { KeyRound, Mail, MailCheck, ArrowLeft, Loader2 } from 'lucide-react';
 import { Link } from '../router';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] } },
-};
-const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets'
 
 export function Recovery() {
   const [email, setEmail] = useState('');
@@ -51,7 +46,7 @@ export function Recovery() {
             {/* Step 1 — Enter email */}
             <motion.div variants={fadeUp} className="mb-6">
               <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto" style={{ background: 'rgba(0,240,255,0.1)' }}>
-                <KeyRound className="h-8 w-8" style={{ color: '#00F0FF' }} />
+                <KeyRound className="h-8 w-8" style={{ color: 'var(--engine-dashboard)' }} />
               </div>
             </motion.div>
 
@@ -67,7 +62,7 @@ export function Recovery() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="you@company.com"
-                    className="w-full rounded-xl bg-white/5 border border-white/10 pl-10 pr-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#00F0FF]/50 transition-colors"
+                    className="w-full rounded-xl bg-white/5 border border-white/10 pl-10 pr-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[var(--engine-dashboard)]/50 transition-colors"
                     autoComplete="email"
                   />
                 </div>
@@ -75,14 +70,14 @@ export function Recovery() {
                   type="submit"
                   disabled={loading}
                   className="w-full rounded-xl font-semibold py-3 text-sm transition-opacity hover:opacity-90 disabled:opacity-60 flex items-center justify-center gap-2"
-                  style={{ background: '#00F0FF', color: '#0B1221' }}
+                  style={{ background: 'var(--engine-dashboard)', color: '#0B1221' }}
                 >
                   {loading ? <><Loader2 className="h-4 w-4 animate-spin" />Sending...</> : 'Send reset link'}
                 </button>
               </form>
 
               <div className="text-center mt-4">
-                <Link to="/login" className="text-sm hover:opacity-80 transition-opacity" style={{ color: '#00F0FF' }}>
+                <Link to="/login" className="text-sm hover:opacity-80 transition-opacity" style={{ color: 'var(--engine-dashboard)' }}>
                   <ArrowLeft className="inline h-3.5 w-3.5 mr-1" />
                   Back to sign in
                 </Link>
@@ -113,7 +108,7 @@ export function Recovery() {
               </button>
 
               <div className="mt-4">
-                <Link to="/login" className="text-sm hover:opacity-80 transition-opacity" style={{ color: '#00F0FF' }}>
+                <Link to="/login" className="text-sm hover:opacity-80 transition-opacity" style={{ color: 'var(--engine-dashboard)' }}>
                   <ArrowLeft className="inline h-3.5 w-3.5 mr-1" />
                   Back to sign in
                 </Link>

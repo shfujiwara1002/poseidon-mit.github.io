@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
-import { useRouter } from '../router';
 import { motion } from 'framer-motion';
 import {
-  Shield,
-  ShieldCheck,
-  ExternalLink,
   CheckCircle2,
   XCircle,
   Zap,
   Clock,
   Download,
   Mail,
-  User,
   CircleDot,
 } from 'lucide-react';
 import { usePageTitle } from '../hooks/use-page-title';
+import { GovernFooter, AuroraPulse } from '@/components/poseidon';
+import { GOVERNANCE_META } from '@/lib/governance-meta';
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets';
 
 /* ═══════════════════════════════════════════
    TYPES
@@ -181,21 +179,6 @@ const historyData: DayGroup[] = [
 ];
 
 /* ═══════════════════════════════════════════
-   ANIMATION VARIANTS
-   ═══════════════════════════════════════════ */
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 },
-};
-
-const stagger = {
-  visible: {
-    transition: { staggerChildren: 0.08 },
-  },
-};
-
-/* ═══════════════════════════════════════════
    UTILITY HELPERS
    ═══════════════════════════════════════════ */
 
@@ -207,9 +190,9 @@ const typeConfig: Record<ActionType, { color: string; bg: string; icon: React.El
 
 const engineColor: Record<SourceEngine, string> = {
   Protect: '#14B8A6',
-  Grow: '#8B5CF6',
-  Execute: '#EAB308',
-  Govern: '#3B82F6',
+  Grow: 'var(--engine-grow)',
+  Execute: 'var(--engine-execute)',
+  Govern: 'var(--engine-govern)',
 };
 
 const engineBg: Record<SourceEngine, string> = {
@@ -300,7 +283,7 @@ function HeroSection({
           style={{
             borderColor: 'rgba(234,179,8,0.3)',
             background: 'rgba(234,179,8,0.08)',
-            color: '#EAB308',
+            color: 'var(--engine-execute)',
           }}
         >
           <Clock size={12} />
@@ -333,14 +316,14 @@ function HeroSection({
               className="inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-semibold transition-all cursor-pointer"
               style={{
                 background: isActive ? 'rgba(234,179,8,0.15)' : 'rgba(255,255,255,0.05)',
-                color: isActive ? '#EAB308' : '#94A3B8',
+                color: isActive ? 'var(--engine-execute)' : '#94A3B8',
                 border: isActive ? '1px solid rgba(234,179,8,0.3)' : '1px solid transparent',
                 minHeight: '44px',
               }}
             >
               {f.label}
               {f.count != null && (
-                <span className="text-[10px]" style={{ color: isActive ? '#EAB308' : '#64748B' }}>
+                <span className="text-[10px]" style={{ color: isActive ? 'var(--engine-execute)' : '#64748B' }}>
                   ({f.count})
                 </span>
               )}
@@ -530,53 +513,6 @@ function ExportOptions() {
 }
 
 /* ═══════════════════════════════════════════
-   GOVERNANCE FOOTER
-   ═══════════════════════════════════════════ */
-
-function GovernFooter() {
-  const { navigate } = useRouter();
-  return (
-    <footer
-      className="mt-8 flex flex-col gap-3 md:flex-row md:items-center md:justify-between rounded-2xl border border-white/[0.06] px-4 py-3 md:px-6 md:py-4"
-      style={{ background: 'rgba(255,255,255,0.03)' }}
-      role="contentinfo"
-      aria-label="Governance verification footer"
-    >
-      <div className="flex items-center gap-2">
-        <div
-          className="flex items-center justify-center rounded-full"
-          style={{ width: 28, height: 28, background: 'rgba(59,130,246,0.12)' }}
-        >
-          <ShieldCheck size={14} style={{ color: '#3B82F6' }} />
-        </div>
-        <span
-          className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider"
-          style={{ background: 'rgba(16,185,129,0.12)', color: '#10B981' }}
-        >
-          <Shield size={10} />
-          Verified
-        </span>
-      </div>
-      <div className="flex items-center gap-2">
-        <span className="text-xs font-mono" style={{ color: '#64748B' }}>
-          GV-2026-0216-EXEC-HIST
-        </span>
-        <ExternalLink size={12} style={{ color: '#64748B' }} aria-hidden="true" />
-      </div>
-      <button
-        className="inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-xs font-medium transition-all hover:bg-white/[0.04] cursor-pointer"
-        style={{ borderColor: 'rgba(255,255,255,0.08)', color: '#CBD5E1', background: 'transparent', minHeight: '44px' }}
-        aria-label="Request human review of execution history"
-        onClick={() => navigate('/govern/oversight')}
-      >
-        <User size={14} />
-        Request human review
-      </button>
-    </footer>
-  );
-}
-
-/* ═══════════════════════════════════════════
    MAIN COMPONENT
    ═══════════════════════════════════════════ */
 
@@ -585,11 +521,12 @@ export function ExecuteHistory() {
   const [activeFilter, setActiveFilter] = useState<FilterTab>('All');
 
   return (
-    <div className="min-h-screen w-full" style={{ background: '#0B1221' }}>
+    <div className="relative min-h-screen w-full" style={{ background: '#0B1221' }}>
+      <AuroraPulse color="var(--engine-execute)" intensity="subtle" />
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-1/2 focus:-translate-x-1/2 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold"
-        style={{ background: '#EAB308', color: '#0B1221' }}
+        style={{ background: 'var(--engine-execute)', color: '#0B1221' }}
       >
         Skip to main content
       </a>
@@ -613,7 +550,7 @@ export function ExecuteHistory() {
           </aside>
         </div>
 
-        <GovernFooter />
+        <GovernFooter auditId={GOVERNANCE_META['/execute/history'].auditId} pageContext={GOVERNANCE_META['/execute/history'].pageContext} />
       </div>
     </div>
   );

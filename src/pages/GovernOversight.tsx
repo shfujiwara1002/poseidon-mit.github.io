@@ -4,28 +4,25 @@ import { ArrowLeft, Eye, UserCheck, Bot, AlertTriangle, CheckCircle, XCircle, Cl
 import { Link } from '../router';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { usePageTitle } from '../hooks/use-page-title';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] } },
-};
-const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
+import { GovernFooter, AuroraPulse } from '@/components/poseidon'
+import { GOVERNANCE_META } from '@/lib/governance-meta'
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets';
 
 const reviewCards = [
   {
-    id: 'RV-001', urgency: 'Critical' as const, urgencyColor: '#EF4444', engine: 'Protect', engineColor: '#22C55E',
+    id: 'RV-001', urgency: 'Critical' as const, urgencyColor: '#EF4444', engine: 'Protect', engineColor: 'var(--engine-protect)',
     action: 'Block card', confidence: 0.71, reason: 'Amount $4,200 near threshold',
     aiRec: 'AI recommends blocking due to anomalous spending pattern. Transaction origin flagged.',
     auditId: 'GV-2026-0216-OVR-001',
   },
   {
-    id: 'RV-002', urgency: 'Warning' as const, urgencyColor: '#EAB308', engine: 'Execute', engineColor: '#EAB308',
+    id: 'RV-002', urgency: 'Warning' as const, urgencyColor: 'var(--engine-execute)', engine: 'Execute', engineColor: 'var(--engine-execute)',
     action: 'Auto-pay bill', confidence: 0.76, reason: 'New merchant, first payment',
     aiRec: 'AI recommends proceeding. Merchant verified, amount within normal range.',
     auditId: 'GV-2026-0216-OVR-002',
   },
   {
-    id: 'RV-003', urgency: 'Info' as const, urgencyColor: '#3B82F6', engine: 'Grow', engineColor: '#8B5CF6',
+    id: 'RV-003', urgency: 'Info' as const, urgencyColor: 'var(--engine-govern)', engine: 'Grow', engineColor: 'var(--engine-grow)',
     action: 'Rebalance portfolio', confidence: 0.79, reason: 'Market conditions changed',
     aiRec: 'AI suggests shifting 5% from bonds to equities based on updated forecasts.',
     auditId: 'GV-2026-0216-OVR-003',
@@ -59,12 +56,13 @@ const overrideReasons = [
 export function GovernOversight() {
   usePageTitle('Oversight Queue');
   return (
-    <div className="min-h-screen w-full" style={{ background: '#0B1221' }}>
-      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold" style={{ background: '#3B82F6', color: '#fff' }}>Skip to main content</a>
+    <div className="relative min-h-screen w-full" style={{ background: '#0B1221' }}>
+      <AuroraPulse color="var(--engine-govern)" intensity="subtle" />
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold" style={{ background: 'var(--engine-govern)', color: '#fff' }}>Skip to main content</a>
 
       <nav className="sticky top-0 z-50 backdrop-blur-xl border-b border-white/[0.06]" style={{ background: 'rgba(11,18,33,0.8)' }} aria-label="Breadcrumb">
         <div className="mx-auto px-4 md:px-6 lg:px-8 h-14 flex items-center gap-2" style={{ maxWidth: '1280px' }}>
-          <Link to="/govern" className="flex items-center gap-1.5 text-sm font-medium hover:opacity-80 transition-opacity" style={{ color: '#3B82F6' }}>
+          <Link to="/govern" className="flex items-center gap-1.5 text-sm font-medium hover:opacity-80 transition-opacity" style={{ color: 'var(--engine-govern)' }}>
             <ArrowLeft className="h-4 w-4" />Govern
           </Link>
           <span className="text-white/20">/</span>
@@ -77,9 +75,9 @@ export function GovernOversight() {
         <motion.div variants={fadeUp} className="flex flex-col gap-1">
           <div className="flex items-center gap-2 mb-1">
             <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'rgba(59,130,246,0.15)' }}>
-              <Eye className="h-4 w-4" style={{ color: '#3B82F6' }} />
+              <Eye className="h-4 w-4" style={{ color: 'var(--engine-govern)' }} />
             </div>
-            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#3B82F6' }}>Govern · Oversight</span>
+            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--engine-govern)' }}>Govern · Oversight</span>
           </div>
           <h1 className="text-2xl md:text-3xl font-bold text-white">Human Oversight</h1>
           <p className="text-sm text-slate-400">Override rate: 3.2%. Zero escalations this week.</p>
@@ -88,10 +86,10 @@ export function GovernOversight() {
         {/* KPI bar */}
         <motion.div variants={fadeUp} className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { label: 'Override rate', value: '3.2%', color: '#22C55E' },
-            { label: 'Human reviews', value: '41', color: '#3B82F6' },
-            { label: 'Avg review time', value: '4.2m', color: '#00F0FF' },
-            { label: 'Escalations', value: '0', color: '#22C55E' },
+            { label: 'Override rate', value: '3.2%', color: 'var(--engine-protect)' },
+            { label: 'Human reviews', value: '41', color: 'var(--engine-govern)' },
+            { label: 'Avg review time', value: '4.2m', color: 'var(--engine-dashboard)' },
+            { label: 'Escalations', value: '0', color: 'var(--engine-protect)' },
           ].map((kpi) => (
             <div key={kpi.label} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
               <p className="text-xs text-white/40 mb-1">{kpi.label}</p>
@@ -130,8 +128,8 @@ export function GovernOversight() {
                     </div>
 
                     <div className="flex flex-wrap items-center gap-2">
-                      <button className="px-4 py-2 rounded-xl text-xs font-semibold text-white hover:opacity-90 transition-opacity" style={{ background: '#3B82F6' }}>Confirm AI decision</button>
-                      <button className="px-4 py-2 rounded-xl text-xs font-semibold border hover:bg-amber-500/10 transition-colors" style={{ borderColor: 'rgba(234,179,8,0.3)', color: '#EAB308' }}>Override</button>
+                      <button className="px-4 py-2 rounded-xl text-xs font-semibold text-white hover:opacity-90 transition-opacity" style={{ background: 'var(--engine-govern)' }}>Confirm AI decision</button>
+                      <button className="px-4 py-2 rounded-xl text-xs font-semibold border hover:bg-amber-500/10 transition-colors" style={{ borderColor: 'rgba(234,179,8,0.3)', color: 'var(--engine-execute)' }}>Override</button>
                       <button className="px-3 py-2 rounded-xl text-xs text-white/40 hover:text-white/60 hover:bg-white/5 transition-colors">Request more info</button>
                       <span className="ml-auto text-[10px] font-mono text-white/20">{card.auditId}</span>
                     </div>
@@ -182,8 +180,8 @@ export function GovernOversight() {
                     <CartesianGrid strokeDasharray="3 3" stroke="#253852" />
                     <XAxis dataKey="day" tick={{ fill: '#6B7280', fontSize: 10 }} axisLine={false} tickLine={false} />
                     <YAxis tick={{ fill: '#6B7280', fontSize: 10 }} axisLine={false} tickLine={false} />
-                    <Tooltip contentStyle={{ background: '#0F1D32', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, fontSize: 11 }} labelStyle={{ color: '#94A3B8' }} itemStyle={{ color: '#3B82F6' }} />
-                    <Bar dataKey="overrides" fill="#3B82F6" radius={[4, 4, 0, 0]} />
+                    <Tooltip contentStyle={{ background: '#0F1D32', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, fontSize: 11 }} labelStyle={{ color: '#94A3B8' }} itemStyle={{ color: 'var(--engine-govern)' }} />
+                    <Bar dataKey="overrides" fill="var(--engine-govern)" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -195,7 +193,7 @@ export function GovernOversight() {
               <p className="text-xs text-white/50 mb-2">Post-override accuracy</p>
               <p className="text-lg font-bold text-emerald-400 mb-2">94.2%</p>
               <div className="h-1.5 rounded-full bg-white/10">
-                <div className="h-full rounded-full" style={{ width: '94.2%', background: '#22C55E' }} />
+                <div className="h-full rounded-full" style={{ width: '94.2%', background: 'var(--engine-protect)' }} />
               </div>
             </motion.div>
 
@@ -210,7 +208,7 @@ export function GovernOversight() {
                       <span className="text-white/70 font-semibold">{r.pct}%</span>
                     </div>
                     <div className="h-1.5 rounded-full bg-white/10">
-                      <div className="h-full rounded-full" style={{ width: `${r.pct}%`, background: '#3B82F6' }} />
+                      <div className="h-full rounded-full" style={{ width: `${r.pct}%`, background: 'var(--engine-govern)' }} />
                     </div>
                   </div>
                 ))}
@@ -228,6 +226,8 @@ export function GovernOversight() {
           <span className="text-xs text-white/30">OversightEngine v1.1</span>
           <Link to="/govern/audit" className="ml-auto text-xs text-white/40 hover:text-white/60 transition-colors">Request human review</Link>
         </motion.footer>
+
+        <GovernFooter auditId={GOVERNANCE_META['/govern/oversight'].auditId} pageContext={GOVERNANCE_META['/govern/oversight'].pageContext} />
       </motion.div>
     </div>
   );

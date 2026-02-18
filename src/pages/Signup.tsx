@@ -5,24 +5,19 @@ import {
   CheckCircle, Eye, EyeOff, Mail, Lock, User, Loader2,
 } from 'lucide-react';
 import { Link, useRouter } from '../router';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] } },
-};
-const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets'
 
 const valueProps = [
-  { icon: Shield, color: '#22C55E', label: 'Protect', desc: 'Fraud blocked in <100ms with explainable AI' },
-  { icon: TrendingUp, color: '#8B5CF6', label: 'Grow', desc: 'Personalized forecasts and savings automation' },
-  { icon: Zap, color: '#EAB308', label: 'Execute', desc: 'Consent-first actions with full audit trail' },
-  { icon: Scale, color: '#3B82F6', label: 'Govern', desc: 'Every decision logged and explained' },
+  { icon: Shield, color: 'var(--engine-protect)', label: 'Protect', desc: 'Fraud blocked in <100ms with explainable AI' },
+  { icon: TrendingUp, color: 'var(--engine-grow)', label: 'Grow', desc: 'Personalized forecasts and savings automation' },
+  { icon: Zap, color: 'var(--engine-execute)', label: 'Execute', desc: 'Consent-first actions with full audit trail' },
+  { icon: Scale, color: 'var(--engine-govern)', label: 'Govern', desc: 'Every decision logged and explained' },
 ];
 
 const avatars = [
-  { initials: 'MK', bg: '#22C55E' },
-  { initials: 'JL', bg: '#8B5CF6' },
-  { initials: 'AR', bg: '#3B82F6' },
+  { initials: 'MK', bg: 'var(--engine-protect)' },
+  { initials: 'JL', bg: 'var(--engine-grow)' },
+  { initials: 'AR', bg: 'var(--engine-govern)' },
 ];
 
 export function Signup() {
@@ -322,13 +317,13 @@ export function Signup() {
                   type="checkbox"
                   checked={termsAccepted}
                   onChange={(e) => setTermsAccepted(e.target.checked)}
-                  className="mt-0.5 accent-[#00F0FF]"
+                  className="mt-0.5 accent-[var(--engine-dashboard)]"
                 />
                 <span className="text-xs text-white/50">
                   {'I agree to the '}
-                  <span className="underline" style={{ color: '#00F0FF' }}>Terms of Service</span>
+                  <span className="underline" style={{ color: 'var(--engine-dashboard)' }}>Terms of Service</span>
                   {' and '}
-                  <span className="underline" style={{ color: '#00F0FF' }}>Privacy Policy</span>
+                  <span className="underline" style={{ color: 'var(--engine-dashboard)' }}>Privacy Policy</span>
                 </span>
               </label>
               <label className="flex items-start gap-2 cursor-pointer">
@@ -336,7 +331,7 @@ export function Signup() {
                   type="checkbox"
                   checked={updatesOptIn}
                   onChange={(e) => setUpdatesOptIn(e.target.checked)}
-                  className="mt-0.5 accent-[#00F0FF]"
+                  className="mt-0.5 accent-[var(--engine-dashboard)]"
                 />
                 <span className="text-xs text-white/50">Keep me informed about product updates</span>
               </label>
@@ -348,7 +343,7 @@ export function Signup() {
                 type="submit"
                 disabled={!termsAccepted || loading}
                 className="w-full rounded-xl font-bold py-3 text-sm transition-opacity hover:opacity-90 disabled:opacity-40 mt-2 flex items-center justify-center gap-2"
-                style={{ background: '#00F0FF', color: '#0B1221' }}
+                style={{ background: 'var(--engine-dashboard)', color: '#0B1221' }}
               >
                 {loading ? (
                   <>
@@ -365,7 +360,7 @@ export function Signup() {
           {/* Sign in link */}
           <motion.p variants={fadeUp} className="text-center text-sm text-white/40 mt-6">
             {'Already have an account? '}
-            <Link to="/login" className="font-medium hover:opacity-80 transition-opacity" style={{ color: '#00F0FF' }}>
+            <Link to="/login" className="font-medium hover:opacity-80 transition-opacity" style={{ color: 'var(--engine-dashboard)' }}>
               {'Sign in \u2192'}
             </Link>
           </motion.p>

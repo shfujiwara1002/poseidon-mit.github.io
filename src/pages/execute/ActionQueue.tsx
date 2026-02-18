@@ -66,7 +66,7 @@ export function ActionQueue({ viewMode = 'detail' }: ActionQueueProps) {
         className="text-lg md:text-xl font-semibold flex items-center gap-2"
         style={{ fontFamily: 'var(--font-display)', color: '#F1F5F9' }}
       >
-        <ListTodo size={20} style={{ color: '#EAB308' }} aria-hidden="true" />
+        <ListTodo size={20} style={{ color: 'var(--engine-execute)' }} aria-hidden="true" />
         Pending Actions
       </h2>
 
@@ -265,7 +265,7 @@ export function ActionQueue({ viewMode = 'detail' }: ActionQueueProps) {
 
       {/* Reasoning chain — deep mode only */}
       {viewMode === 'deep' && (
-        <ReasoningChain steps={executeReasoningSteps} accentColor="#EAB308" className="mt-4" />
+        <ReasoningChain steps={executeReasoningSteps} accentColor="var(--engine-execute)" className="mt-4" />
       )}
     </motion.section>
   )

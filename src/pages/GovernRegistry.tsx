@@ -2,18 +2,15 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Database, Bot, Shield, TrendingUp, Zap, Scale, ChevronDown, ExternalLink, RefreshCw } from 'lucide-react';
 import { Link } from '../router';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] } },
-};
-const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
+import { GovernFooter, AuroraPulse } from '@/components/poseidon'
+import { GOVERNANCE_META } from '@/lib/governance-meta'
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets'
 
 const engineColors: Record<string, string> = {
-  Protect: '#22C55E',
-  Grow: '#8B5CF6',
-  Execute: '#EAB308',
-  Govern: '#3B82F6',
+  Protect: 'var(--engine-protect)',
+  Grow: 'var(--engine-grow)',
+  Execute: 'var(--engine-execute)',
+  Govern: 'var(--engine-govern)',
 };
 
 const models = [
@@ -39,12 +36,13 @@ export function GovernRegistry() {
   const [expanded, setExpanded] = useState<string | null>(null);
 
   return (
-    <div className="min-h-screen w-full" style={{ background: '#0B1221' }}>
-      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold" style={{ background: '#3B82F6', color: '#fff' }}>Skip to main content</a>
+    <div className="relative min-h-screen w-full" style={{ background: '#0B1221' }}>
+      <AuroraPulse color="var(--engine-govern)" intensity="subtle" />
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold" style={{ background: 'var(--engine-govern)', color: '#fff' }}>Skip to main content</a>
 
       <nav className="sticky top-0 z-50 backdrop-blur-xl border-b border-white/[0.06]" style={{ background: 'rgba(11,18,33,0.8)' }} aria-label="Breadcrumb">
         <div className="mx-auto px-4 md:px-6 lg:px-8 h-14 flex items-center gap-2" style={{ maxWidth: '1280px' }}>
-          <Link to="/govern" className="flex items-center gap-1.5 text-sm font-medium hover:opacity-80 transition-opacity" style={{ color: '#3B82F6' }}>
+          <Link to="/govern" className="flex items-center gap-1.5 text-sm font-medium hover:opacity-80 transition-opacity" style={{ color: 'var(--engine-govern)' }}>
             <ArrowLeft className="h-4 w-4" />Govern
           </Link>
           <span className="text-white/20">/</span>
@@ -57,9 +55,9 @@ export function GovernRegistry() {
         <motion.div variants={fadeUp} className="flex flex-col gap-1">
           <div className="flex items-center gap-2 mb-1">
             <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'rgba(59,130,246,0.15)' }}>
-              <Database className="h-4 w-4" style={{ color: '#3B82F6' }} />
+              <Database className="h-4 w-4" style={{ color: 'var(--engine-govern)' }} />
             </div>
-            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#3B82F6' }}>Govern · Registry</span>
+            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--engine-govern)' }}>Govern · Registry</span>
           </div>
           <h1 className="text-2xl md:text-3xl font-bold text-white">AI Model Registry</h1>
           <p className="text-sm text-slate-400">8 active models · Last updated 4m ago · All models audited.</p>
@@ -68,10 +66,10 @@ export function GovernRegistry() {
         {/* KPI bar */}
         <motion.div variants={fadeUp} className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { label: 'Active models', value: '8', color: '#3B82F6' },
-            { label: 'Avg accuracy', value: '96.2%', color: '#22C55E' },
-            { label: 'Last retrained', value: '2d ago', color: '#00F0FF' },
-            { label: 'Coverage', value: '100%', color: '#8B5CF6' },
+            { label: 'Active models', value: '8', color: 'var(--engine-govern)' },
+            { label: 'Avg accuracy', value: '96.2%', color: 'var(--engine-protect)' },
+            { label: 'Last retrained', value: '2d ago', color: 'var(--engine-dashboard)' },
+            { label: 'Coverage', value: '100%', color: 'var(--engine-grow)' },
           ].map((kpi) => (
             <div key={kpi.label} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
               <p className="text-xs text-white/40 mb-1">{kpi.label}</p>
@@ -111,7 +109,7 @@ export function GovernRegistry() {
                             </span>
                           </td>
                           <td className="px-4 py-3 text-xs text-white/60 font-mono">{m.version}</td>
-                          <td className="px-4 py-3 text-xs font-semibold" style={{ color: m.accuracy >= 95 ? '#22C55E' : m.accuracy >= 90 ? '#00F0FF' : '#EAB308' }}>{m.accuracy}%</td>
+                          <td className="px-4 py-3 text-xs font-semibold" style={{ color: m.accuracy >= 95 ? 'var(--engine-protect)' : m.accuracy >= 90 ? 'var(--engine-dashboard)' : 'var(--engine-execute)' }}>{m.accuracy}%</td>
                           <td className="px-4 py-3 text-xs text-white/40">{m.lastTrained}</td>
                           <td className="px-4 py-3">
                             <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400">{m.status}</span>
@@ -129,7 +127,7 @@ export function GovernRegistry() {
                                   <p className="text-[10px] text-white/30 uppercase tracking-wider mb-2">7-Day Accuracy</p>
                                   <div className="flex items-end gap-1 h-8">
                                     {[m.accuracy - 0.8, m.accuracy - 0.4, m.accuracy - 0.2, m.accuracy, m.accuracy - 0.1, m.accuracy + 0.1, m.accuracy].map((v, i) => (
-                                      <div key={i} className="flex-1 rounded-sm" style={{ height: `${(v / 100) * 100}%`, minHeight: '4px', background: '#3B82F6' }} />
+                                      <div key={i} className="flex-1 rounded-sm" style={{ height: `${(v / 100) * 100}%`, minHeight: '4px', background: 'var(--engine-govern)' }} />
                                     ))}
                                   </div>
                                 </div>
@@ -143,7 +141,7 @@ export function GovernRegistry() {
                                   <p className="text-white/70 font-semibold">{m.trainingPeriod}</p>
                                 </div>
                               </div>
-                              <button className="flex items-center gap-1.5 mt-3 text-xs font-medium hover:opacity-80 transition-opacity" style={{ color: '#3B82F6' }}>
+                              <button className="flex items-center gap-1.5 mt-3 text-xs font-medium hover:opacity-80 transition-opacity" style={{ color: 'var(--engine-govern)' }}>
                                 <ExternalLink className="h-3 w-3" />View audit trail
                               </button>
                             </td>
@@ -165,7 +163,7 @@ export function GovernRegistry() {
                     </div>
                     <div className="flex flex-wrap gap-3 text-xs">
                       <span className="text-white/40">{m.version}</span>
-                      <span style={{ color: m.accuracy >= 95 ? '#22C55E' : '#EAB308' }}>{m.accuracy}%</span>
+                      <span style={{ color: m.accuracy >= 95 ? 'var(--engine-protect)' : 'var(--engine-execute)' }}>{m.accuracy}%</span>
                       <span className="text-white/40">Trained {m.lastTrained}</span>
                     </div>
                     <span className="inline-block mt-2 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400">{m.status}</span>
@@ -225,7 +223,7 @@ export function GovernRegistry() {
               <div className="flex flex-col gap-3">
                 {recentUpdates.map((u, i) => (
                   <div key={i} className="flex items-start gap-2">
-                    <div className="w-2 h-2 rounded-full mt-1.5 shrink-0" style={{ background: '#3B82F6' }} />
+                    <div className="w-2 h-2 rounded-full mt-1.5 shrink-0" style={{ background: 'var(--engine-govern)' }} />
                     <div>
                       <p className="text-xs text-white/70">{u.model} <span className="text-white/30 font-mono">{u.version}</span></p>
                       <p className="text-[10px] text-white/30">{u.date}</p>
@@ -246,6 +244,8 @@ export function GovernRegistry() {
           <span className="text-xs text-white/30">ModelRegistry v1.0</span>
           <Link to="/govern/oversight" className="ml-auto text-xs text-white/40 hover:text-white/60 transition-colors">Request human review</Link>
         </motion.footer>
+
+        <GovernFooter auditId={GOVERNANCE_META['/govern/registry'].auditId} pageContext={GOVERNANCE_META['/govern/registry'].pageContext} />
       </motion.div>
     </div>
   );

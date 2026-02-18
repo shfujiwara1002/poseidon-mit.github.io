@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Shield, Lock, Eye, EyeOff, Mail, CheckCircle, Loader2 } from 'lucide-react';
 import { Link, useRouter } from '../router';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] } },
-};
-const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets'
 
 export function Login() {
   const { navigate } = useRouter();
@@ -120,7 +115,7 @@ export function Login() {
               <div>
                 <div className="flex items-center justify-between mb-1.5">
                   <label className="text-xs text-white/50 uppercase tracking-wider" htmlFor="login-password">Password</label>
-                  <Link to="/recovery" className="text-xs hover:opacity-80 transition-opacity" style={{ color: '#00F0FF' }}>
+                  <Link to="/recovery" className="text-xs hover:opacity-80 transition-opacity" style={{ color: 'var(--engine-dashboard)' }}>
                     Forgot password?
                   </Link>
                 </div>
@@ -153,7 +148,7 @@ export function Login() {
                 type="submit"
                 disabled={loading}
                 className="w-full rounded-xl font-semibold py-3 text-sm transition-opacity hover:opacity-90 disabled:opacity-60 flex items-center justify-center gap-2"
-                style={{ background: '#00F0FF', color: '#0B1221' }}
+                style={{ background: 'var(--engine-dashboard)', color: '#0B1221' }}
               >
                 {loading ? <><Loader2 className="h-4 w-4 animate-spin" />Signing in...</> : 'Sign in'}
               </button>
@@ -161,7 +156,7 @@ export function Login() {
 
             <p className="text-center text-sm text-white/40 mt-6">
               {"Don't have an account? "}
-              <Link to="/signup" className="font-medium hover:opacity-80 transition-opacity" style={{ color: '#00F0FF' }}>
+              <Link to="/signup" className="font-medium hover:opacity-80 transition-opacity" style={{ color: 'var(--engine-dashboard)' }}>
                 {'Sign up \u2192'}
               </Link>
             </p>
