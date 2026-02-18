@@ -17,8 +17,6 @@ src/styles/pages/disclosure-sheet.css|duration
 src/styles/pages/mission.css|translation
 
 src/components/LoadingSpinner.css|duration
-src/components/RealtimeIndicator.tsx|duration
-src/components/RealtimeIndicator.tsx|infinite
 src/components/Skeleton.css|duration
 src/components/Toast.css|duration
 

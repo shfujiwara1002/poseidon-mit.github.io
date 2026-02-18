@@ -23,8 +23,8 @@ const MORNING_ACTIVITIES = [
 ];
 
 const EVENING_METRICS = [
-  { label: 'Decisions made', value: '12', tone: 'positive' },
-  { label: 'Alerts resolved', value: '3', tone: 'neutral' },
+  { label: 'Decisions made', value: '12', tone: 'healthy' },
+  { label: 'Alerts resolved', value: '3', tone: 'primary' },
   { label: 'Actions pending', value: '2', tone: 'warning' },
 ];
 
