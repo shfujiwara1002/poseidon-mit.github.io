@@ -47,13 +47,13 @@ function HeroSection({ navigate, viewMode, onViewModeChange }: HeroSectionProps)
             style={{
               borderColor: 'rgba(234,179,8,0.3)',
               background: 'rgba(234,179,8,0.08)',
-              color: '#EAB308',
+              color: 'var(--engine-execute)',
             }}
           >
             <Zap size={12} />
             Execute Engine
           </span>
-          <ViewModeToggle value={viewMode} onChange={onViewModeChange} accentColor="#EAB308" />
+          <ViewModeToggle value={viewMode} onChange={onViewModeChange} accentColor="var(--engine-execute)" />
         </div>
       </motion.div>
 
@@ -76,7 +76,7 @@ function HeroSection({ navigate, viewMode, onViewModeChange }: HeroSectionProps)
           summary="Block wire transfer to MerchantX — fraud score 0.94, exceeds $5k threshold. Multi-engine risk aggregation flags immediate action required."
           sources={executeCitations}
           confidence={0.94}
-          accentColor="#EAB308"
+          accentColor="var(--engine-execute)"
           viewMode={viewMode}
         />
         <div className="flex flex-wrap gap-2 mt-3">

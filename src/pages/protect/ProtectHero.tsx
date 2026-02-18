@@ -44,13 +44,13 @@ export function ProtectHero({ viewMode, onViewModeChange }: ProtectHeroProps) {
               className="flex h-7 w-7 items-center justify-center rounded-full"
               style={{ background: 'rgba(34,197,94,0.15)' }}
             >
-              <Shield className="h-3.5 w-3.5" style={{ color: '#22C55E' }} />
+              <Shield className="h-3.5 w-3.5" style={{ color: 'var(--engine-protect)' }} />
             </div>
-            <span className="text-sm font-semibold tracking-wide" style={{ color: '#22C55E' }}>
+            <span className="text-sm font-semibold tracking-wide" style={{ color: 'var(--engine-protect)' }}>
               Protect
             </span>
           </div>
-          <ViewModeToggle value={viewMode} onChange={onViewModeChange} accentColor="#22C55E" />
+          <ViewModeToggle value={viewMode} onChange={onViewModeChange} accentColor="var(--engine-protect)" />
         </div>
 
         {/* Headline */}
@@ -72,7 +72,7 @@ export function ProtectHero({ viewMode, onViewModeChange }: ProtectHeroProps) {
           summary="Unusual pattern detected at MerchantX — $4,200 charge deviates 3.2× from category average. Behavioral analysis flags merchant as new vendor with elevated risk profile."
           sources={protectCitations}
           confidence={0.94}
-          accentColor="#22C55E"
+          accentColor="var(--engine-protect)"
           viewMode={viewMode}
         />
 

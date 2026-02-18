@@ -2,15 +2,11 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Zap, AlertTriangle, CheckCircle2 } from 'lucide-react';
 import { Link } from '../router';
-import { GovernFooter } from '../components/dashboard/GovernFooter';
+import { GovernFooter, ShapWaterfall, AuroraPulse } from '@/components/poseidon'
+import { GOVERNANCE_META } from '@/lib/governance-meta'
 import { Dialog, DialogContent } from '../components/ui/dialog';
 import { usePageTitle } from '../hooks/use-page-title';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] } },
-};
-const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets';
 
 /* ═══════════════════════════════════════════
    DATA
@@ -37,7 +33,7 @@ const queueActions: QueueAction[] = [
   { id: 'ACT-005', engine: 'Grow', title: 'Increase emergency fund auto-save', description: 'Raise weekly auto-save from $50 to $75 based on increased income stability.', urgency: 'low', confidence: 0.81, impact: { approved: 'Reach emergency fund goal 3 weeks earlier', declined: 'Continue at current pace, May 2026 completion' }, reversible: true, expiresIn: null, factors: [{ label: 'Income stability', value: 0.94 }, { label: 'Budget headroom', value: 0.76 }, { label: 'Goal acceleration', value: 0.65 }] },
 ];
 
-const urgencyBorderColor = { high: '#EF4444', medium: '#EAB308', low: '#3B82F6' };
+const urgencyBorderColor = { high: '#EF4444', medium: 'var(--engine-execute)', low: 'var(--engine-govern)' };
 const urgencyBadgeCls = { high: 'bg-red-500/20 text-red-400', medium: 'bg-amber-500/20 text-amber-400', low: 'bg-blue-500/20 text-blue-400' };
 const engineBadgeCls = { Protect: 'bg-emerald-500/20 text-emerald-400', Grow: 'bg-violet-500/20 text-violet-400', Execute: 'bg-amber-500/20 text-amber-400' };
 
@@ -65,11 +61,12 @@ export function ExecuteApproval() {
   const visibleActions = queueActions.filter((a) => !processedIds.has(a.id));
 
   return (
-    <div className="min-h-screen w-full" style={{ background: '#0B1221' }}>
+    <div className="relative min-h-screen w-full" style={{ background: '#0B1221' }}>
+      <AuroraPulse color="var(--engine-execute)" intensity="subtle" />
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold"
-        style={{ background: '#EAB308', color: '#0B1221' }}
+        style={{ background: 'var(--engine-execute)', color: '#0B1221' }}
       >
         Skip to main content
       </a>
@@ -83,7 +80,7 @@ export function ExecuteApproval() {
           <Link
             to="/execute"
             className="flex items-center gap-1.5 text-sm font-medium hover:opacity-80 transition-opacity"
-            style={{ color: '#EAB308' }}
+            style={{ color: 'var(--engine-execute)' }}
           >
             <ArrowLeft className="h-4 w-4" />
             Execute
@@ -105,8 +102,8 @@ export function ExecuteApproval() {
         {/* Hero */}
         <motion.div variants={fadeUp} className="flex flex-col gap-1">
           <div className="flex items-center gap-2 mb-1">
-            <Zap className="h-5 w-5" style={{ color: '#EAB308' }} />
-            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#EAB308' }}>
+            <Zap className="h-5 w-5" style={{ color: 'var(--engine-execute)' }} />
+            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--engine-execute)' }}>
               Execute · Approval Queue
             </span>
           </div>
@@ -120,10 +117,10 @@ export function ExecuteApproval() {
         <motion.div variants={fadeUp}>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { label: 'Pending', value: '5', color: '#EAB308' },
-              { label: 'Approved (24h)', value: '3', color: '#22C55E' },
-              { label: 'Deferred', value: '1', color: '#3B82F6' },
-              { label: 'Avg confidence', value: '0.88', color: '#00F0FF' },
+              { label: 'Pending', value: '5', color: 'var(--engine-execute)' },
+              { label: 'Approved (24h)', value: '3', color: 'var(--engine-protect)' },
+              { label: 'Deferred', value: '1', color: 'var(--engine-govern)' },
+              { label: 'Avg confidence', value: '0.88', color: 'var(--engine-dashboard)' },
             ].map((kpi) => (
               <div key={kpi.label} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
                 <p className="text-xs text-white/40 mb-1">{kpi.label}</p>
@@ -149,7 +146,7 @@ export function ExecuteApproval() {
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-wider mb-0.5" style={{ color: '#EAB308' }}>Consent scope</p>
+                  <p className="text-xs font-semibold uppercase tracking-wider mb-0.5" style={{ color: 'var(--engine-execute)' }}>Consent scope</p>
                   <p className="text-sm text-white/70">Click to review the data access scope for these actions.</p>
                 </div>
                 {consentReviewed ? (
@@ -164,7 +161,7 @@ export function ExecuteApproval() {
             <button
               disabled={!consentReviewed}
               className="w-full py-3 rounded-xl text-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-              style={{ background: consentReviewed ? '#EAB308' : 'rgba(234,179,8,0.15)', color: consentReviewed ? '#0B1221' : '#EAB308' }}
+              style={{ background: consentReviewed ? 'var(--engine-execute)' : 'rgba(234,179,8,0.15)', color: consentReviewed ? '#0B1221' : 'var(--engine-execute)' }}
             >
               {consentReviewed ? 'Approve & execute' : 'Review consent scope first'}
             </button>
@@ -210,7 +207,7 @@ export function ExecuteApproval() {
                       <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true">
                         <circle cx="20" cy="20" r="16" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="4" />
                         <circle
-                          cx="20" cy="20" r="16" fill="none" stroke="#EAB308" strokeWidth="4"
+                          cx="20" cy="20" r="16" fill="none" stroke="var(--engine-execute)" strokeWidth="4"
                           strokeLinecap="round"
                           strokeDasharray={`${action.confidence * 2 * Math.PI * 16} ${2 * Math.PI * 16}`}
                           transform="rotate(-90 20 20)"
@@ -226,7 +223,7 @@ export function ExecuteApproval() {
                   {expandedAction === action.id && (
                     <div className="mt-4 pt-3 border-t border-white/[0.06] space-y-3">
                       {/* Action evidence */}
-                      <p className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: '#EAB308' }}>Action evidence</p>
+                      <p className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: 'var(--engine-execute)' }}>Action evidence</p>
                       <div className="space-y-2">
                         {action.factors.map((f) => (
                           <div key={f.label} className="flex items-center gap-2">
@@ -239,8 +236,16 @@ export function ExecuteApproval() {
                         ))}
                       </div>
 
+                      {/* SHAP attribution waterfall */}
+                      <p className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: 'var(--engine-execute)' }}>SHAP attribution</p>
+                      <ShapWaterfall
+                        factors={action.factors.map(f => ({ name: f.label, value: f.value }))}
+                        baseValue={50}
+                        className="mt-1"
+                      />
+
                       {/* Expected outcome */}
-                      <p className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: '#EAB308' }}>Expected outcome</p>
+                      <p className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: 'var(--engine-execute)' }}>Expected outcome</p>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                         <div className="rounded-xl bg-emerald-500/5 border border-emerald-500/20 p-3">
                           <p className="text-[10px] text-emerald-400 uppercase tracking-wider mb-1">If approved</p>
@@ -258,7 +263,7 @@ export function ExecuteApproval() {
                       <div className="flex gap-2 pt-1">
                         <button
                           className="px-4 py-2 rounded-lg text-white text-xs font-semibold hover:opacity-90 transition-opacity"
-                          style={{ background: '#EAB308', color: '#0B1221' }}
+                          style={{ background: 'var(--engine-execute)', color: '#0B1221' }}
                           onClick={() => setConfirmAction({ id: action.id, type: 'approve' })}
                         >
                           Approve
@@ -278,7 +283,7 @@ export function ExecuteApproval() {
 
             {visibleActions.length === 0 && (
               <div className="flex flex-col items-center gap-3 py-16">
-                <CheckCircle2 className="w-12 h-12 opacity-30" style={{ color: '#22C55E' }} />
+                <CheckCircle2 className="w-12 h-12 opacity-30" style={{ color: 'var(--engine-protect)' }} />
                 <p className="text-sm text-white/50">All actions reviewed. Queue is clear.</p>
                 <p className="text-xs text-white/30">3 actions approved today.</p>
               </div>
@@ -294,7 +299,7 @@ export function ExecuteApproval() {
                 <svg width="80" height="80" viewBox="0 0 80 80" aria-hidden="true">
                   <circle cx="40" cy="40" r="32" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
                   <circle
-                    cx="40" cy="40" r="32" fill="none" stroke="#EAB308" strokeWidth="6"
+                    cx="40" cy="40" r="32" fill="none" stroke="var(--engine-execute)" strokeWidth="6"
                     strokeLinecap="round"
                     strokeDasharray={`${0.85 * 2 * Math.PI * 32} ${2 * Math.PI * 32}`}
                     transform="rotate(-90 40 40)"
@@ -353,12 +358,12 @@ export function ExecuteApproval() {
             <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
               <h3 className="text-xs font-semibold text-white/70 uppercase tracking-wider mb-3">Completed</h3>
               <p className="text-xs text-white/30">3 actions completed today. Expand to review.</p>
-              <button className="text-xs mt-2 hover:underline" style={{ color: '#EAB308' }}>Show completed</button>
+              <button className="text-xs mt-2 hover:underline" style={{ color: 'var(--engine-execute)' }}>Show completed</button>
             </div>
           </aside>
         </div>
 
-        <GovernFooter />
+        <GovernFooter auditId={GOVERNANCE_META['/execute/approval'].auditId} pageContext={GOVERNANCE_META['/execute/approval'].pageContext} />
       </motion.div>
 
       {/* Confirm / Decline Dialog */}
@@ -375,7 +380,7 @@ export function ExecuteApproval() {
                 <div>
                   <p
                     className="text-xs font-semibold uppercase tracking-widest mb-1"
-                    style={{ color: isApprove ? '#EAB308' : '#EF4444' }}
+                    style={{ color: isApprove ? 'var(--engine-execute)' : '#EF4444' }}
                   >
                     {isApprove ? 'Confirm Approval' : 'Confirm Decline'}
                   </p>
@@ -391,7 +396,7 @@ export function ExecuteApproval() {
                     border: `1px solid ${isApprove ? 'rgba(34,197,94,0.2)' : 'rgba(239,68,68,0.2)'}`,
                   }}
                 >
-                  <p className="text-[10px] uppercase tracking-wider mb-1" style={{ color: isApprove ? '#22C55E' : '#EF4444' }}>
+                  <p className="text-[10px] uppercase tracking-wider mb-1" style={{ color: isApprove ? 'var(--engine-protect)' : '#EF4444' }}>
                     {isApprove ? 'Expected outcome' : 'If declined'}
                   </p>
                   <p className="text-xs text-white/70">
@@ -403,7 +408,7 @@ export function ExecuteApproval() {
                   <button
                     className="flex-1 px-4 py-2.5 rounded-xl text-sm font-semibold transition-opacity hover:opacity-90"
                     style={{
-                      background: isApprove ? '#EAB308' : '#EF4444',
+                      background: isApprove ? 'var(--engine-execute)' : '#EF4444',
                       color: isApprove ? '#0B1221' : '#ffffff',
                     }}
                     onClick={handleConfirm}

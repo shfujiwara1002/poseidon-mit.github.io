@@ -91,8 +91,8 @@ export const projectionData: ProjectionPoint[] = [
 /* ── Asset allocation pie data ── */
 
 export const allocationData: AllocationSlice[] = [
-  { name: 'Stocks', value: 62, color: '#8B5CF6' },
-  { name: 'Bonds', value: 28, color: '#3B82F6' },
+  { name: 'Stocks', value: 62, color: 'var(--engine-grow)' },
+  { name: 'Bonds', value: 28, color: 'var(--engine-govern)' },
   { name: 'Cash', value: 10, color: '#64748B' },
 ]
 

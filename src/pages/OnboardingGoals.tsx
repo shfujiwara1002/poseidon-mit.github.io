@@ -4,12 +4,7 @@ import {
   TrendingUp, Target, Home, GraduationCap, Briefcase, Plane, ShoppingBag, Check,
 } from 'lucide-react';
 import { Link, useRouter } from '../router';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] } },
-};
-const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets'
 
 /* ── Step progress bar ── */
 const stepsMeta = [
@@ -28,9 +23,9 @@ function StepProgress({ current }: { current: number }) {
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
                 idx < current
-                  ? 'bg-[#22C55E] text-white'
+                  ? 'bg-[var(--engine-protect)] text-white'
                   : idx === current
-                    ? 'border-2 border-[#8B5CF6] text-[#8B5CF6]'
+                    ? 'border-2 border-[var(--engine-grow)] text-[var(--engine-grow)]'
                     : 'border border-white/20 text-white/30'
               }`}
               style={idx === current ? { animation: 'pulse 2s infinite' } : {}}
@@ -40,7 +35,7 @@ function StepProgress({ current }: { current: number }) {
             <span
               className={`text-xs font-medium hidden md:inline ${
                 idx < current
-                  ? 'text-[#22C55E]'
+                  ? 'text-[var(--engine-protect)]'
                   : idx === current
                     ? 'text-white'
                     : 'text-white/30'
@@ -50,7 +45,7 @@ function StepProgress({ current }: { current: number }) {
             </span>
           </div>
           {idx < stepsMeta.length - 1 && (
-            <div className={`w-8 md:w-12 h-px flex-shrink-0 ${idx < current ? 'bg-[#22C55E]/40' : 'bg-white/10'}`} />
+            <div className={`w-8 md:w-12 h-px flex-shrink-0 ${idx < current ? 'bg-[var(--engine-protect)]/40' : 'bg-white/10'}`} />
           )}
         </React.Fragment>
       ))}
@@ -69,10 +64,10 @@ interface GoalDef {
 }
 
 const goals: GoalDef[] = [
-  { id: 'emergency', icon: Target, color: '#22C55E', label: 'Emergency Fund', desc: '3\u20136 months of expenses', target: '$18,000' },
-  { id: 'home', icon: Home, color: '#00F0FF', label: 'Buy a Home', desc: 'Down payment savings', target: '$80,000' },
-  { id: 'debt', icon: GraduationCap, color: '#EAB308', label: 'Pay Off Debt', desc: 'Student loans & credit cards', target: '$24,500' },
-  { id: 'retire', icon: Briefcase, color: '#8B5CF6', label: 'Retirement', desc: 'FIRE or 401k maximization', target: '$1.2M by 65' },
+  { id: 'emergency', icon: Target, color: 'var(--engine-protect)', label: 'Emergency Fund', desc: '3\u20136 months of expenses', target: '$18,000' },
+  { id: 'home', icon: Home, color: 'var(--engine-dashboard)', label: 'Buy a Home', desc: 'Down payment savings', target: '$80,000' },
+  { id: 'debt', icon: GraduationCap, color: 'var(--engine-execute)', label: 'Pay Off Debt', desc: 'Student loans & credit cards', target: '$24,500' },
+  { id: 'retire', icon: Briefcase, color: 'var(--engine-grow)', label: 'Retirement', desc: 'FIRE or 401k maximization', target: '$1.2M by 65' },
   { id: 'travel', icon: Plane, color: '#F59E0B', label: 'Dream Vacation', desc: 'Travel fund', target: '$8,000' },
   { id: 'purchase', icon: ShoppingBag, color: '#EF4444', label: 'Major Purchase', desc: 'Car, gadgets, etc.', target: 'Custom' },
 ];
@@ -101,8 +96,8 @@ export function OnboardingGoals() {
         {/* Hero */}
         <motion.div variants={fadeUp} className="flex flex-col items-center text-center gap-2">
           <div className="flex items-center gap-1.5 mb-2">
-            <TrendingUp className="h-4 w-4" style={{ color: '#8B5CF6' }} />
-            <span className="text-xs font-mono" style={{ color: '#8B5CF6' }}>Step 2 of 4</span>
+            <TrendingUp className="h-4 w-4" style={{ color: 'var(--engine-grow)' }} />
+            <span className="text-xs font-mono" style={{ color: 'var(--engine-grow)' }}>Step 2 of 4</span>
           </div>
           <h1 className="text-2xl font-bold text-white text-balance">What matters most to you?</h1>
           <p className="text-sm text-white/50 max-w-sm">
@@ -120,7 +115,7 @@ export function OnboardingGoals() {
                 onClick={() => toggleGoal(goal.id)}
                 className={`rounded-2xl border p-4 text-left transition-all flex items-center gap-4 ${
                   isSelected
-                    ? 'bg-[#8B5CF6]/[0.06]'
+                    ? 'bg-[var(--engine-grow)]/[0.06]'
                     : 'border-white/[0.08] bg-white/[0.03] hover:border-white/20'
                 }`}
                 style={isSelected ? { borderColor: 'rgba(139,92,246,0.5)' } : undefined}
@@ -146,7 +141,7 @@ export function OnboardingGoals() {
                 <div
                   className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 transition-all ${
                     isSelected
-                      ? 'bg-[#8B5CF6] border-[#8B5CF6]'
+                      ? 'bg-[var(--engine-grow)] border-[var(--engine-grow)]'
                       : 'border-white/20'
                   }`}
                 >
@@ -176,7 +171,7 @@ export function OnboardingGoals() {
             onClick={() => navigate('/onboarding/consent')}
             disabled={selected.length === 0}
             className="px-6 py-2.5 rounded-xl text-sm font-bold transition-opacity hover:opacity-90 disabled:opacity-40"
-            style={{ background: '#8B5CF6', color: '#FFFFFF' }}
+            style={{ background: 'var(--engine-grow)', color: '#FFFFFF' }}
           >
             {'Continue \u2192'}
           </button>

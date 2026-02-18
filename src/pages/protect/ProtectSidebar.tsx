@@ -25,7 +25,7 @@ import { categoryScores, milestones, protectMethodology } from './protect-data'
 /* ─── Score Ring (large, for Decision Rail) ────────────────── */
 
 function ScoreRingLarge({ score }: { score: number }) {
-  const data = [{ value: score, fill: '#22C55E' }]
+  const data = [{ value: score, fill: 'var(--engine-protect)' }]
   return (
     <div className="flex flex-col items-center gap-3">
       <p className="text-xs font-medium uppercase tracking-widest" style={{ color: '#64748B' }}>
@@ -57,7 +57,7 @@ function ScoreRingLarge({ score }: { score: number }) {
           <span className="text-xs" style={{ color: '#64748B' }}>{'/100'}</span>
         </div>
       </div>
-      <span className="text-sm font-medium" style={{ color: '#22C55E' }}>
+      <span className="text-sm font-medium" style={{ color: 'var(--engine-protect)' }}>
         {'Low \u2014 monitoring'}
       </span>
     </div>
@@ -81,17 +81,17 @@ function CategoryScoreBars() {
               className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
               style={{ background: 'rgba(34,197,94,0.1)' }}
             >
-              <Icon className="h-4 w-4" style={{ color: '#22C55E' }} />
+              <Icon className="h-4 w-4" style={{ color: 'var(--engine-protect)' }} />
             </div>
             <div className="min-w-0 flex-1">
               <div className="mb-1.5 flex items-center justify-between">
                 <span className="text-sm font-medium" style={{ color: '#F1F5F9' }}>{cat.name}</span>
-                <span className="font-mono text-sm font-semibold" style={{ color: '#22C55E' }}>{cat.score}</span>
+                <span className="font-mono text-sm font-semibold" style={{ color: 'var(--engine-protect)' }}>{cat.score}</span>
               </div>
               <div className="h-2 overflow-hidden rounded-full" style={{ background: 'rgba(255,255,255,0.08)' }}>
                 <motion.div
                   className="h-full rounded-full"
-                  style={{ background: 'linear-gradient(90deg, #22C55E, rgba(34,197,94,0.6))' }}
+                  style={{ background: 'linear-gradient(90deg, var(--engine-protect), rgba(34,197,94,0.6))' }}
                   initial={{ width: 0 }}
                   animate={{ width: `${cat.score}%` }}
                   transition={{ duration: 1, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
@@ -137,7 +137,7 @@ function Timeline() {
                   className="flex h-8 w-8 items-center justify-center rounded-full"
                   style={{ background: 'rgba(34,197,94,0.15)', boxShadow: 'inset 0 0 0 2px rgba(34,197,94,0.3)' }}
                 >
-                  <div className="h-3 w-3 animate-pulse rounded-full" style={{ background: '#22C55E' }} />
+                  <div className="h-3 w-3 animate-pulse rounded-full" style={{ background: 'var(--engine-protect)' }} />
                 </div>
               )}
             </div>
@@ -159,7 +159,7 @@ function Timeline() {
               {m.status === 'current' && (
                 <span
                   className="rounded-full px-2.5 py-0.5 text-xs font-medium"
-                  style={{ background: 'rgba(34,197,94,0.1)', color: '#22C55E' }}
+                  style={{ background: 'rgba(34,197,94,0.1)', color: 'var(--engine-protect)' }}
                 >
                   Active
                 </span>
@@ -177,14 +177,14 @@ function Timeline() {
 function EvidenceSummary() {
   return (
     <GlassCard
-      borderColor="#22C55E"
+      borderColor="var(--engine-protect)"
       style={{
         background: 'rgba(255,255,255,0.05)',
         border: '1px solid rgba(255,255,255,0.1)',
       }}
     >
       <h3 className="mb-3 text-sm font-semibold flex items-center gap-2" style={{ color: '#F1F5F9' }}>
-        <AlertCircle size={14} style={{ color: '#22C55E' }} aria-hidden="true" />
+        <AlertCircle size={14} style={{ color: 'var(--engine-protect)' }} aria-hidden="true" />
         Evidence Summary
       </h3>
       <p className="text-sm leading-relaxed" style={{ color: '#CBD5E1' }}>
@@ -223,7 +223,7 @@ export function ProtectSidebar({ viewMode = 'detail' }: ProtectSidebarProps) {
         }}
       >
         <h3 className="mb-4 text-sm font-semibold flex items-center gap-2" style={{ color: '#F1F5F9' }}>
-          <Layers size={14} style={{ color: '#22C55E' }} aria-hidden="true" />
+          <Layers size={14} style={{ color: 'var(--engine-protect)' }} aria-hidden="true" />
           Category Breakdown
         </h3>
         <CategoryScoreBars />
@@ -237,7 +237,7 @@ export function ProtectSidebar({ viewMode = 'detail' }: ProtectSidebarProps) {
         }}
       >
         <h3 className="mb-4 text-sm font-semibold flex items-center gap-2" style={{ color: '#F1F5F9' }}>
-          <Activity size={14} style={{ color: '#22C55E' }} aria-hidden="true" />
+          <Activity size={14} style={{ color: 'var(--engine-protect)' }} aria-hidden="true" />
           Signal Timeline
         </h3>
         <Timeline />
@@ -253,7 +253,7 @@ export function ProtectSidebar({ viewMode = 'detail' }: ProtectSidebarProps) {
           modelVersion={protectMethodology.modelVersion}
           accuracy={protectMethodology.accuracy}
           description={protectMethodology.description}
-          accentColor="#22C55E"
+          accentColor="var(--engine-protect)"
         />
       )}
     </motion.aside>

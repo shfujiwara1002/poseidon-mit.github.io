@@ -2,14 +2,11 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ScrollText, Shield, FileText, CheckCircle, AlertCircle, Clock, Eye as EyeIcon, Edit, ChevronDown, Plus } from 'lucide-react';
 import { Link } from '../router';
+import { GovernFooter, AuroraPulse } from '@/components/poseidon'
+import { GOVERNANCE_META } from '@/lib/governance-meta'
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets'
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] } },
-};
-const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
-
-const engineColors: Record<string, string> = { Protect: '#22C55E', Grow: '#8B5CF6', Execute: '#EAB308', Govern: '#3B82F6', All: '#94A3B8' };
+const engineColors: Record<string, string> = { Protect: 'var(--engine-protect)', Grow: 'var(--engine-grow)', Execute: 'var(--engine-execute)', Govern: 'var(--engine-govern)', All: '#94A3B8' };
 
 const policies = [
   { name: 'Data Privacy Policy', category: 'Privacy', engines: ['All'], status: 'Active' as const, reviewed: 'Feb 10, 2026', desc: 'Governs collection, storage, and processing of personal financial data.', enforcement: 'Strict', violations: 0, fullText: 'All personal data shall be encrypted at rest and in transit. Access is limited to authorized processes. Data retention follows category-specific schedules.' },
@@ -26,7 +23,7 @@ const policies = [
   { name: 'Consumer Protection Act', category: 'Compliance', engines: ['Execute'], status: 'Active' as const, reviewed: 'Feb 7, 2026', desc: 'Consumer financial protection compliance.', enforcement: 'Strict', violations: 0, fullText: 'All automated financial actions must be reversible within 24 hours. Clear disclosures required.' },
 ];
 
-const categoryColors: Record<string, string> = { Privacy: '#8B5CF6', Fairness: '#00F0FF', Safety: '#EAB308', Compliance: '#3B82F6' };
+const categoryColors: Record<string, string> = { Privacy: 'var(--engine-grow)', Fairness: 'var(--engine-dashboard)', Safety: 'var(--engine-execute)', Compliance: 'var(--engine-govern)' };
 
 const policyHealth = [
   { category: 'Privacy', count: 4 },
@@ -49,12 +46,13 @@ export function GovernPolicy() {
   const displayed = showAll ? policies : policies.slice(0, 5);
 
   return (
-    <div className="min-h-screen w-full" style={{ background: '#0B1221' }}>
-      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold" style={{ background: '#3B82F6', color: '#fff' }}>Skip to main content</a>
+    <div className="relative min-h-screen w-full" style={{ background: '#0B1221' }}>
+      <AuroraPulse color="var(--engine-govern)" intensity="subtle" />
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold" style={{ background: 'var(--engine-govern)', color: '#fff' }}>Skip to main content</a>
 
       <nav className="sticky top-0 z-50 backdrop-blur-xl border-b border-white/[0.06]" style={{ background: 'rgba(11,18,33,0.8)' }} aria-label="Breadcrumb">
         <div className="mx-auto px-4 md:px-6 lg:px-8 h-14 flex items-center gap-2" style={{ maxWidth: '1280px' }}>
-          <Link to="/govern" className="flex items-center gap-1.5 text-sm font-medium hover:opacity-80 transition-opacity" style={{ color: '#3B82F6' }}>
+          <Link to="/govern" className="flex items-center gap-1.5 text-sm font-medium hover:opacity-80 transition-opacity" style={{ color: 'var(--engine-govern)' }}>
             <ArrowLeft className="h-4 w-4" />Govern
           </Link>
           <span className="text-white/20">/</span>
@@ -67,9 +65,9 @@ export function GovernPolicy() {
         <motion.div variants={fadeUp} className="flex flex-col gap-1">
           <div className="flex items-center gap-2 mb-1">
             <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'rgba(59,130,246,0.15)' }}>
-              <ScrollText className="h-4 w-4" style={{ color: '#3B82F6' }} />
+              <ScrollText className="h-4 w-4" style={{ color: 'var(--engine-govern)' }} />
             </div>
-            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#3B82F6' }}>Govern · Policy</span>
+            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--engine-govern)' }}>Govern · Policy</span>
           </div>
           <h1 className="text-2xl md:text-3xl font-bold text-white">Policy & Rules</h1>
           <p className="text-sm text-slate-400">12 active policies · 0 violations · Last reviewed Feb 16, 2026.</p>
@@ -78,10 +76,10 @@ export function GovernPolicy() {
         {/* KPI bar */}
         <motion.div variants={fadeUp} className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { label: 'Active policies', value: '12', color: '#3B82F6' },
-            { label: 'Violations (30d)', value: '0', color: '#22C55E' },
-            { label: 'Pending review', value: '2', color: '#EAB308' },
-            { label: 'Compliance', value: '100%', color: '#22C55E' },
+            { label: 'Active policies', value: '12', color: 'var(--engine-govern)' },
+            { label: 'Violations (30d)', value: '0', color: 'var(--engine-protect)' },
+            { label: 'Pending review', value: '2', color: 'var(--engine-execute)' },
+            { label: 'Compliance', value: '100%', color: 'var(--engine-protect)' },
           ].map((kpi) => (
             <div key={kpi.label} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
               <p className="text-xs text-white/40 mb-1">{kpi.label}</p>
@@ -116,7 +114,7 @@ export function GovernPolicy() {
                     <div className="flex items-center gap-3 text-[10px] text-white/30">
                       <span>Last reviewed: {p.reviewed}</span>
                     </div>
-                    <button onClick={() => setExpanded(expanded === p.name ? null : p.name)} className="flex items-center gap-1 mt-2 text-xs font-medium hover:opacity-80 transition-opacity" style={{ color: '#3B82F6' }}>
+                    <button onClick={() => setExpanded(expanded === p.name ? null : p.name)} className="flex items-center gap-1 mt-2 text-xs font-medium hover:opacity-80 transition-opacity" style={{ color: 'var(--engine-govern)' }}>
                       <EyeIcon className="h-3 w-3" />{expanded === p.name ? 'Hide details' : 'View details'}
                       <ChevronDown className={`h-3 w-3 transition-transform ${expanded === p.name ? 'rotate-180' : ''}`} />
                     </button>
@@ -141,7 +139,7 @@ export function GovernPolicy() {
                 </div>
               ))}
               {!showAll && (
-                <button onClick={() => setShowAll(true)} className="text-sm font-medium hover:opacity-80 transition-opacity text-center py-2" style={{ color: '#3B82F6' }}>
+                <button onClick={() => setShowAll(true)} className="text-sm font-medium hover:opacity-80 transition-opacity text-center py-2" style={{ color: 'var(--engine-govern)' }}>
                   Show all 12 policies
                 </button>
               )}
@@ -184,7 +182,7 @@ export function GovernPolicy() {
 
             {/* Quick add */}
             <motion.div variants={fadeUp} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6">
-              <button className="w-full flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold text-white hover:opacity-90 transition-opacity" style={{ background: '#3B82F6' }}>
+              <button className="w-full flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold text-white hover:opacity-90 transition-opacity" style={{ background: 'var(--engine-govern)' }}>
                 <Plus className="h-3.5 w-3.5" />Draft new policy
               </button>
             </motion.div>
@@ -200,6 +198,8 @@ export function GovernPolicy() {
           <span className="text-xs text-white/30">PolicyEngine v2.0</span>
           <Link to="/govern/oversight" className="ml-auto text-xs text-white/40 hover:text-white/60 transition-colors">Request human review</Link>
         </motion.footer>
+
+        <GovernFooter auditId={GOVERNANCE_META['/govern/policy'].auditId} pageContext={GOVERNANCE_META['/govern/policy'].pageContext} />
       </motion.div>
     </div>
   );

@@ -2,14 +2,10 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, GitBranch, Zap } from 'lucide-react';
 import { Link } from '../router';
-import { GovernFooter } from '../components/dashboard/GovernFooter';
+import { GovernFooter, ForecastBand, AuroraPulse } from '@/components/poseidon'
+import { GOVERNANCE_META } from '@/lib/governance-meta'
 import { usePageTitle } from '../hooks/use-page-title';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] } },
-};
-const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets';
 
 /* ═══════════════════════════════════════════
    DATA
@@ -27,6 +23,17 @@ const scenarioFactors = [
   { label: 'Savings rate impact', contribution: 0.85 },
   { label: 'Market conditions', contribution: 0.62 },
   { label: 'Seasonal patterns', contribution: -0.15 },
+];
+
+const forecastData: { x: number; median: number; low: number; high: number }[] = [
+  { x: 0, median: 100, low: 95, high: 105 },
+  { x: 1, median: 108, low: 98, high: 118 },
+  { x: 2, median: 115, low: 100, high: 132 },
+  { x: 3, median: 124, low: 104, high: 148 },
+  { x: 4, median: 132, low: 108, high: 162 },
+  { x: 5, median: 141, low: 112, high: 178 },
+  { x: 6, median: 150, low: 115, high: 195 },
+  { x: 7, median: 158, low: 118, high: 210 },
 ];
 
 const horizonOptions = ['30d', '90d', '1yr'] as const;
@@ -48,11 +55,12 @@ export function GrowScenarios() {
   const selected = scenarios.find((s) => s.id === activeScenario) ?? scenarios[1];
 
   return (
-    <div className="min-h-screen w-full" style={{ background: '#0B1221' }}>
+    <div className="relative min-h-screen w-full" style={{ background: '#0B1221' }}>
+      <AuroraPulse color="var(--engine-grow)" intensity="subtle" />
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold"
-        style={{ background: '#8B5CF6', color: '#ffffff' }}
+        style={{ background: 'var(--engine-grow)', color: '#ffffff' }}
       >
         Skip to main content
       </a>
@@ -66,7 +74,7 @@ export function GrowScenarios() {
           <Link
             to="/grow"
             className="flex items-center gap-1.5 text-sm font-medium hover:opacity-80 transition-opacity"
-            style={{ color: '#8B5CF6' }}
+            style={{ color: 'var(--engine-grow)' }}
           >
             <ArrowLeft className="h-4 w-4" />
             Grow
@@ -88,8 +96,8 @@ export function GrowScenarios() {
         {/* Hero */}
         <motion.div variants={fadeUp} className="flex flex-col gap-1">
           <div className="flex items-center gap-2 mb-1">
-            <GitBranch className="h-5 w-5" style={{ color: '#8B5CF6' }} />
-            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#8B5CF6' }}>
+            <GitBranch className="h-5 w-5" style={{ color: 'var(--engine-grow)' }} />
+            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--engine-grow)' }}>
               Grow · Scenarios
             </span>
           </div>
@@ -101,10 +109,10 @@ export function GrowScenarios() {
         <motion.div variants={fadeUp}>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { label: 'Scenarios', value: '3', color: '#8B5CF6' },
-              { label: 'Best delta', value: '+$8.4k', color: '#22C55E' },
-              { label: 'Avg confidence', value: '0.90', color: '#00F0FF' },
-              { label: 'Horizon', value: horizon, color: '#3B82F6' },
+              { label: 'Scenarios', value: '3', color: 'var(--engine-grow)' },
+              { label: 'Best delta', value: '+$8.4k', color: 'var(--engine-protect)' },
+              { label: 'Avg confidence', value: '0.90', color: 'var(--engine-dashboard)' },
+              { label: 'Horizon', value: horizon, color: 'var(--engine-govern)' },
             ].map((kpi) => (
               <div key={kpi.label} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
                 <p className="text-xs text-white/40 mb-1">{kpi.label}</p>
@@ -129,7 +137,7 @@ export function GrowScenarios() {
                     type="text"
                     defaultValue={selected.name}
                     className="w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:ring-1"
-                    style={{ '--tw-ring-color': '#8B5CF6' } as React.CSSProperties}
+                    style={{ '--tw-ring-color': 'var(--engine-grow)' } as React.CSSProperties}
                   />
                 </div>
 
@@ -176,7 +184,7 @@ export function GrowScenarios() {
                 <div className="flex gap-3 pt-2">
                   <button
                     className="flex-1 rounded-xl text-white text-sm font-semibold py-2.5 hover:opacity-90 transition-opacity"
-                    style={{ background: '#8B5CF6' }}
+                    style={{ background: 'var(--engine-grow)' }}
                   >
                     Run Scenario
                   </button>
@@ -194,12 +202,9 @@ export function GrowScenarios() {
             {/* Forecast visualization */}
             <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6">
               <h2 className="text-sm font-semibold text-white mb-4">Forecast Projection ({horizon})</h2>
-              <div className="h-48 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(to bottom, rgba(139,92,246,0.1), transparent)', border: '1px solid rgba(255,255,255,0.05)' }}>
-                <div className="text-center">
-                  <p className="text-sm text-white/40">Forecast Band</p>
-                  <p className="text-xs text-white/25 mt-1">Baseline (white) vs {selected.name} (violet)</p>
-                  <p className="text-2xl font-bold mt-2" style={{ color: '#8B5CF6' }}>{selected.projectedBalance}</p>
-                </div>
+              <div className="h-48 rounded-xl flex flex-col items-center justify-center gap-2" style={{ background: 'linear-gradient(to bottom, rgba(139,92,246,0.1), transparent)', border: '1px solid rgba(255,255,255,0.05)' }}>
+                <ForecastBand data={forecastData} width={320} height={120} engine="grow" className="mx-auto" />
+                <p className="text-2xl font-bold" style={{ color: 'var(--engine-grow)' }}>{selected.projectedBalance}</p>
               </div>
               <p className="text-xs text-white/30 mt-2">Projected balance: {selected.projectedBalance} · Delta: {selected.delta} · Horizon: {horizon}</p>
             </div>
@@ -217,8 +222,8 @@ export function GrowScenarios() {
                     <p>Confidence: <span className="text-white/70">96%</span></p>
                   </div>
                 </div>
-                <div className="rounded-xl border border-violet-500/30 bg-violet-500/5 p-4" style={{ borderLeftWidth: 2, borderLeftColor: '#8B5CF6' }}>
-                  <p className="text-xs uppercase tracking-wider" style={{ color: '#8B5CF6' }}>{selected.name}</p>
+                <div className="rounded-xl border border-violet-500/30 bg-violet-500/5 p-4" style={{ borderLeftWidth: 2, borderLeftColor: 'var(--engine-grow)' }}>
+                  <p className="text-xs uppercase tracking-wider" style={{ color: 'var(--engine-grow)' }}>{selected.name}</p>
                   <p className="text-2xl font-bold text-white mt-1">{selected.projectedBalance}</p>
                   <div className="mt-3 space-y-1 text-xs text-white/50">
                     <p>Delta: <span className="text-violet-300">{selected.delta}</span></p>
@@ -230,11 +235,11 @@ export function GrowScenarios() {
             </div>
 
             {/* AI recommendation */}
-            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6" style={{ borderLeftWidth: 2, borderLeftColor: '#8B5CF6' }}>
+            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6" style={{ borderLeftWidth: 2, borderLeftColor: 'var(--engine-grow)' }}>
               <div className="flex items-start gap-3 mb-3">
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold" style={{ background: 'rgba(139,92,246,0.2)', color: '#8B5CF6' }}>AI</div>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold" style={{ background: 'rgba(139,92,246,0.2)', color: 'var(--engine-grow)' }}>AI</div>
                 <div>
-                  <p className="text-sm text-white">Scenario B is achievable with <span className="font-semibold" style={{ color: '#8B5CF6' }}>91% probability</span>.</p>
+                  <p className="text-sm text-white">Scenario B is achievable with <span className="font-semibold" style={{ color: 'var(--engine-grow)' }}>91% probability</span>.</p>
                   <p className="text-xs text-white/50 mt-1">Based on your income stability and historical expense patterns, moderate growth has the best risk-adjusted return.</p>
                 </div>
               </div>
@@ -243,7 +248,7 @@ export function GrowScenarios() {
                 <Link
                   to="/execute"
                   className="px-4 py-2 rounded-lg text-white text-xs font-semibold hover:opacity-90 transition-opacity"
-                  style={{ background: '#8B5CF6' }}
+                  style={{ background: 'var(--engine-grow)' }}
                 >
                   Send to Execute
                 </Link>
@@ -281,7 +286,7 @@ export function GrowScenarios() {
                 <svg width="80" height="80" viewBox="0 0 80 80" aria-hidden="true">
                   <circle cx="40" cy="40" r="32" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
                   <circle
-                    cx="40" cy="40" r="32" fill="none" stroke="#8B5CF6" strokeWidth="6"
+                    cx="40" cy="40" r="32" fill="none" stroke="var(--engine-grow)" strokeWidth="6"
                     strokeLinecap="round"
                     strokeDasharray={`${(selected.confidence / 100) * 2 * Math.PI * 32} ${2 * Math.PI * 32}`}
                     transform="rotate(-90 40 40)"
@@ -298,7 +303,7 @@ export function GrowScenarios() {
             {/* Projection factors */}
             <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
               <div className="flex items-center gap-2 mb-3">
-                <Zap className="h-4 w-4" style={{ color: '#8B5CF6' }} />
+                <Zap className="h-4 w-4" style={{ color: 'var(--engine-grow)' }} />
                 <h3 className="text-xs font-semibold text-white/70 uppercase tracking-wider">Projection Factors</h3>
               </div>
               <div className="space-y-2.5">
@@ -308,7 +313,7 @@ export function GrowScenarios() {
                     <div className="flex-1 h-1.5 rounded-full bg-white/10">
                       <div
                         className="h-full rounded-full"
-                        style={{ width: `${Math.abs(f.contribution) * 100}%`, background: f.contribution > 0 ? '#8B5CF6' : '#EF4444', opacity: 0.7 }}
+                        style={{ width: `${Math.abs(f.contribution) * 100}%`, background: f.contribution > 0 ? 'var(--engine-grow)' : '#EF4444', opacity: 0.7 }}
                       />
                     </div>
                     <span className="text-xs text-white/40 w-8 text-right">{f.contribution > 0 ? '+' : ''}{f.contribution.toFixed(2)}</span>
@@ -319,7 +324,7 @@ export function GrowScenarios() {
           </aside>
         </div>
 
-        <GovernFooter />
+        <GovernFooter auditId={GOVERNANCE_META['/grow/scenarios'].auditId} pageContext={GOVERNANCE_META['/grow/scenarios'].pageContext} />
       </motion.div>
     </div>
   );

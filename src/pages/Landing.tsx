@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { AreaChart, Area, ResponsiveContainer } from 'recharts';
 import { Link } from '../router';
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets'
 
 /* ─── Mock data ────────────────────────────────────────────────────────────── */
 
@@ -56,7 +57,7 @@ const engines = [
   {
     icon: Shield,
     name: 'Protect',
-    color: '#22C55E',
+    color: 'var(--engine-protect)',
     desc: 'Real-time threat detection with explainable AI.',
     confidence: 0.94,
   },
@@ -103,19 +104,6 @@ const governancePillars = [
     color: '#4E94FF',
   },
 ];
-
-/* ─── Animation helpers ────────────────────────────────────────────────────── */
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0 },
-};
-
-const stagger = {
-  visible: {
-    transition: { staggerChildren: 0.1 },
-  },
-};
 
 /* ─── Sparkline component ──────────────────────────────────────────────────── */
 

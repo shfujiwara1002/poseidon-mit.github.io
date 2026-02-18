@@ -2,13 +2,9 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Target, TrendingUp } from 'lucide-react';
 import { Link } from '../router';
-import { GovernFooter } from '../components/dashboard/GovernFooter';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] } },
-};
-const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
+import { GovernFooter, ForecastBand, AuroraPulse } from '@/components/poseidon'
+import { GOVERNANCE_META } from '@/lib/governance-meta'
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets';
 
 /* ═══════════════════════════════════════════
    DATA
@@ -38,6 +34,16 @@ const healthCategories = [
   { name: 'Growth rate', score: 72 },
 ];
 
+const goalForecastData: { x: number; median: number; low: number; high: number }[] = [
+  { x: 0, median: 45, low: 45, high: 45 },
+  { x: 1, median: 52, low: 48, high: 56 },
+  { x: 2, median: 60, low: 53, high: 68 },
+  { x: 3, median: 68, low: 57, high: 82 },
+  { x: 4, median: 76, low: 62, high: 95 },
+  { x: 5, median: 85, low: 66, high: 108 },
+  { x: 6, median: 92, low: 70, high: 118 },
+];
+
 const circumference = 2 * Math.PI * 40;
 
 /* ═══════════════════════════════════════════
@@ -46,11 +52,12 @@ const circumference = 2 * Math.PI * 40;
 
 export function GrowGoalDetail() {
   return (
-    <div className="min-h-screen w-full" style={{ background: '#0B1221' }}>
+    <div className="relative min-h-screen w-full" style={{ background: '#0B1221' }}>
+      <AuroraPulse color="var(--engine-grow)" intensity="subtle" />
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold"
-        style={{ background: '#8B5CF6', color: '#ffffff' }}
+        style={{ background: 'var(--engine-grow)', color: '#ffffff' }}
       >
         Skip to main content
       </a>
@@ -64,7 +71,7 @@ export function GrowGoalDetail() {
           <Link
             to="/grow"
             className="flex items-center gap-1.5 text-sm font-medium hover:opacity-80 transition-opacity"
-            style={{ color: '#8B5CF6' }}
+            style={{ color: 'var(--engine-grow)' }}
           >
             <ArrowLeft className="h-4 w-4" />
             Grow
@@ -86,8 +93,8 @@ export function GrowGoalDetail() {
         {/* Hero */}
         <motion.div variants={fadeUp} className="flex flex-col gap-1">
           <div className="flex items-center gap-2 mb-1">
-            <Target className="h-5 w-5" style={{ color: '#8B5CF6' }} />
-            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#8B5CF6' }}>
+            <Target className="h-5 w-5" style={{ color: 'var(--engine-grow)' }} />
+            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--engine-grow)' }}>
               Grow · Goal Detail
             </span>
           </div>
@@ -101,10 +108,10 @@ export function GrowGoalDetail() {
         <motion.div variants={fadeUp}>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { label: 'Progress', value: `${progressPct}%`, color: '#8B5CF6' },
-              { label: 'Monthly avg', value: '$500', color: '#22C55E' },
-              { label: 'Confidence', value: '0.87', color: '#00F0FF' },
-              { label: 'Months left', value: '3', color: '#EAB308' },
+              { label: 'Progress', value: `${progressPct}%`, color: 'var(--engine-grow)' },
+              { label: 'Monthly avg', value: '$500', color: 'var(--engine-protect)' },
+              { label: 'Confidence', value: '0.87', color: 'var(--engine-dashboard)' },
+              { label: 'Months left', value: '3', color: 'var(--engine-execute)' },
             ].map((kpi) => (
               <div key={kpi.label} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
                 <p className="text-xs text-white/40 mb-1">{kpi.label}</p>
@@ -124,7 +131,7 @@ export function GrowGoalDetail() {
                 <svg width="96" height="96" viewBox="0 0 96 96" aria-hidden="true">
                   <circle cx="48" cy="48" r="40" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="8" />
                   <circle
-                    cx="48" cy="48" r="40" fill="none" stroke="#8B5CF6" strokeWidth="8"
+                    cx="48" cy="48" r="40" fill="none" stroke="var(--engine-grow)" strokeWidth="8"
                     strokeLinecap="round"
                     strokeDasharray={`${(progressPct / 100) * circumference} ${circumference}`}
                     transform="rotate(-90 48 48)"
@@ -139,7 +146,7 @@ export function GrowGoalDetail() {
                 <p className="text-lg font-semibold text-white">${goal.current.toLocaleString()} saved</p>
                 <p className="text-sm text-slate-400 mt-0.5">of ${goal.target.toLocaleString()} target · ${remaining.toLocaleString()} remaining</p>
                 <div className="mt-3 h-2 rounded-full bg-white/10">
-                  <div className="h-full rounded-full transition-all" style={{ width: `${progressPct}%`, background: '#8B5CF6' }} />
+                  <div className="h-full rounded-full transition-all" style={{ width: `${progressPct}%`, background: 'var(--engine-grow)' }} />
                 </div>
                 <p className="text-xs text-white/40 mt-1">On track — Projected completion May 2026</p>
               </div>
@@ -148,7 +155,7 @@ export function GrowGoalDetail() {
             {/* Monthly contributions */}
             <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6">
               <div className="flex items-center gap-2 mb-4">
-                <TrendingUp className="h-4 w-4" style={{ color: '#8B5CF6' }} />
+                <TrendingUp className="h-4 w-4" style={{ color: 'var(--engine-grow)' }} />
                 <h2 className="text-sm font-semibold text-white">Monthly Contributions</h2>
               </div>
               <div className="flex items-end gap-2 h-20 mb-2">
@@ -156,7 +163,7 @@ export function GrowGoalDetail() {
                   <div key={d.month} className="flex-1 flex flex-col items-center gap-1">
                     <div
                       className="w-full rounded-sm"
-                      style={{ height: `${(d.amount / 600) * 100}%`, background: d.amount >= 500 ? '#8B5CF6' : 'rgba(139,92,246,0.4)' }}
+                      style={{ height: `${(d.amount / 600) * 100}%`, background: d.amount >= 500 ? 'var(--engine-grow)' : 'rgba(139,92,246,0.4)' }}
                     />
                   </div>
                 ))}
@@ -176,10 +183,19 @@ export function GrowGoalDetail() {
               <p className="text-xs text-white/30 mt-2">Projected completion: May 2026 · Confidence 0.87 · GoalTracker v2.1</p>
             </div>
 
+            {/* Goal projection forecast */}
+            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6">
+              <h2 className="text-sm font-semibold text-white mb-4">Goal Projection</h2>
+              <div className="flex flex-col items-center gap-2">
+                <ForecastBand data={goalForecastData} width={280} height={100} engine="grow" />
+                <p className="text-xs text-white/30">Confidence band based on contribution variance and growth rate</p>
+              </div>
+            </div>
+
             {/* AI recommendation */}
-            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6" style={{ borderLeftWidth: 3, borderLeftColor: '#8B5CF6' }}>
+            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6" style={{ borderLeftWidth: 3, borderLeftColor: 'var(--engine-grow)' }}>
               <div className="flex items-start gap-3 mb-3">
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold" style={{ background: 'rgba(139,92,246,0.2)', color: '#8B5CF6' }}>AI</div>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold" style={{ background: 'rgba(139,92,246,0.2)', color: 'var(--engine-grow)' }}>AI</div>
                 <div>
                   <p className="text-sm font-semibold text-white">AI Recommendation</p>
                   <p className="text-xs text-white/50 mt-1">Increasing monthly contribution by $100 would accelerate completion by 3 weeks.</p>
@@ -190,7 +206,7 @@ export function GrowGoalDetail() {
                 <Link
                   to="/execute"
                   className="px-4 py-2 rounded-lg text-white text-xs font-semibold hover:opacity-90 transition-opacity"
-                  style={{ background: '#8B5CF6' }}
+                  style={{ background: 'var(--engine-grow)' }}
                 >
                   Add Funds
                 </Link>
@@ -214,7 +230,7 @@ export function GrowGoalDetail() {
                       <span className="text-white/70">{cat.score}</span>
                     </div>
                     <div className="h-1.5 rounded-full bg-white/10">
-                      <div className="h-full rounded-full" style={{ width: `${cat.score}%`, background: '#8B5CF6' }} />
+                      <div className="h-full rounded-full" style={{ width: `${cat.score}%`, background: 'var(--engine-grow)' }} />
                     </div>
                   </div>
                 ))}
@@ -257,7 +273,7 @@ export function GrowGoalDetail() {
           </aside>
         </div>
 
-        <GovernFooter />
+        <GovernFooter auditId={GOVERNANCE_META['/grow/goal'].auditId} pageContext={GOVERNANCE_META['/grow/goal'].pageContext} />
       </motion.div>
     </div>
   );

@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { AreaChart, Area, ResponsiveContainer } from 'recharts';
 import { Link } from '../../router';
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets'
 
 /* ─── Mock data ────────────────────────────────────────────────────────────── */
 
@@ -34,13 +35,13 @@ const metricsData = [
   {
     label: 'Decisions Audited',
     value: '1,247',
-    color: '#3B82F6',
+    color: 'var(--engine-govern)',
     spark: [2, 4, 5, 7, 8, 9, 10, 11, 12, 12.5],
   },
   {
     label: 'Threats Blocked',
     value: '23',
-    color: '#EAB308',
+    color: 'var(--engine-execute)',
     spark: [8, 7, 5, 6, 4, 3, 3, 2, 2, 2.3],
   },
   {
@@ -55,28 +56,28 @@ const engines = [
   {
     icon: Shield,
     name: 'Protect',
-    color: '#22C55E',
+    color: 'var(--engine-protect)',
     desc: 'Real-time threat detection with explainable AI.',
     confidence: 0.94,
   },
   {
     icon: TrendingUp,
     name: 'Grow',
-    color: '#8B5CF6',
+    color: 'var(--engine-grow)',
     desc: 'Forecast-driven growth with Monte Carlo simulations.',
     confidence: 0.89,
   },
   {
     icon: Zap,
     name: 'Execute',
-    color: '#EAB308',
+    color: 'var(--engine-execute)',
     desc: 'Consent-first automation with reversible actions.',
     confidence: 0.91,
   },
   {
     icon: Scale,
     name: 'Govern',
-    color: '#3B82F6',
+    color: 'var(--engine-govern)',
     desc: 'Full audit trail for every AI decision.',
     confidence: 0.97,
   },
@@ -87,34 +88,21 @@ const governancePillars = [
     icon: Brain,
     title: 'Explainable',
     desc: 'Every AI decision includes SHAP feature attribution.',
-    color: '#3B82F6',
+    color: 'var(--engine-govern)',
   },
   {
     icon: ScrollText,
     title: 'Auditable',
     desc: '1,247 decisions with full audit trails.',
-    color: '#3B82F6',
+    color: 'var(--engine-govern)',
   },
   {
     icon: RotateCcw,
     title: 'Reversible',
     desc: 'One-click rollback on any automated action.',
-    color: '#3B82F6',
+    color: 'var(--engine-govern)',
   },
 ];
-
-/* ─── Animation helpers ────────────────────────────────────────────────────── */
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0 },
-};
-
-const stagger = {
-  visible: {
-    transition: { staggerChildren: 0.1 },
-  },
-};
 
 /* ─── Sparkline component ──────────────────────────────────────────────────── */
 

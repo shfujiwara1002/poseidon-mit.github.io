@@ -22,7 +22,7 @@ export function ExecuteGlance() {
           summary="Block wire transfer to MerchantX — fraud score 0.94, exceeds $5k threshold. Immediate action required."
           sources={executeCitations}
           confidence={0.94}
-          accentColor="#EAB308"
+          accentColor="var(--engine-execute)"
           viewMode="glance"
         />
       </motion.div>
@@ -49,7 +49,7 @@ export function ExecuteGlance() {
       <motion.div variants={fadeUp} className="grid grid-cols-3 gap-3">
         <GlassCard className="flex flex-col items-center gap-1 py-4 glass-hover-execute">
           <span className="text-xs uppercase tracking-wider" style={{ color: '#64748B' }}>Pending</span>
-          <span className="text-2xl font-bold" style={{ color: '#EAB308' }}>
+          <span className="text-2xl font-bold" style={{ color: 'var(--engine-execute)' }}>
             <CountUp value={4} />
           </span>
         </GlassCard>
@@ -61,7 +61,7 @@ export function ExecuteGlance() {
         </GlassCard>
         <GlassCard className="flex flex-col items-center gap-1 py-4 glass-hover-execute">
           <span className="text-xs uppercase tracking-wider" style={{ color: '#64748B' }}>Auto-executed</span>
-          <span className="text-2xl font-bold" style={{ color: '#3B82F6' }}>
+          <span className="text-2xl font-bold" style={{ color: 'var(--engine-govern)' }}>
             <CountUp value={12} />
           </span>
         </GlassCard>

@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
-import { useRouter } from '../router';
 import { motion } from 'framer-motion';
 import {
   Shield,
-  ShieldCheck,
-  ExternalLink,
   User as UserIcon,
   Brain,
   Plug,
@@ -20,6 +17,9 @@ import {
   CircleDot,
 } from 'lucide-react';
 import { usePageTitle } from '../hooks/use-page-title';
+import { GovernFooter, AuroraPulse } from '@/components/poseidon';
+import { GOVERNANCE_META } from '@/lib/governance-meta';
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets';
 
 /* ═══════════════════════════════════════════
    TYPES
@@ -77,7 +77,7 @@ const integrations: Integration[] = [
     name: 'Stripe',
     description: 'Payment Processing',
     logo: 'S',
-    logoColor: '#8B5CF6',
+    logoColor: 'var(--engine-grow)',
     logoBg: 'rgba(139,92,246,0.15)',
     status: 'Connected',
     details: 'Business account',
@@ -123,7 +123,7 @@ const integrations: Integration[] = [
     name: 'Email Notifications',
     description: 'Alerts & Reports',
     logo: '',
-    logoColor: '#3B82F6',
+    logoColor: 'var(--engine-govern)',
     logoBg: 'rgba(59,130,246,0.15)',
     status: 'Configured',
     details: 'user@example.com',
@@ -136,21 +136,6 @@ const recentChanges = [
   { text: 'Email preferences updated', time: '2 hours ago' },
   { text: 'AI risk threshold adjusted', time: 'Yesterday' },
 ];
-
-/* ═══════════════════════════════════════════
-   ANIMATION VARIANTS
-   ═══════════════════════════════════════════ */
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 },
-};
-
-const stagger = {
-  visible: {
-    transition: { staggerChildren: 0.08 },
-  },
-};
 
 /* ═══════════════════════════════════════════
    UTILITY HELPERS
@@ -208,7 +193,7 @@ function HeroSection() {
           style={{
             borderColor: 'rgba(0,240,255,0.3)',
             background: 'rgba(0,240,255,0.08)',
-            color: '#00F0FF',
+            color: 'var(--engine-dashboard)',
           }}
         >
           <SettingsIcon size={12} />
@@ -275,7 +260,7 @@ function SettingsTabs({
               style={{
                 background: isActive ? 'rgba(255,255,255,0.08)' : 'transparent',
                 color: isActive ? '#F1F5F9' : '#94A3B8',
-                borderLeft: isActive ? '4px solid #00F0FF' : '4px solid transparent',
+                borderLeft: isActive ? '4px solid var(--engine-dashboard)' : '4px solid transparent',
                 minHeight: '44px',
               }}
             >
@@ -300,7 +285,7 @@ function SettingsTabs({
                 className="flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium whitespace-nowrap transition-all cursor-pointer"
                 style={{
                   background: isActive ? 'rgba(0,240,255,0.12)' : 'rgba(255,255,255,0.05)',
-                  color: isActive ? '#00F0FF' : '#94A3B8',
+                  color: isActive ? 'var(--engine-dashboard)' : '#94A3B8',
                   border: isActive ? '1px solid rgba(0,240,255,0.3)' : '1px solid transparent',
                   minHeight: '44px',
                 }}
@@ -464,7 +449,7 @@ function RecentChanges() {
           >
             <div
               className="mt-0.5 h-2 w-2 rounded-full shrink-0"
-              style={{ background: '#00F0FF' }}
+              style={{ background: 'var(--engine-dashboard)' }}
               aria-hidden="true"
             />
             <div className="flex flex-col gap-0.5 min-w-0">
@@ -479,53 +464,6 @@ function RecentChanges() {
 }
 
 /* ═══════════════════════════════════════════
-   GOVERNANCE FOOTER
-   ═══════════════════════════════════════════ */
-
-function GovernFooter() {
-  const { navigate } = useRouter();
-  return (
-    <footer
-      className="mt-8 flex flex-col gap-3 md:flex-row md:items-center md:justify-between rounded-2xl border border-white/[0.06] px-4 py-3 md:px-6 md:py-4"
-      style={{ background: 'rgba(255,255,255,0.03)' }}
-      role="contentinfo"
-      aria-label="Governance verification footer"
-    >
-      <div className="flex items-center gap-2">
-        <div
-          className="flex items-center justify-center rounded-full"
-          style={{ width: 28, height: 28, background: 'rgba(59,130,246,0.12)' }}
-        >
-          <ShieldCheck size={14} style={{ color: '#3B82F6' }} />
-        </div>
-        <span
-          className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider"
-          style={{ background: 'rgba(16,185,129,0.12)', color: '#10B981' }}
-        >
-          <Shield size={10} />
-          Verified
-        </span>
-      </div>
-      <div className="flex items-center gap-2">
-        <span className="text-xs font-mono" style={{ color: '#64748B' }}>
-          GV-2026-0216-SET
-        </span>
-        <ExternalLink size={12} style={{ color: '#64748B' }} aria-hidden="true" />
-      </div>
-      <button
-        className="inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-xs font-medium transition-all hover:bg-white/[0.04] cursor-pointer"
-        style={{ borderColor: 'rgba(255,255,255,0.08)', color: '#CBD5E1', background: 'transparent', minHeight: '44px' }}
-        aria-label="Request human review of settings changes"
-        onClick={() => navigate('/govern/oversight')}
-      >
-        <UserIcon size={14} />
-        Request human review
-      </button>
-    </footer>
-  );
-}
-
-/* ═══════════════════════════════════════════
    MAIN COMPONENT
    ═══════════════════════════════════════════ */
 
@@ -534,11 +472,12 @@ export function Settings() {
   const [activeTab, setActiveTab] = useState('integrations');
 
   return (
-    <div className="min-h-screen w-full" style={{ background: '#0B1221' }}>
+    <div className="relative min-h-screen w-full" style={{ background: '#0B1221' }}>
+      <AuroraPulse color="var(--engine-dashboard)" intensity="subtle" />
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-1/2 focus:-translate-x-1/2 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold"
-        style={{ background: '#00F0FF', color: '#0B1221' }}
+        style={{ background: 'var(--engine-dashboard)', color: '#0B1221' }}
       >
         Skip to main content
       </a>
@@ -582,7 +521,7 @@ export function Settings() {
           </aside>
         </div>
 
-        <GovernFooter />
+        <GovernFooter auditId={GOVERNANCE_META['/settings'].auditId} pageContext={GOVERNANCE_META['/settings'].pageContext} />
       </div>
     </div>
   );

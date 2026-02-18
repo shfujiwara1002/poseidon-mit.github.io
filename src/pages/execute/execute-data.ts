@@ -29,7 +29,7 @@ export const kpiData: KpiCardData[] = [
   {
     label: 'Pending Actions',
     value: '4',
-    badge: { text: 'pending', color: '#EAB308', bg: 'rgba(234,179,8,0.12)' },
+    badge: { text: 'pending', color: 'var(--engine-execute)', bg: 'rgba(234,179,8,0.12)' },
   },
   {
     label: 'Auto-approved Today',
@@ -126,9 +126,9 @@ export const confidenceData = [
    ═══════════════════════════════════════════ */
 
 export const engineColor: Record<Engine, string> = {
-  Protect: '#22C55E',
-  Grow: '#8B5CF6',
-  Govern: '#3B82F6',
+  Protect: 'var(--engine-protect)',
+  Grow: 'var(--engine-grow)',
+  Govern: 'var(--engine-govern)',
 }
 
 export const engineBg: Record<Engine, string> = {

@@ -21,7 +21,7 @@ export function ProtectGlance() {
           <GlassCard className="flex flex-col gap-4 glass-hover-protect">
             <div className="flex items-center justify-between">
               <SeverityBadge severity={signal.severity} />
-              <ConfidenceIndicator value={signal.confidence} accentColor="#22C55E" />
+              <ConfidenceIndicator value={signal.confidence} accentColor="var(--engine-protect)" />
             </div>
             <h3 className="text-sm font-semibold" style={{ color: '#F1F5F9' }}>
               {signal.title}

@@ -22,7 +22,7 @@ export function GovernGlance() {
             className="flex h-12 w-12 items-center justify-center rounded-full"
             style={{ background: 'rgba(59,130,246,0.12)' }}
           >
-            <ShieldCheck size={24} style={{ color: '#3B82F6' }} />
+            <ShieldCheck size={24} style={{ color: 'var(--engine-govern)' }} />
           </div>
           <span className="text-4xl md:text-5xl font-bold tabular-nums" style={{ fontFamily: 'var(--font-display)', color: '#F1F5F9' }}>
             <CountUp value={847} />
@@ -30,7 +30,7 @@ export function GovernGlance() {
           <span className="text-sm font-medium" style={{ color: '#CBD5E1' }}>
             decisions fully audited
           </span>
-          <span className="text-xs" style={{ color: '#3B82F6' }}>100% traceable</span>
+          <span className="text-xs" style={{ color: 'var(--engine-govern)' }}>100% traceable</span>
         </GlassCard>
       </motion.div>
 
@@ -47,7 +47,7 @@ export function GovernGlance() {
         <motion.div variants={fadeUp}>
           <GlassCard className="flex flex-col items-center gap-1 py-4 glass-hover-govern">
             <span className="text-xs uppercase tracking-wider" style={{ color: '#64748B' }}>Verified</span>
-            <span className="text-2xl font-bold" style={{ color: '#3B82F6' }}>
+            <span className="text-2xl font-bold" style={{ color: 'var(--engine-govern)' }}>
               <CountUp value={812} />
             </span>
           </GlassCard>

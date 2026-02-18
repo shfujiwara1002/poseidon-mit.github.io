@@ -28,13 +28,13 @@ export const Protect: React.FC = () => {
       style={{ background: '#0A1628' }}
       data-view-mode={viewMode}
     >
-      <AuroraPulse color="#22C55E" />
+      <AuroraPulse color="var(--engine-protect)" />
 
       {/* Skip link */}
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-1/2 focus:-translate-x-1/2 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold"
-        style={{ background: '#22C55E', color: '#0A1628' }}
+        style={{ background: 'var(--engine-protect)', color: '#0A1628' }}
       >
         Skip to main content
       </a>

@@ -126,7 +126,7 @@ export const kpiData: KpiCardData[] = [
   {
     label: 'Decisions Audited',
     value: '847',
-    badge: { text: 'audited', color: '#3B82F6', bg: 'rgba(59,130,246,0.12)' },
+    badge: { text: 'audited', color: 'var(--engine-govern)', bg: 'rgba(59,130,246,0.12)' },
   },
   {
     label: 'Verifiable',
@@ -151,8 +151,8 @@ export const kpiData: KpiCardData[] = [
 
 export const typeColor: Record<DecisionType, string> = {
   Protect: '#14B8A6',
-  Grow: '#8B5CF6',
-  Execute: '#EAB308',
+  Grow: 'var(--engine-grow)',
+  Execute: 'var(--engine-execute)',
 }
 
 export const typeBg: Record<DecisionType, string> = {

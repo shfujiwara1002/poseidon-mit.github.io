@@ -2,21 +2,10 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Shield, TrendingUp, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { Link } from '../router';
-import { GovernFooter } from '../components/dashboard/GovernFooter';
+import { GovernFooter, AuroraPulse } from '@/components/poseidon'
+import { GOVERNANCE_META } from '@/lib/governance-meta'
 import { usePageTitle } from '../hooks/use-page-title';
-
-/* ═══════════════════════════════════════════
-   ANIMATION PRESETS
-   ═══════════════════════════════════════════ */
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] } },
-};
-const stagger = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.08 } },
-};
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets';
 
 /* ═══════════════════════════════════════════
    DATA
@@ -34,7 +23,7 @@ interface EngineCard {
 const engineCards: EngineCard[] = [
   {
     engine: 'Protect',
-    color: '#22C55E',
+    color: 'var(--engine-protect)',
     trustScore: 94,
     riskTolerance: 30,
     autoApproval: 85,
@@ -42,7 +31,7 @@ const engineCards: EngineCard[] = [
   },
   {
     engine: 'Grow',
-    color: '#8B5CF6',
+    color: 'var(--engine-grow)',
     trustScore: 89,
     riskTolerance: 55,
     autoApproval: 70,
@@ -50,7 +39,7 @@ const engineCards: EngineCard[] = [
   },
   {
     engine: 'Execute',
-    color: '#EAB308',
+    color: 'var(--engine-execute)',
     trustScore: 91,
     riskTolerance: 40,
     autoApproval: 80,
@@ -58,7 +47,7 @@ const engineCards: EngineCard[] = [
   },
   {
     engine: 'Govern',
-    color: '#3B82F6',
+    color: 'var(--engine-govern)',
     trustScore: 97,
     riskTolerance: 20,
     autoApproval: 95,
@@ -102,12 +91,13 @@ export function GovernTrust() {
   const circumference = 2 * Math.PI * 40;
 
   return (
-    <div className="min-h-screen w-full" style={{ background: '#0B1221' }}>
+    <div className="relative min-h-screen w-full" style={{ background: '#0B1221' }}>
+      <AuroraPulse color="var(--engine-govern)" intensity="subtle" />
       {/* Skip link */}
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold"
-        style={{ background: '#3B82F6', color: '#ffffff' }}
+        style={{ background: 'var(--engine-govern)', color: '#ffffff' }}
       >
         Skip to main content
       </a>
@@ -122,7 +112,7 @@ export function GovernTrust() {
           <Link
             to="/govern"
             className="flex items-center gap-1.5 text-sm font-medium hover:opacity-80 transition-opacity"
-            style={{ color: '#3B82F6' }}
+            style={{ color: 'var(--engine-govern)' }}
           >
             <ArrowLeft className="h-4 w-4" />
             Govern
@@ -145,8 +135,8 @@ export function GovernTrust() {
         {/* Hero */}
         <motion.div variants={fadeUp} className="flex flex-col gap-1">
           <div className="flex items-center gap-2 mb-1">
-            <Shield className="h-5 w-5" style={{ color: '#3B82F6' }} />
-            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#3B82F6' }}>
+            <Shield className="h-5 w-5" style={{ color: 'var(--engine-govern)' }} />
+            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--engine-govern)' }}>
               Govern · Trust
             </span>
           </div>
@@ -167,7 +157,7 @@ export function GovernTrust() {
                   cy="48"
                   r="40"
                   fill="none"
-                  stroke="#3B82F6"
+                  stroke="var(--engine-govern)"
                   strokeWidth="8"
                   strokeLinecap="round"
                   strokeDasharray={`${(systemTrust / 100) * circumference} ${circumference}`}
@@ -326,7 +316,7 @@ export function GovernTrust() {
           </aside>
         </div>
 
-        <GovernFooter />
+        <GovernFooter auditId={GOVERNANCE_META['/govern/trust'].auditId} pageContext={GOVERNANCE_META['/govern/trust'].pageContext} />
       </motion.div>
     </div>
   );

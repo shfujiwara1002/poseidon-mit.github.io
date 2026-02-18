@@ -2,24 +2,21 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Link2, Building2, CreditCard, TrendingUp, Wallet, CheckCircle, AlertCircle, RefreshCw, Trash2, Lock, Plus, Shield } from 'lucide-react';
 import { Link } from '../router';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] } },
-};
-const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
+import { GovernFooter } from '@/components/poseidon'
+import { GOVERNANCE_META } from '@/lib/governance-meta'
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets'
 
 const connectedAccounts = [
-  { id: 'a1', name: 'Chase Checking', type: 'Bank', masked: '••4821', status: 'Connected' as const, lastSync: '2m ago', icon: Building2, iconColor: '#22C55E', iconBg: 'rgba(34,197,94,0.15)', chips: ['Transactions', 'Balances', 'Statements'] },
-  { id: 'a2', name: 'Vanguard Investment', type: 'Investment', masked: '••7290', status: 'Connected' as const, lastSync: '1h ago', icon: TrendingUp, iconColor: '#8B5CF6', iconBg: 'rgba(139,92,246,0.15)', chips: ['Transactions', 'Balances'] },
-  { id: 'a3', name: 'Amex Credit', type: 'Credit Card', masked: '••3344', status: 'Needs attention' as const, lastSync: '3h ago', icon: CreditCard, iconColor: '#EAB308', iconBg: 'rgba(234,179,8,0.15)', chips: ['Transactions', 'Balances', 'Statements'] },
+  { id: 'a1', name: 'Chase Checking', type: 'Bank', masked: '••4821', status: 'Connected' as const, lastSync: '2m ago', icon: Building2, iconColor: 'var(--engine-protect)', iconBg: 'rgba(34,197,94,0.15)', chips: ['Transactions', 'Balances', 'Statements'] },
+  { id: 'a2', name: 'Vanguard Investment', type: 'Investment', masked: '••7290', status: 'Connected' as const, lastSync: '1h ago', icon: TrendingUp, iconColor: 'var(--engine-grow)', iconBg: 'rgba(139,92,246,0.15)', chips: ['Transactions', 'Balances'] },
+  { id: 'a3', name: 'Amex Credit', type: 'Credit Card', masked: '••3344', status: 'Needs attention' as const, lastSync: '3h ago', icon: CreditCard, iconColor: 'var(--engine-execute)', iconBg: 'rgba(234,179,8,0.15)', chips: ['Transactions', 'Balances', 'Statements'] },
 ];
 
 const addTypes = [
-  { id: 'bank', label: 'Bank', icon: Building2, desc: 'Checking & savings', iconColor: '#22C55E', iconBg: 'rgba(34,197,94,0.15)' },
-  { id: 'credit', label: 'Credit Card', icon: CreditCard, desc: 'Cards & rewards', iconColor: '#EAB308', iconBg: 'rgba(234,179,8,0.15)' },
-  { id: 'invest', label: 'Investment', icon: TrendingUp, desc: 'Brokerage & 401k', iconColor: '#8B5CF6', iconBg: 'rgba(139,92,246,0.15)' },
-  { id: 'crypto', label: 'Crypto', icon: Wallet, desc: 'Digital assets', iconColor: '#00F0FF', iconBg: 'rgba(0,240,255,0.15)' },
+  { id: 'bank', label: 'Bank', icon: Building2, desc: 'Checking & savings', iconColor: 'var(--engine-protect)', iconBg: 'rgba(34,197,94,0.15)' },
+  { id: 'credit', label: 'Credit Card', icon: CreditCard, desc: 'Cards & rewards', iconColor: 'var(--engine-execute)', iconBg: 'rgba(234,179,8,0.15)' },
+  { id: 'invest', label: 'Investment', icon: TrendingUp, desc: 'Brokerage & 401k', iconColor: 'var(--engine-grow)', iconBg: 'rgba(139,92,246,0.15)' },
+  { id: 'crypto', label: 'Crypto', icon: Wallet, desc: 'Digital assets', iconColor: 'var(--engine-dashboard)', iconBg: 'rgba(0,240,255,0.15)' },
 ];
 
 const permissions = [
@@ -68,10 +65,10 @@ export function SettingsIntegrations() {
         {/* KPI bar */}
         <motion.div variants={fadeUp} className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { label: 'Connected', value: '3', color: '#22C55E' },
-            { label: 'Last sync', value: '2m ago', color: '#00F0FF' },
-            { label: 'Data coverage', value: '94%', color: '#8B5CF6' },
-            { label: 'Security', value: '256-bit', color: '#EAB308' },
+            { label: 'Connected', value: '3', color: 'var(--engine-protect)' },
+            { label: 'Last sync', value: '2m ago', color: 'var(--engine-dashboard)' },
+            { label: 'Data coverage', value: '94%', color: 'var(--engine-grow)' },
+            { label: 'Security', value: '256-bit', color: 'var(--engine-execute)' },
           ].map((kpi) => (
             <div key={kpi.label} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
               <p className="text-xs text-white/40 mb-1">{kpi.label}</p>
@@ -177,7 +174,7 @@ export function SettingsIntegrations() {
                   <span className="text-emerald-400 font-semibold">94%</span>
                 </div>
                 <div className="h-1.5 rounded-full bg-white/10">
-                  <div className="h-full rounded-full" style={{ width: '94%', background: '#22C55E' }} />
+                  <div className="h-full rounded-full" style={{ width: '94%', background: 'var(--engine-protect)' }} />
                 </div>
               </div>
               <div className="flex flex-col gap-2">
@@ -233,6 +230,8 @@ export function SettingsIntegrations() {
           <span className="text-xs text-white/30">DataSync v2.1</span>
           <Link to="/govern/oversight" className="ml-auto text-xs text-white/40 hover:text-white/60 transition-colors">Request human review</Link>
         </motion.footer>
+
+        <GovernFooter auditId={GOVERNANCE_META['/settings/integrations'].auditId} pageContext={GOVERNANCE_META['/settings/integrations'].pageContext} />
       </motion.div>
     </div>
   );

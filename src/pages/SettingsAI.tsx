@@ -2,12 +2,9 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Brain, Sliders, Bot, Shield, TrendingUp, Zap, Scale, Save, RotateCcw } from 'lucide-react';
 import { Link } from '../router';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] } },
-};
-const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
+import { GovernFooter } from '@/components/poseidon'
+import { GOVERNANCE_META } from '@/lib/governance-meta'
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets'
 
 const autonomyLabels = ['Manual', 'Guided', 'Balanced', 'Delegated', 'Autonomous'];
 const autonomyDescriptions = [
@@ -19,10 +16,10 @@ const autonomyDescriptions = [
 ];
 
 const engines = [
-  { name: 'Protect', color: '#22C55E', icon: Shield, autonomy: 80, autoApprove: true, notify: true, minConf: 0.85 },
-  { name: 'Grow', color: '#8B5CF6', icon: TrendingUp, autonomy: 60, autoApprove: false, notify: true, minConf: 0.80 },
-  { name: 'Execute', color: '#EAB308', icon: Zap, autonomy: 55, autoApprove: false, notify: true, minConf: 0.90 },
-  { name: 'Govern', color: '#3B82F6', icon: Scale, autonomy: 75, autoApprove: true, notify: false, minConf: 0.85 },
+  { name: 'Protect', color: 'var(--engine-protect)', icon: Shield, autonomy: 80, autoApprove: true, notify: true, minConf: 0.85 },
+  { name: 'Grow', color: 'var(--engine-grow)', icon: TrendingUp, autonomy: 60, autoApprove: false, notify: true, minConf: 0.80 },
+  { name: 'Execute', color: 'var(--engine-execute)', icon: Zap, autonomy: 55, autoApprove: false, notify: true, minConf: 0.90 },
+  { name: 'Govern', color: 'var(--engine-govern)', icon: Scale, autonomy: 75, autoApprove: true, notify: false, minConf: 0.85 },
 ];
 
 export function SettingsAI() {
@@ -75,10 +72,10 @@ export function SettingsAI() {
         <motion.div variants={fadeUp}>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { label: 'Global autonomy', value: `${globalAutonomy}%`, color: '#8B5CF6' },
-              { label: 'Auto-approvals', value: '47', color: '#22C55E' },
-              { label: 'Overrides', value: '3', color: '#EAB308' },
-              { label: 'Explanation level', value: verbosity, color: '#00F0FF' },
+              { label: 'Global autonomy', value: `${globalAutonomy}%`, color: 'var(--engine-grow)' },
+              { label: 'Auto-approvals', value: '47', color: 'var(--engine-protect)' },
+              { label: 'Overrides', value: '3', color: 'var(--engine-execute)' },
+              { label: 'Explanation level', value: verbosity, color: 'var(--engine-dashboard)' },
             ].map((kpi) => (
               <div key={kpi.label} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
                 <p className="text-xs text-white/40 mb-1">{kpi.label}</p>
@@ -92,7 +89,7 @@ export function SettingsAI() {
         <motion.div variants={fadeUp} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm font-semibold text-white">Global Autonomy Level</h2>
-            <span className="text-lg font-bold" style={{ color: '#8B5CF6' }}>{globalAutonomy}%</span>
+            <span className="text-lg font-bold" style={{ color: 'var(--engine-grow)' }}>{globalAutonomy}%</span>
           </div>
           <input type="range" min={0} max={100} value={globalAutonomy} onChange={(e) => { setGlobalAutonomy(Number(e.target.value)); setDirty(true); }} className="w-full accent-violet-500 cursor-pointer" />
           <div className="flex justify-between mt-2">
@@ -101,7 +98,7 @@ export function SettingsAI() {
             ))}
           </div>
           <div className="mt-3 flex items-center gap-2">
-            <span className="text-xs font-medium px-2 py-0.5 rounded-full" style={{ background: 'rgba(139,92,246,0.15)', color: '#8B5CF6' }}>{autonomyLabels[autonomyIndex]}</span>
+            <span className="text-xs font-medium px-2 py-0.5 rounded-full" style={{ background: 'rgba(139,92,246,0.15)', color: 'var(--engine-grow)' }}>{autonomyLabels[autonomyIndex]}</span>
           </div>
           <p className="text-xs text-white/40 mt-2">{autonomyDescriptions[autonomyIndex]}</p>
         </motion.div>
@@ -195,6 +192,8 @@ export function SettingsAI() {
           <span className="text-xs text-white/30">PolicyEngine v2.0</span>
           <Link to="/govern/oversight" className="ml-auto text-xs text-white/40 hover:text-white/60 transition-colors">Request human review</Link>
         </motion.footer>
+
+        <GovernFooter auditId={GOVERNANCE_META['/settings/ai'].auditId} pageContext={GOVERNANCE_META['/settings/ai'].pageContext} />
       </motion.div>
 
       {/* Sticky save bar */}
@@ -206,7 +205,7 @@ export function SettingsAI() {
               <button onClick={() => setDirty(false)} className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white/60 text-xs hover:bg-white/10 transition-colors">
                 <RotateCcw className="h-3.5 w-3.5" />Discard
               </button>
-              <button onClick={() => setDirty(false)} className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-white text-xs font-semibold hover:opacity-90 transition-opacity" style={{ background: '#8B5CF6' }}>
+              <button onClick={() => setDirty(false)} className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-white text-xs font-semibold hover:opacity-90 transition-opacity" style={{ background: 'var(--engine-grow)' }}>
                 <Save className="h-3.5 w-3.5" />Save changes
               </button>
             </div>

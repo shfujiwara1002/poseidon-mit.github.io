@@ -45,7 +45,7 @@ export function DecisionLedger({ navigate, viewMode = 'detail' }: DecisionLedger
         className="text-lg md:text-xl font-semibold flex items-center gap-2"
         style={{ fontFamily: 'var(--font-display)', color: '#F1F5F9' }}
       >
-        <FileText size={20} style={{ color: '#3B82F6' }} aria-hidden="true" />
+        <FileText size={20} style={{ color: 'var(--engine-govern)' }} aria-hidden="true" />
         Decision Audit Trail
       </h2>
 
@@ -81,7 +81,7 @@ export function DecisionLedger({ navigate, viewMode = 'detail' }: DecisionLedger
                     <td className="px-4 py-3.5">
                       <button
                         className="text-sm font-mono font-medium transition-colors hover:underline cursor-pointer"
-                        style={{ color: '#3B82F6', background: 'transparent', border: 'none' }}
+                        style={{ color: 'var(--engine-govern)', background: 'transparent', border: 'none' }}
                         aria-label={`View details for decision ${d.id}`}
                         onClick={() => navigate('/govern/audit-detail')}
                       >
@@ -99,7 +99,7 @@ export function DecisionLedger({ navigate, viewMode = 'detail' }: DecisionLedger
                       <span className="text-xs" style={{ color: '#94A3B8' }}>{d.timestamp}</span>
                     </td>
                     <td className="px-4 py-3.5">
-                      <ConfidenceIndicator value={d.confidence} accentColor="#3B82F6" />
+                      <ConfidenceIndicator value={d.confidence} accentColor="var(--engine-govern)" />
                     </td>
                     <td className="px-4 py-3.5">
                       <span className="text-sm font-mono tabular-nums" style={{ color: '#CBD5E1' }}>
@@ -113,7 +113,7 @@ export function DecisionLedger({ navigate, viewMode = 'detail' }: DecisionLedger
                       <button
                         className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
                         style={{
-                          background: 'linear-gradient(135deg, #3B82F6, #2563EB)',
+                          background: 'linear-gradient(135deg, var(--engine-govern), #2563EB)',
                           color: '#ffffff',
                           minHeight: '36px',
                         }}
@@ -144,7 +144,7 @@ export function DecisionLedger({ navigate, viewMode = 'detail' }: DecisionLedger
               </div>
               <button
                 className="text-sm font-mono font-medium text-left transition-colors hover:underline cursor-pointer"
-                style={{ color: '#3B82F6', background: 'transparent', border: 'none', padding: 0 }}
+                style={{ color: 'var(--engine-govern)', background: 'transparent', border: 'none', padding: 0 }}
                 aria-label={`View details for decision ${d.id}`}
                 onClick={() => {
                   if (viewMode === 'deep') {
@@ -164,14 +164,14 @@ export function DecisionLedger({ navigate, viewMode = 'detail' }: DecisionLedger
                 <span className="text-xs" style={{ color: '#64748B' }}>
                   {d.evidencePoints} evidence points
                 </span>
-                <ConfidenceIndicator value={d.confidence} accentColor="#3B82F6" />
+                <ConfidenceIndicator value={d.confidence} accentColor="var(--engine-govern)" />
               </div>
               {viewMode === 'deep' && expandedDecision === d.id && (
                 <CitationCard
                   summary={`${d.id}: ${d.description}. ${d.evidencePoints} evidence points collected.`}
                   sources={governCitations}
                   confidence={d.confidence}
-                  accentColor="#3B82F6"
+                  accentColor="var(--engine-govern)"
                   viewMode={viewMode}
                   className="mt-2"
                 />
@@ -179,7 +179,7 @@ export function DecisionLedger({ navigate, viewMode = 'detail' }: DecisionLedger
               <button
                 className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
                 style={{
-                  background: 'linear-gradient(135deg, #3B82F6, #2563EB)',
+                  background: 'linear-gradient(135deg, var(--engine-govern), #2563EB)',
                   color: '#ffffff',
                   minHeight: '44px',
                 }}
@@ -196,7 +196,7 @@ export function DecisionLedger({ navigate, viewMode = 'detail' }: DecisionLedger
 
       {/* Deep mode: reasoning chain */}
       {viewMode === 'deep' && (
-        <ReasoningChain steps={governReasoningSteps} accentColor="#3B82F6" className="mt-4" />
+        <ReasoningChain steps={governReasoningSteps} accentColor="var(--engine-govern)" className="mt-4" />
       )}
     </motion.section>
   );

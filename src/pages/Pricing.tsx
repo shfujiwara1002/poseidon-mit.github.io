@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Shield, Check, X, CheckCircle, Lock, Star, ChevronDown, ArrowRight, Zap } from 'lucide-react';
 import { Link } from '../router';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] } },
-};
-const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets'
 
 const features = [
   { name: 'Dashboard monitoring', group: 'AI Features', starter: true, pro: true, enterprise: true },
@@ -41,12 +36,12 @@ export function Pricing() {
       <nav className="border-b border-white/[0.06]" style={{ background: 'rgba(11,18,33,0.8)' }}>
         <div className="mx-auto px-4 md:px-6 lg:px-8 h-14 flex items-center justify-between" style={{ maxWidth: '1280px' }}>
           <div className="flex items-center gap-2">
-            <Shield className="h-5 w-5" style={{ color: '#00F0FF' }} />
+            <Shield className="h-5 w-5" style={{ color: 'var(--engine-dashboard)' }} />
             <span className="text-base font-bold text-white">Poseidon.AI</span>
           </div>
           <div className="flex items-center gap-3">
             <Link to="/login" className="text-sm text-white/60 hover:text-white/80 transition-colors">Sign in</Link>
-            <Link to="/signup" className="px-4 py-2 rounded-xl text-xs font-semibold text-[#0B1221] hover:opacity-90 transition-opacity" style={{ background: '#00F0FF' }}>Get started</Link>
+            <Link to="/signup" className="px-4 py-2 rounded-xl text-xs font-semibold text-[#0B1221] hover:opacity-90 transition-opacity" style={{ background: 'var(--engine-dashboard)' }}>Get started</Link>
           </div>
         </div>
       </nav>
@@ -54,12 +49,12 @@ export function Pricing() {
       <motion.div className="mx-auto flex flex-col gap-8 md:gap-12 px-4 py-10 md:px-6 md:py-16 lg:px-8" style={{ maxWidth: '1280px' }} variants={stagger} initial="hidden" animate="visible">
         {/* Hero */}
         <motion.div variants={fadeUp} className="text-center flex flex-col items-center gap-3">
-          <span className="text-xs font-semibold px-3 py-1 rounded-full" style={{ background: 'rgba(0,240,255,0.15)', color: '#00F0FF' }}>Pricing</span>
+          <span className="text-xs font-semibold px-3 py-1 rounded-full" style={{ background: 'rgba(0,240,255,0.15)', color: 'var(--engine-dashboard)' }}>Pricing</span>
           <h1 className="text-3xl md:text-4xl font-bold text-white text-balance">Simple, transparent pricing</h1>
           <p className="text-sm text-slate-400 max-w-md text-pretty">Start free, scale when you&apos;re ready. All plans include full audit trails.</p>
           <div className="flex items-center gap-3 mt-4">
             <span className={`text-sm ${!annual ? 'text-white' : 'text-white/40'}`}>Monthly</span>
-            <button onClick={() => setAnnual(!annual)} className={`w-12 h-6 rounded-full relative transition-colors ${annual ? '' : 'bg-white/10'}`} style={annual ? { background: '#00F0FF' } : {}} role="switch" aria-checked={annual}>
+            <button onClick={() => setAnnual(!annual)} className={`w-12 h-6 rounded-full relative transition-colors ${annual ? '' : 'bg-white/10'}`} style={annual ? { background: 'var(--engine-dashboard)' } : {}} role="switch" aria-checked={annual}>
               <div className={`absolute top-1 w-4 h-4 rounded-full transition-transform ${annual ? 'translate-x-7 bg-[#0B1221]' : 'translate-x-1 bg-white'}`} />
             </button>
             <span className={`text-sm ${annual ? 'text-white' : 'text-white/40'}`}>Annual</span>
@@ -88,8 +83,8 @@ export function Pricing() {
           </div>
 
           {/* Pro */}
-          <div className="rounded-2xl border-2 p-6 flex flex-col relative" style={{ borderColor: '#00F0FF', background: 'rgba(0,240,255,0.03)' }}>
-            <span className="absolute -top-3 right-4 text-[10px] font-bold px-3 py-1 rounded-full" style={{ background: '#00F0FF', color: '#0B1221' }}>Most popular</span>
+          <div className="rounded-2xl border-2 p-6 flex flex-col relative" style={{ borderColor: 'var(--engine-dashboard)', background: 'rgba(0,240,255,0.03)' }}>
+            <span className="absolute -top-3 right-4 text-[10px] font-bold px-3 py-1 rounded-full" style={{ background: 'var(--engine-dashboard)', color: '#0B1221' }}>Most popular</span>
             <h3 className="text-lg font-bold text-white mb-1">Pro</h3>
             <p className="text-xs text-white/40 mb-4">For serious users</p>
             <div className="mb-6">
@@ -100,11 +95,11 @@ export function Pricing() {
             <ul className="flex flex-col gap-2 mb-6 flex-1">
               {['All Protect + Grow + Execute', 'Unlimited goals', '10,000 decisions/mo', 'Priority support', 'Full audit trail', 'SHAP explanations'].map((f) => (
                 <li key={f} className="flex items-center gap-2 text-sm text-white/60">
-                  <Check className="h-3.5 w-3.5 shrink-0" style={{ color: '#00F0FF' }} />{f}
+                  <Check className="h-3.5 w-3.5 shrink-0" style={{ color: 'var(--engine-dashboard)' }} />{f}
                 </li>
               ))}
             </ul>
-            <Link to="/signup" className="w-full text-center py-3 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity" style={{ background: '#00F0FF', color: '#0B1221' }}>Start free trial</Link>
+            <Link to="/signup" className="w-full text-center py-3 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity" style={{ background: 'var(--engine-dashboard)', color: '#0B1221' }}>Start free trial</Link>
           </div>
 
           {/* Enterprise */}
@@ -132,7 +127,7 @@ export function Pricing() {
               <tr className="border-b border-white/[0.06]">
                 <th className="px-4 py-3 text-xs text-white/50">Feature</th>
                 <th className="px-4 py-3 text-xs text-white/50 text-center">Starter</th>
-                <th className="px-4 py-3 text-xs text-center" style={{ color: '#00F0FF' }}>Pro</th>
+                <th className="px-4 py-3 text-xs text-center" style={{ color: 'var(--engine-dashboard)' }}>Pro</th>
                 <th className="px-4 py-3 text-xs text-white/50 text-center">Enterprise</th>
               </tr>
             </thead>
@@ -204,7 +199,7 @@ export function Pricing() {
         <motion.div variants={fadeUp} className="text-center flex flex-col items-center gap-4 py-8">
           <h2 className="text-2xl font-bold text-white">Ready to get started?</h2>
           <div className="flex gap-3">
-            <Link to="/dashboard" className="flex items-center gap-1.5 px-6 py-3 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity" style={{ background: '#00F0FF', color: '#0B1221' }}>
+            <Link to="/dashboard" className="flex items-center gap-1.5 px-6 py-3 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity" style={{ background: 'var(--engine-dashboard)', color: '#0B1221' }}>
               Open Dashboard <ArrowRight className="h-4 w-4" />
             </Link>
             <Link to="/help" className="px-6 py-3 rounded-xl text-sm font-semibold border border-white/10 text-white/70 hover:bg-white/5 transition-colors">Talk to sales</Link>

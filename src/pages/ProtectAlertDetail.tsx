@@ -2,15 +2,11 @@ import React, { useState } from 'react';
 import { useRouter } from '../router';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Shield,
-  ShieldCheck,
-  ExternalLink,
   ArrowLeft,
   AlertTriangle,
   MapPin,
   Clock,
   CreditCard,
-  User,
   ChevronDown,
   ChevronUp,
   CheckCircle2,
@@ -18,6 +14,9 @@ import {
   CircleDot,
 } from 'lucide-react';
 import { usePageTitle } from '../hooks/use-page-title';
+import { GovernFooter, ShapWaterfall, AuroraPulse } from '@/components/poseidon';
+import { GOVERNANCE_META } from '@/lib/governance-meta';
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets';
 
 /* ═══════════════════════════════════════════
    TYPES
@@ -98,28 +97,13 @@ const similarIncidents: SimilarIncident[] = [
 ];
 
 /* ═══════════════════════════════════════════
-   ANIMATION VARIANTS
-   ═══════════════════════════════════════════ */
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 },
-};
-
-const stagger = {
-  visible: {
-    transition: { staggerChildren: 0.08 },
-  },
-};
-
-/* ═══════════════════════════════════════════
    UTILITY HELPERS
    ═══════════════════════════════════════════ */
 
 function getScoreColor(s: number): string {
   if (s >= 0.9) return '#EF4444';
   if (s >= 0.8) return '#F59E0B';
-  return '#3B82F6';
+  return 'var(--engine-govern)';
 }
 
 function getScoreBg(s: number): string {
@@ -342,6 +326,14 @@ function AlertTimeline() {
    EVIDENCE PANEL
    ═══════════════════════════════════════════ */
 
+const shapFactors = [
+  { name: 'Transaction velocity', value: 8.2 },
+  { name: 'Geo anomaly', value: 5.7 },
+  { name: 'Amount deviation', value: 4.1 },
+  { name: 'Time pattern', value: -2.3 },
+  { name: 'Account history', value: -1.8 },
+];
+
 function EvidencePanel() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
@@ -411,6 +403,22 @@ function EvidencePanel() {
           );
         })}
       </div>
+
+      {/* SHAP attribution waterfall */}
+      <motion.div variants={fadeUp}>
+        <GlassCard className="flex flex-col gap-3">
+          <h3
+            className="text-sm font-semibold"
+            style={{ fontFamily: 'var(--font-display)', color: '#F1F5F9' }}
+          >
+            SHAP attribution
+          </h3>
+          <p className="text-[10px]" style={{ color: '#64748B' }}>
+            Feature contribution to threat score
+          </p>
+          <ShapWaterfall factors={shapFactors} baseValue={42} className="mt-1" />
+        </GlassCard>
+      </motion.div>
     </motion.section>
   );
 }
@@ -520,69 +528,18 @@ function AccountContext() {
 }
 
 /* ═══════════════════════════════════════════
-   GOVERNANCE FOOTER
-   ═══════════════════════════════════════════ */
-
-function GovernFooter() {
-  const { navigate } = useRouter();
-  return (
-    <footer
-      className="mt-8 flex flex-col gap-3 md:flex-row md:items-center md:justify-between rounded-2xl border border-white/[0.06] px-4 py-3 md:px-6 md:py-4"
-      style={{ background: 'rgba(255,255,255,0.03)' }}
-      role="contentinfo"
-      aria-label="Governance verification footer"
-    >
-      <div className="flex items-center gap-2">
-        <div
-          className="flex items-center justify-center rounded-full"
-          style={{ width: 28, height: 28, background: 'rgba(59,130,246,0.12)' }}
-        >
-          <ShieldCheck size={14} style={{ color: '#3B82F6' }} />
-        </div>
-        <span
-          className="mission-govern-badge inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider"
-          style={{ background: 'rgba(16,185,129,0.12)', color: '#10B981' }}
-        >
-          <Shield size={10} />
-          Verified
-        </span>
-      </div>
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-mono" style={{ color: '#64748B' }}>
-            GV-2026-0216-PRT-003
-          </span>
-          <ExternalLink size={12} style={{ color: '#64748B' }} aria-hidden="true" />
-        </div>
-        <span className="text-[10px] font-mono" style={{ color: '#64748B' }}>
-          FraudDetection v3.2 | SHAP v2.1
-        </span>
-      </div>
-      <button
-        className="inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-xs font-medium transition-all hover:bg-white/[0.04] cursor-pointer"
-        style={{ borderColor: 'rgba(255,255,255,0.08)', color: '#CBD5E1', background: 'transparent', minHeight: '44px' }}
-        aria-label="Request human review of this alert"
-        onClick={() => navigate('/govern/oversight')}
-      >
-        <User size={14} />
-        Request human review
-      </button>
-    </footer>
-  );
-}
-
-/* ═══════════════════════════════════════════
    MAIN COMPONENT
    ═══════════════════════════════════════════ */
 
 export function ProtectAlertDetail() {
   usePageTitle('Alert Details');
   return (
-    <div className="min-h-screen w-full" style={{ background: '#0B1221' }}>
+    <div className="relative min-h-screen w-full" style={{ background: '#0B1221' }}>
+      <AuroraPulse color="var(--engine-protect)" intensity="subtle" />
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-1/2 focus:-translate-x-1/2 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold"
-        style={{ background: '#22C55E', color: '#0B1221' }}
+        style={{ background: 'var(--engine-protect)', color: '#0B1221' }}
       >
         Skip to main content
       </a>
@@ -608,7 +565,7 @@ export function ProtectAlertDetail() {
           </aside>
         </div>
 
-        <GovernFooter />
+        <GovernFooter auditId={GOVERNANCE_META['/protect/alert-detail'].auditId} pageContext={GOVERNANCE_META['/protect/alert-detail'].pageContext} />
       </div>
     </div>
   );

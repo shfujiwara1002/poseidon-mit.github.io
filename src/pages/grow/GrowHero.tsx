@@ -37,14 +37,14 @@ export function HeroSection({ navigate, viewMode = 'detail', onViewModeChange }:
             style={{
               borderColor: 'rgba(139,92,246,0.3)',
               background: 'rgba(139,92,246,0.08)',
-              color: '#8B5CF6',
+              color: 'var(--engine-grow)',
             }}
           >
             <TrendingUp size={12} />
             Grow Engine
           </span>
           {onViewModeChange && (
-            <ViewModeToggle value={viewMode} onChange={onViewModeChange} accentColor="#8B5CF6" />
+            <ViewModeToggle value={viewMode} onChange={onViewModeChange} accentColor="var(--engine-grow)" />
           )}
         </div>
       </motion.div>
@@ -68,14 +68,14 @@ export function HeroSection({ navigate, viewMode = 'detail', onViewModeChange }:
           summary="Retire by 2045 — increase monthly contributions by $420 to stay on track. Monte Carlo simulation shows 89% probability of achieving target with this adjustment."
           sources={growCitations}
           confidence={0.89}
-          accentColor="#8B5CF6"
+          accentColor="var(--engine-grow)"
           viewMode={viewMode}
         />
         <div className="flex flex-wrap gap-2">
           <button
             className="inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
             style={{
-              background: 'linear-gradient(135deg, #8B5CF6, #7C3AED)',
+              background: 'linear-gradient(135deg, var(--engine-grow), #7C3AED)',
               color: '#ffffff',
               minHeight: '44px',
             }}

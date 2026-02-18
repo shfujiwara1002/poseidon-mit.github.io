@@ -5,12 +5,7 @@ import {
   Lock, CheckCircle2, Loader2, Check,
 } from 'lucide-react';
 import { Link, useRouter } from '../router';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] } },
-};
-const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets'
 
 /* ── Step progress bar (reused across onboarding) ── */
 const stepsMeta = [
@@ -29,9 +24,9 @@ function StepProgress({ current }: { current: number }) {
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
                 idx < current
-                  ? 'bg-[#22C55E] text-white'
+                  ? 'bg-[var(--engine-protect)] text-white'
                   : idx === current
-                    ? 'border-2 border-[#00F0FF] text-[#00F0FF]'
+                    ? 'border-2 border-[var(--engine-dashboard)] text-[var(--engine-dashboard)]'
                     : 'border border-white/20 text-white/30'
               }`}
               style={idx === current ? { animation: 'pulse 2s infinite' } : {}}
@@ -41,7 +36,7 @@ function StepProgress({ current }: { current: number }) {
             <span
               className={`text-xs font-medium hidden md:inline ${
                 idx < current
-                  ? 'text-[#22C55E]'
+                  ? 'text-[var(--engine-protect)]'
                   : idx === current
                     ? 'text-white'
                     : 'text-white/30'
@@ -51,7 +46,7 @@ function StepProgress({ current }: { current: number }) {
             </span>
           </div>
           {idx < stepsMeta.length - 1 && (
-            <div className={`w-8 md:w-12 h-px flex-shrink-0 ${idx < current ? 'bg-[#22C55E]/40' : 'bg-white/10'}`} />
+            <div className={`w-8 md:w-12 h-px flex-shrink-0 ${idx < current ? 'bg-[var(--engine-protect)]/40' : 'bg-white/10'}`} />
           )}
         </React.Fragment>
       ))}
@@ -69,10 +64,10 @@ interface AccountDef {
 }
 
 const accountTypes: AccountDef[] = [
-  { id: 'bank', label: 'Bank Account', icon: Building2, color: '#22C55E', sub: 'Checking \u00b7 Savings \u00b7 Cash' },
-  { id: 'credit', label: 'Credit Card', icon: CreditCard, color: '#EAB308', sub: 'Cards \u00b7 Rewards \u00b7 Debt tracking' },
-  { id: 'invest', label: 'Investment', icon: TrendingUp, color: '#8B5CF6', sub: 'Brokerage \u00b7 401k \u00b7 IRA' },
-  { id: 'wallet', label: 'Crypto / Wallet', icon: Wallet, color: '#00F0FF', sub: 'Digital assets \u00b7 DeFi' },
+  { id: 'bank', label: 'Bank Account', icon: Building2, color: 'var(--engine-protect)', sub: 'Checking \u00b7 Savings \u00b7 Cash' },
+  { id: 'credit', label: 'Credit Card', icon: CreditCard, color: 'var(--engine-execute)', sub: 'Cards \u00b7 Rewards \u00b7 Debt tracking' },
+  { id: 'invest', label: 'Investment', icon: TrendingUp, color: 'var(--engine-grow)', sub: 'Brokerage \u00b7 401k \u00b7 IRA' },
+  { id: 'wallet', label: 'Crypto / Wallet', icon: Wallet, color: 'var(--engine-dashboard)', sub: 'Digital assets \u00b7 DeFi' },
 ];
 
 interface ConnectedInfo {
@@ -122,7 +117,7 @@ export function Onboarding() {
         <motion.div variants={fadeUp} className="flex flex-col items-center text-center gap-2">
           <div className="flex items-center gap-1.5 mb-2">
             <img src="/logo.png" alt="" width="36" height="36" className="h-9 w-9 object-contain" aria-hidden="true" />
-            <span className="text-xs font-mono" style={{ color: '#00F0FF' }}>Step 1 of 4</span>
+            <span className="text-xs font-mono" style={{ color: 'var(--engine-dashboard)' }}>Step 1 of 4</span>
           </div>
           <h1 className="text-2xl font-bold text-white text-balance">Connect your accounts</h1>
           <p className="text-sm text-white/50 max-w-sm">
@@ -183,7 +178,7 @@ export function Onboarding() {
                     </span>
                   )}
                   {isConnected && (
-                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full text-[#22C55E] shrink-0" style={{ background: 'rgba(34,197,94,0.15)' }}>
+                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full text-[var(--engine-protect)] shrink-0" style={{ background: 'rgba(34,197,94,0.15)' }}>
                       Connected
                     </span>
                   )}
@@ -213,7 +208,7 @@ export function Onboarding() {
             onClick={() => navigate('/onboarding/goals')}
             disabled={connectedCount === 0}
             className="px-6 py-2.5 rounded-xl text-sm font-bold transition-opacity hover:opacity-90 disabled:opacity-40"
-            style={{ background: '#00F0FF', color: '#0B1221' }}
+            style={{ background: 'var(--engine-dashboard)', color: '#0B1221' }}
           >
             {'Continue \u2192'}
           </button>

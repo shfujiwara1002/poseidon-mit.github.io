@@ -2,12 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Shield, ShieldCheck, Lock, Eye, Brain, ScrollText, UserCheck, CheckCircle, FileText, ArrowRight } from 'lucide-react';
 import { Link } from '../router';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] } },
-};
-const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets'
 
 const liveStats = [
   { label: 'System confidence', value: '0.92', spark: [0.88, 0.89, 0.90, 0.91, 0.91, 0.92, 0.92] },
@@ -29,12 +24,12 @@ export function TrustSecurity() {
       <nav className="border-b border-white/[0.06]" style={{ background: 'rgba(11,18,33,0.8)' }}>
         <div className="mx-auto px-4 md:px-6 lg:px-8 h-14 flex items-center justify-between" style={{ maxWidth: '1280px' }}>
           <div className="flex items-center gap-2">
-            <Shield className="h-5 w-5" style={{ color: '#00F0FF' }} />
+            <Shield className="h-5 w-5" style={{ color: 'var(--engine-dashboard)' }} />
             <span className="text-base font-bold text-white">Poseidon.AI</span>
           </div>
           <div className="flex items-center gap-3">
             <Link to="/login" className="text-sm text-white/60 hover:text-white/80 transition-colors">Sign in</Link>
-            <Link to="/signup" className="px-4 py-2 rounded-xl text-xs font-semibold text-[#0B1221] hover:opacity-90 transition-opacity" style={{ background: '#22C55E' }}>Get started</Link>
+            <Link to="/signup" className="px-4 py-2 rounded-xl text-xs font-semibold text-[#0B1221] hover:opacity-90 transition-opacity" style={{ background: 'var(--engine-protect)' }}>Get started</Link>
           </div>
         </div>
       </nav>
@@ -43,14 +38,14 @@ export function TrustSecurity() {
         {/* Hero */}
         <motion.div variants={fadeUp} className="text-center flex flex-col items-center gap-4">
           <div className="w-20 h-20 rounded-full flex items-center justify-center" style={{ background: 'rgba(34,197,94,0.1)', boxShadow: '0 0 40px rgba(34,197,94,0.2)' }}>
-            <Shield className="h-10 w-10" style={{ color: '#22C55E' }} />
+            <Shield className="h-10 w-10" style={{ color: 'var(--engine-protect)' }} />
           </div>
-          <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#22C55E' }}>Security First</span>
+          <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--engine-protect)' }}>Security First</span>
           <h1 className="text-3xl md:text-4xl font-bold text-white text-balance">Trusted by design, not by chance</h1>
           <p className="text-sm text-slate-400 max-w-lg text-pretty">Every decision auditable. Every byte encrypted. Zero trust architecture.</p>
           <div className="flex flex-wrap justify-center gap-2 mt-2">
             {['GDPR', 'CCPA', 'SOC 2 (Coming)'].map((b) => (
-              <span key={b} className="text-xs font-semibold px-3 py-1 rounded-full border" style={{ borderColor: '#22C55E', color: '#22C55E' }}>{b}</span>
+              <span key={b} className="text-xs font-semibold px-3 py-1 rounded-full border" style={{ borderColor: 'var(--engine-protect)', color: 'var(--engine-protect)' }}>{b}</span>
             ))}
           </div>
         </motion.div>
@@ -60,14 +55,14 @@ export function TrustSecurity() {
           {liveStats.map((stat) => (
             <div key={stat.label} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
               <p className="text-xs text-white/40 mb-1">{stat.label}</p>
-              <p className="text-lg font-bold" style={{ color: '#22C55E' }}>{stat.value}</p>
+              <p className="text-lg font-bold" style={{ color: 'var(--engine-protect)' }}>{stat.value}</p>
               <div className="flex items-end gap-0.5 h-6 mt-2">
                 {stat.spark.map((v, i) => {
                   const max = Math.max(...stat.spark);
                   const min = Math.min(...stat.spark);
                   const range = max - min || 1;
                   const h = 8 + ((v - min) / range) * 16;
-                  return <div key={i} className="flex-1 rounded-sm" style={{ height: `${h}px`, background: '#22C55E', opacity: 0.4 + (i / stat.spark.length) * 0.6 }} />;
+                  return <div key={i} className="flex-1 rounded-sm" style={{ height: `${h}px`, background: 'var(--engine-protect)', opacity: 0.4 + (i / stat.spark.length) * 0.6 }} />;
                 })}
               </div>
             </div>
@@ -77,9 +72,9 @@ export function TrustSecurity() {
         {/* Security pillars */}
         <motion.div variants={fadeUp} className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
-            { icon: Lock, color: '#22C55E', title: 'Encrypted in transit & at rest', desc: 'AES-256 encryption at rest. TLS 1.3 for all data in transit. Keys rotated automatically.' },
-            { icon: Eye, color: '#3B82F6', title: 'Read-only data access', desc: 'We see, never touch. Read-only connections to your financial accounts. No write permissions ever.' },
-            { icon: ShieldCheck, color: '#8B5CF6', title: 'Zero-knowledge architecture', desc: 'OAuth 2.0 authentication. No credentials stored. Your secrets remain yours.' },
+            { icon: Lock, color: 'var(--engine-protect)', title: 'Encrypted in transit & at rest', desc: 'AES-256 encryption at rest. TLS 1.3 for all data in transit. Keys rotated automatically.' },
+            { icon: Eye, color: 'var(--engine-govern)', title: 'Read-only data access', desc: 'We see, never touch. Read-only connections to your financial accounts. No write permissions ever.' },
+            { icon: ShieldCheck, color: 'var(--engine-grow)', title: 'Zero-knowledge architecture', desc: 'OAuth 2.0 authentication. No credentials stored. Your secrets remain yours.' },
           ].map((pillar) => (
             <div key={pillar.title} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-6">
               <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4" style={{ background: `${pillar.color}15` }}>
@@ -102,7 +97,7 @@ export function TrustSecurity() {
             ].map((col) => (
               <div key={col.title} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-6 text-center">
                 <div className="w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-3" style={{ background: 'rgba(34,197,94,0.15)' }}>
-                  <col.icon className="h-5 w-5" style={{ color: '#22C55E' }} />
+                  <col.icon className="h-5 w-5" style={{ color: 'var(--engine-protect)' }} />
                 </div>
                 <h3 className="text-sm font-semibold text-white mb-2">{col.title}</h3>
                 <p className="text-xs text-slate-400 leading-relaxed">{col.desc}</p>
@@ -112,7 +107,7 @@ export function TrustSecurity() {
                       <div key={f.name} className="flex items-center gap-2">
                         <span className="text-[10px] text-white/40 w-24 text-left truncate">{f.name}</span>
                         <div className="flex-1 h-1.5 rounded-full bg-white/10">
-                          <div className="h-full rounded-full" style={{ width: `${f.weight * 100}%`, background: '#22C55E' }} />
+                          <div className="h-full rounded-full" style={{ width: `${f.weight * 100}%`, background: 'var(--engine-protect)' }} />
                         </div>
                       </div>
                     ))}
@@ -122,7 +117,7 @@ export function TrustSecurity() {
                   <div className="flex flex-col gap-2 mt-3 text-left">
                     {['Decision logged', 'Evidence recorded', 'Trail sealed'].map((entry, i) => (
                       <div key={i} className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full" style={{ background: '#22C55E' }} />
+                        <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--engine-protect)' }} />
                         <span className="text-[10px] text-white/40">{entry}</span>
                       </div>
                     ))}
@@ -140,7 +135,7 @@ export function TrustSecurity() {
             <span className="text-xs text-white/30 uppercase tracking-wider">Sample Audit Record</span>
           </div>
           <div className="flex flex-wrap items-center gap-2 mb-3">
-            <span className="text-xs font-mono px-2 py-0.5 rounded" style={{ background: 'rgba(59,130,246,0.15)', color: '#3B82F6' }}>GV-2026-0216-001</span>
+            <span className="text-xs font-mono px-2 py-0.5 rounded" style={{ background: 'rgba(59,130,246,0.15)', color: 'var(--engine-govern)' }}>GV-2026-0216-001</span>
             <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400">Protect</span>
           </div>
           <p className="text-sm text-white font-medium mb-2">Blocked suspicious transaction $4,200</p>
@@ -181,7 +176,7 @@ export function TrustSecurity() {
         {/* CTA */}
         <motion.div variants={fadeUp} className="text-center flex flex-col items-center gap-4 py-8">
           <div className="flex gap-3">
-            <Link to="/dashboard" className="flex items-center gap-1.5 px-6 py-3 rounded-xl text-sm font-semibold text-[#0B1221] hover:opacity-90 transition-opacity" style={{ background: '#22C55E' }}>
+            <Link to="/dashboard" className="flex items-center gap-1.5 px-6 py-3 rounded-xl text-sm font-semibold text-[#0B1221] hover:opacity-90 transition-opacity" style={{ background: 'var(--engine-protect)' }}>
               See the dashboard <ArrowRight className="h-4 w-4" />
             </Link>
             <button className="px-6 py-3 rounded-xl text-sm font-semibold border border-white/10 text-white/70 hover:bg-white/5 transition-colors">Read security whitepaper</button>

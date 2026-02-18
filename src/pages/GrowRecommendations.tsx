@@ -3,12 +3,9 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Lightbulb, Sparkles, TrendingUp, DollarSign, BarChart3, ChevronDown, ChevronUp, Send, X, Shield, Filter } from 'lucide-react';
 import { Link } from '../router';
 import { usePageTitle } from '../hooks/use-page-title';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] } },
-};
-const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
+import { GovernFooter, AuroraPulse } from '@/components/poseidon'
+import { GOVERNANCE_META } from '@/lib/governance-meta'
+import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets';
 
 /* ═══════════════════════════════════════════
    DATA
@@ -78,10 +75,10 @@ const recommendations: Recommendation[] = [
   },
 ];
 
-const categoryColors: Record<Exclude<Category, 'All'>, string> = { Savings: '#22C55E', Debt: '#EF4444', Income: '#00F0FF', Investment: '#8B5CF6' };
+const categoryColors: Record<Exclude<Category, 'All'>, string> = { Savings: 'var(--engine-protect)', Debt: '#EF4444', Income: 'var(--engine-dashboard)', Investment: 'var(--engine-grow)' };
 const difficultyColors: Record<Difficulty, { text: string; bg: string }> = {
-  Easy: { text: '#22C55E', bg: 'rgba(34,197,94,0.15)' },
-  Medium: { text: '#EAB308', bg: 'rgba(234,179,8,0.15)' },
+  Easy: { text: 'var(--engine-protect)', bg: 'rgba(34,197,94,0.15)' },
+  Medium: { text: 'var(--engine-execute)', bg: 'rgba(234,179,8,0.15)' },
   Hard: { text: '#EF4444', bg: 'rgba(239,68,68,0.15)' },
 };
 
@@ -110,11 +107,12 @@ export function GrowRecommendations() {
   const categoryOptions: Category[] = ['All', 'Savings', 'Debt', 'Income', 'Investment'];
 
   return (
-    <div className="min-h-screen w-full" style={{ background: '#0B1221' }}>
+    <div className="relative min-h-screen w-full" style={{ background: '#0B1221' }}>
+      <AuroraPulse color="var(--engine-grow)" intensity="subtle" />
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold"
-        style={{ background: '#8B5CF6', color: '#fff' }}
+        style={{ background: 'var(--engine-grow)', color: '#fff' }}
       >
         Skip to main content
       </a>
@@ -126,7 +124,7 @@ export function GrowRecommendations() {
         aria-label="Breadcrumb"
       >
         <div className="mx-auto px-4 md:px-6 lg:px-8 h-14 flex items-center gap-2" style={{ maxWidth: '1280px' }}>
-          <Link to="/grow" className="flex items-center gap-1.5 text-sm font-medium hover:opacity-80 transition-opacity" style={{ color: '#8B5CF6' }}>
+          <Link to="/grow" className="flex items-center gap-1.5 text-sm font-medium hover:opacity-80 transition-opacity" style={{ color: 'var(--engine-grow)' }}>
             <ArrowLeft className="h-4 w-4" />
             Grow
           </Link>
@@ -148,9 +146,9 @@ export function GrowRecommendations() {
         <motion.div variants={fadeUp} className="flex flex-col gap-1">
           <div className="flex items-center gap-2 mb-1">
             <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'rgba(139,92,246,0.15)' }}>
-              <Lightbulb className="h-4 w-4" style={{ color: '#8B5CF6' }} />
+              <Lightbulb className="h-4 w-4" style={{ color: 'var(--engine-grow)' }} />
             </div>
-            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#8B5CF6' }}>
+            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--engine-grow)' }}>
               Grow · Recommendations
             </span>
           </div>
@@ -164,10 +162,10 @@ export function GrowRecommendations() {
         <motion.div variants={fadeUp}>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { label: 'Total impact', value: '+$840/mo', color: '#8B5CF6' },
-              { label: 'High confidence', value: '5', color: '#22C55E' },
-              { label: 'Actionable now', value: '3', color: '#00F0FF' },
-              { label: 'Avg confidence', value: '0.91', color: '#EAB308' },
+              { label: 'Total impact', value: '+$840/mo', color: 'var(--engine-grow)' },
+              { label: 'High confidence', value: '5', color: 'var(--engine-protect)' },
+              { label: 'Actionable now', value: '3', color: 'var(--engine-dashboard)' },
+              { label: 'Avg confidence', value: '0.91', color: 'var(--engine-execute)' },
             ].map((kpi) => (
               <div key={kpi.label} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
                 <p className="text-xs text-white/40 mb-1">{kpi.label}</p>
@@ -215,11 +213,11 @@ export function GrowRecommendations() {
                 key={rec.rank}
                 variants={fadeUp}
                 className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6"
-                style={{ borderLeftWidth: 3, borderLeftColor: '#8B5CF6' }}
+                style={{ borderLeftWidth: 3, borderLeftColor: 'var(--engine-grow)' }}
               >
                 {/* Top row */}
                 <div className="flex flex-wrap items-center gap-2 mb-3">
-                  <span className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold" style={{ background: 'rgba(139,92,246,0.2)', color: '#8B5CF6' }}>
+                  <span className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold" style={{ background: 'rgba(139,92,246,0.2)', color: 'var(--engine-grow)' }}>
                     #{rec.rank}
                   </span>
                   <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold border" style={{ color: categoryColors[rec.category], borderColor: `${categoryColors[rec.category]}40`, background: `${categoryColors[rec.category]}15` }}>
@@ -237,8 +235,8 @@ export function GrowRecommendations() {
                 {/* Impact metrics */}
                 <div className="flex flex-wrap items-center gap-4 mb-3">
                   <div className="flex items-center gap-1.5">
-                    <DollarSign className="h-3.5 w-3.5" style={{ color: '#8B5CF6' }} />
-                    <span className="text-sm font-bold" style={{ color: '#8B5CF6' }}>+${rec.monthlySavings}/mo</span>
+                    <DollarSign className="h-3.5 w-3.5" style={{ color: 'var(--engine-grow)' }} />
+                    <span className="text-sm font-bold" style={{ color: 'var(--engine-grow)' }}>+${rec.monthlySavings}/mo</span>
                   </div>
                   <span className="text-xs text-white/50">${rec.annualSavings.toLocaleString()}/yr</span>
                   <span className="text-xs text-white/50">Confidence: {(rec.confidence * 100).toFixed(0)}%</span>
@@ -246,7 +244,7 @@ export function GrowRecommendations() {
 
                 {/* Confidence bar */}
                 <div className="h-1.5 rounded-full bg-white/10 mb-4">
-                  <div className="h-full rounded-full transition-all duration-500" style={{ width: `${rec.confidence * 100}%`, background: '#8B5CF6' }} />
+                  <div className="h-full rounded-full transition-all duration-500" style={{ width: `${rec.confidence * 100}%`, background: 'var(--engine-grow)' }} />
                 </div>
 
                 {/* Expandable section */}
@@ -272,7 +270,7 @@ export function GrowRecommendations() {
                         <div key={f.name} className="flex items-center gap-2">
                           <span className="text-xs text-white/50 w-32 shrink-0 truncate">{f.name}</span>
                           <div className="flex-1 h-1.5 rounded-full bg-white/10">
-                            <div className="h-full rounded-full" style={{ width: `${f.weight * 100}%`, background: '#8B5CF6', opacity: 0.7 }} />
+                            <div className="h-full rounded-full" style={{ width: `${f.weight * 100}%`, background: 'var(--engine-grow)', opacity: 0.7 }} />
                           </div>
                           <span className="text-xs text-white/40 w-10 text-right">{f.weight.toFixed(2)}</span>
                         </div>
@@ -292,7 +290,7 @@ export function GrowRecommendations() {
 
                 {/* Action row */}
                 <div className="flex gap-3">
-                  <button className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold text-white hover:opacity-90 transition-opacity" style={{ background: '#8B5CF6' }}>
+                  <button className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold text-white hover:opacity-90 transition-opacity" style={{ background: 'var(--engine-grow)' }}>
                     <Send className="h-3.5 w-3.5" />
                     Add to Execute
                   </button>
@@ -312,10 +310,10 @@ export function GrowRecommendations() {
               <h3 className="text-xs font-semibold text-white/70 uppercase tracking-wider mb-3">Summary</h3>
               <div className="space-y-3">
                 {[
-                  { label: 'Monthly impact', value: '$840', color: '#8B5CF6' },
-                  { label: 'Annual impact', value: '$10,080', color: '#8B5CF6' },
-                  { label: 'Actions pending', value: '3', color: '#EAB308' },
-                  { label: 'Confidence avg', value: '0.91', color: '#22C55E' },
+                  { label: 'Monthly impact', value: '$840', color: 'var(--engine-grow)' },
+                  { label: 'Annual impact', value: '$10,080', color: 'var(--engine-grow)' },
+                  { label: 'Actions pending', value: '3', color: 'var(--engine-execute)' },
+                  { label: 'Confidence avg', value: '0.91', color: 'var(--engine-protect)' },
                 ].map((s) => (
                   <div key={s.label} className="flex justify-between items-center">
                     <span className="text-xs text-white/50">{s.label}</span>
@@ -341,7 +339,7 @@ export function GrowRecommendations() {
                       <span className="text-white/70">${b.amount}</span>
                     </div>
                     <div className="h-1.5 rounded-full bg-white/10">
-                      <div className="h-full rounded-full" style={{ width: `${(b.amount / b.max) * 100}%`, background: '#8B5CF6' }} />
+                      <div className="h-full rounded-full" style={{ width: `${(b.amount / b.max) * 100}%`, background: 'var(--engine-grow)' }} />
                     </div>
                   </div>
                 ))}
@@ -349,10 +347,10 @@ export function GrowRecommendations() {
             </div>
 
             {/* AI Analysis */}
-            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4" style={{ borderLeftWidth: 3, borderLeftColor: '#8B5CF6' }}>
+            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4" style={{ borderLeftWidth: 3, borderLeftColor: 'var(--engine-grow)' }}>
               <div className="flex items-center gap-2 mb-2">
-                <div className="w-6 h-6 rounded-md flex items-center justify-center text-[10px] font-bold" style={{ background: 'rgba(139,92,246,0.2)', color: '#8B5CF6' }}>AI</div>
-                <Sparkles className="h-3.5 w-3.5" style={{ color: '#8B5CF6' }} />
+                <div className="w-6 h-6 rounded-md flex items-center justify-center text-[10px] font-bold" style={{ background: 'rgba(139,92,246,0.2)', color: 'var(--engine-grow)' }}>AI</div>
+                <Sparkles className="h-3.5 w-3.5" style={{ color: 'var(--engine-grow)' }} />
               </div>
               <p className="text-sm text-white/70 leading-relaxed">
                 Your top opportunity is subscription consolidation — 3 overlapping services total $140/mo.
@@ -376,6 +374,8 @@ export function GrowRecommendations() {
           <span className="text-xs text-white/30">GrowthForecast v3.2</span>
           <Link to="/govern/oversight" className="ml-auto text-xs text-white/40 hover:text-white/60 transition-colors">Request human review</Link>
         </motion.footer>
+
+        <GovernFooter auditId={GOVERNANCE_META['/grow/recommendations'].auditId} pageContext={GOVERNANCE_META['/grow/recommendations'].pageContext} />
       </motion.div>
     </div>
   );
