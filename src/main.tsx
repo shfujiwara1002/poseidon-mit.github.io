@@ -6,6 +6,8 @@ import { AppNavShell } from './components/layout/AppNavShell';
 import { usePresentationMode } from './hooks/usePresentationMode';
 import './styles/tailwind.css';
 import './styles/app.css';
+import './styles/pages/dashboard-v3.css';
+import './styles/pages/engine-semantics.css';
 
 class ErrorBoundary extends Component<{ children: ReactNode }, { error: Error | null }> {
   state = { error: null };

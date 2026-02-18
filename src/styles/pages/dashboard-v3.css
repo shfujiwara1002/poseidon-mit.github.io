@@ -531,6 +531,20 @@
 }
 
 /* ── Insights section ── */
+.dashboard-insights-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dashboard-insights-heading {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(220, 233, 248, 0.95);
+  letter-spacing: var(--tracking-normal);
+}
+
 .dashboard-insights-section {
   display: grid;
   gap: 12px;

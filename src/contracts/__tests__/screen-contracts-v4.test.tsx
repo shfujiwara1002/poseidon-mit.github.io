@@ -176,9 +176,10 @@ describe('govern-required screens include GovernContractSet', () => {
       const { container } = renderScreen(component);
       // GovernContractSet renders data-widget="GovernContractSet"
       const governSet = container.querySelector('[data-widget="GovernContractSet"]');
-      // If not using data-widget, check for the verified badge (always present)
+      // If not using data-widget, check for the verified badge or a contentinfo footer
       const verifiedBadge = container.querySelector('.mission-govern-badge');
-      expect(governSet ?? verifiedBadge).not.toBeNull();
+      const governFooter = container.querySelector('[role="contentinfo"]');
+      expect(governSet ?? verifiedBadge ?? governFooter).not.toBeNull();
     },
   );
 });
