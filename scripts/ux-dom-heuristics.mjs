@@ -80,22 +80,9 @@ try {
       autofixRule: primaryCtaCount > 1 ? 'engine-core-nav-cta-demotion' : undefined,
     });
 
-    const requiredCoreSlots = ['hero_message', 'primary_feed', 'govern_controls'];
-    for (const slot of requiredCoreSlots) {
-      const slotCount = await page.locator(`[data-slot="${slot}"]`).count();
-      checks.push({
-        route,
-        key: `slot-${slot}`,
-        criteria: 'reliability',
-        ok: slotCount > 0,
-        severity: 'P0',
-        demoImpact: 'high',
-        effort: 'S',
-        message: `Missing required core slot data-slot="${slot}".`,
-        fixHypothesis: 'Ensure shell emits required slot containers for all screen contracts.',
-        autofixable: false,
-      });
-    }
+    // Note: requiredCoreSlots (hero_message, primary_feed, govern_controls)
+    // were removed — they belong to the legacy PageShell architecture.
+    // v0 pages are self-contained and do not emit data-slot containers.
   }
 } finally {
   await browser.close();
