@@ -7,19 +7,23 @@ describe('DashboardInsightsPanel', () => {
     const { container } = render(<DashboardInsightsPanel variant="morning" />);
 
     expect(screen.getByText('Good morning')).toBeInTheDocument();
-    expect(container.querySelector('.dashboard-main-card.dashboard-insights-card')).not.toBeNull();
+    expect(container.querySelector('.dashboard-insights-card.glass-surface')).not.toBeNull();
     expect(container.querySelector('.dashboard-insights-card--activity')).not.toBeNull();
     expect(container.querySelectorAll('.activity-rail-item')).toHaveLength(3);
     expect(container.querySelectorAll('.activity-rail-node')).toHaveLength(3);
     expect(container.querySelector('.dashboard-action-list')).not.toBeNull();
   });
 
-  it('renders evening variant with shared structure and state semantics', () => {
+  it('renders evening variant with engine-aligned tones', () => {
     const { container } = render(<DashboardInsightsPanel variant="evening" />);
 
     expect(screen.getByText('Day in review')).toBeInTheDocument();
     expect(container.querySelector('[data-widget="DashboardInsightsPanel"]')).toHaveAttribute('data-variant', 'evening');
-    expect(container.querySelectorAll('.dashboard-insights-metric[data-tone]')).toHaveLength(3);
+    const metrics = container.querySelectorAll('.dashboard-insights-metric[data-tone]');
+    expect(metrics).toHaveLength(3);
+    expect(metrics[0]).toHaveAttribute('data-tone', 'dashboard');
+    expect(metrics[1]).toHaveAttribute('data-tone', 'protect');
+    expect(metrics[2]).toHaveAttribute('data-tone', 'execute');
     expect(screen.getByText('AI recommendations')).toBeInTheDocument();
     expect(container.querySelector('.dashboard-insights-proof')).not.toBeNull();
   });
