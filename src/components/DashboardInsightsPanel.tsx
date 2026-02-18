@@ -25,9 +25,9 @@ const MORNING_ACTIVITIES = [
 ];
 
 const EVENING_METRICS = [
-  { label: 'Decisions made', value: '12', tone: 'healthy' },
-  { label: 'Alerts resolved', value: '3', tone: 'primary' },
-  { label: 'Actions pending', value: '2', tone: 'warning' },
+  { label: 'Decisions made', value: '12', tone: 'dashboard' },
+  { label: 'Alerts resolved', value: '3', tone: 'protect' },
+  { label: 'Actions pending', value: '2', tone: 'execute' },
 ];
 
 const stagger = {
@@ -53,7 +53,7 @@ export function DashboardInsightsPanel({ variant }: DashboardInsightsPanelProps)
     >
       {variant === 'morning' ? (
         <motion.div
-          className="dashboard-main-card dashboard-insights-card dashboard-insights-card--activity glass-surface"
+          className="dashboard-insights-card dashboard-insights-card--activity glass-surface"
           variants={stagger}
           initial="hidden"
           animate="visible"
@@ -77,7 +77,7 @@ export function DashboardInsightsPanel({ variant }: DashboardInsightsPanelProps)
         </motion.div>
       ) : (
         <motion.div
-          className="dashboard-main-card dashboard-insights-card glass-surface"
+          className="dashboard-insights-card glass-surface"
           variants={stagger}
           initial="hidden"
           animate="visible"
