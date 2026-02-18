@@ -660,11 +660,19 @@
   color: var(--state-critical);
 }
 
+.dashboard-insights-signal-trend {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .dashboard-insights-proof {
   border-radius: 10px;
   border: 1px solid rgba(143, 187, 233, 0.22);
   background: rgba(13, 29, 53, 0.72);
   padding: 8px var(--space-2-5);
+  font-size: 12px;
+  color: rgba(181, 205, 234, 0.72);
 }
 
 .dashboard-insights-actions {
