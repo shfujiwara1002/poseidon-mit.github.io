@@ -5,6 +5,10 @@
   justify-content: center;
   border-radius: 8px;
   flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  font-size: 0;
+  overflow: hidden;
   background: color-mix(in srgb, var(--engine-badge-color) 14%, transparent);
   border: 1px solid color-mix(in srgb, var(--engine-badge-color) 28%, transparent);
 }
