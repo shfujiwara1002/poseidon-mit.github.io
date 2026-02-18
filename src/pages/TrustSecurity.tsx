@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Shield, ShieldCheck, Lock, Eye, Brain, ScrollText, UserCheck, CheckCircle, FileText, ArrowRight } from 'lucide-react';
 import { Link } from '../router';

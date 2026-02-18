@@ -8,6 +8,7 @@ import './styles/tailwind.css';
 import './styles/app.css';
 import './styles/pages/dashboard-v3.css';
 import './styles/pages/engine-semantics.css';
+import './styles/colorblind-palettes.css';
 
 class ErrorBoundary extends Component<{ children: ReactNode }, { error: Error | null }> {
   state = { error: null };

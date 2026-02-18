@@ -18,6 +18,7 @@ import { useCommandPalette } from '../../hooks/useCommandPalette';
 import { usePresentationMode } from '../../hooks/usePresentationMode';
 import { usePWA } from '../../hooks/usePWA';
 import { CommandPalette } from './CommandPalette';
+import { engineTokens } from '../../lib/engine-tokens';
 
 /* ─── Engine config ──────────────────────────────────────── */
 
@@ -30,19 +31,19 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: 'Dashboard', path: '/dashboard', icon: LayoutDashboard, color: '#00F0FF', group: 'engine' },
-  { label: 'Protect', path: '/protect', icon: Shield, color: '#22C55E', group: 'engine' },
-  { label: 'Grow', path: '/grow', icon: TrendingUp, color: '#8B5CF6', group: 'engine' },
-  { label: 'Execute', path: '/execute', icon: Zap, color: '#EAB308', group: 'engine' },
-  { label: 'Govern', path: '/govern', icon: Scale, color: '#60A5FA', group: 'engine' },
+  { label: 'Dashboard', path: '/dashboard', icon: LayoutDashboard, color: engineTokens.dashboard.color, group: 'engine' },
+  { label: 'Protect', path: '/protect', icon: Shield, color: engineTokens.protect.color, group: 'engine' },
+  { label: 'Grow', path: '/grow', icon: TrendingUp, color: engineTokens.grow.color, group: 'engine' },
+  { label: 'Execute', path: '/execute', icon: Zap, color: engineTokens.execute.color, group: 'engine' },
+  { label: 'Govern', path: '/govern', icon: Scale, color: engineTokens.govern.color, group: 'engine' },
   { label: 'Settings', path: '/settings', icon: Settings, color: '#94a3b8', group: 'system' },
   { label: 'Help', path: '/help', icon: HelpCircle, color: '#94a3b8', group: 'system' },
 ];
 
 /* ─── Live status badges (mock) ─────────────────────────────── */
 const NAV_BADGES: Record<string, { type: 'pulse' | 'count'; value?: number; color: string }> = {
-  '/protect': { type: 'pulse', color: '#EF4444' },
-  '/execute': { type: 'count', value: 3, color: '#EAB308' },
+  '/protect': { type: 'pulse', color: 'var(--state-critical)' },
+  '/execute': { type: 'count', value: 3, color: engineTokens.execute.color },
 };
 
 const ENGINE_ITEMS = NAV_ITEMS.filter((i) => i.group === 'engine');
@@ -140,15 +141,6 @@ function getSubNav(path: string): SubNavItem[] | null {
   return SUB_NAV[sectionKey];
 }
 
-/* ─── Pulse animation (injected once) ───────────────────────── */
-const PULSE_STYLE = `
-@keyframes nav-pulse {
-  0%   { box-shadow: 0 0 0 0 rgba(239,68,68,0.6); }
-  100% { box-shadow: 0 0 0 6px rgba(239,68,68,0); }
-}
-.nav-badge-pulse { animation: nav-pulse 1.8s ease-out infinite; }
-`;
-
 /* ─── Component ──────────────────────────────────────────── */
 
 export function AppNavShell({
@@ -177,7 +169,6 @@ export function AppNavShell({
 
   return (
     <div className="flex min-h-screen" style={{ background: '#070d1a' }}>
-      <style>{PULSE_STYLE}</style>
       <CommandPalette isOpen={isPaletteOpen} onClose={closePalette} />
       {/* ── Desktop Sidebar ── */}
       <aside

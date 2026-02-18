@@ -130,7 +130,7 @@ function Timeline() {
                   className="flex h-8 w-8 items-center justify-center rounded-full"
                   style={{ background: 'rgba(34,197,94,0.15)', boxShadow: 'inset 0 0 0 2px rgba(34,197,94,0.3)' }}
                 >
-                  <Check className="h-4 w-4" style={{ color: '#10B981' }} />
+                  <Check className="h-4 w-4" style={{ color: 'var(--state-healthy)' }} />
                 </div>
               ) : (
                 <div
@@ -151,7 +151,7 @@ function Timeline() {
               {m.status === 'completed' && (
                 <span
                   className="rounded-full px-2.5 py-0.5 text-xs font-medium"
-                  style={{ background: 'rgba(34,197,94,0.1)', color: '#10B981' }}
+                  style={{ background: 'rgba(34,197,94,0.1)', color: 'var(--state-healthy)' }}
                 >
                   Done
                 </span>

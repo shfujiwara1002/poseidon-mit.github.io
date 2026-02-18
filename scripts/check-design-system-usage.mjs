@@ -39,11 +39,17 @@ function toRelative(filePath) {
 }
 
 function resolveLocalImport(fromFile, specifier) {
-  if (!specifier.startsWith('./') && !specifier.startsWith('../')) {
+  let base;
+
+  if (specifier.startsWith('@/')) {
+    // Resolve @/ alias → src/
+    base = path.resolve(SRC_ROOT, specifier.slice(2));
+  } else if (specifier.startsWith('./') || specifier.startsWith('../')) {
+    base = path.resolve(path.dirname(fromFile), specifier);
+  } else {
     return null;
   }
 
-  const base = path.resolve(path.dirname(fromFile), specifier);
   const candidates = [
     base,
     `${base}.ts`,

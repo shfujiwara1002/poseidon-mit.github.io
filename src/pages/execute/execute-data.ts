@@ -34,17 +34,17 @@ export const kpiData: KpiCardData[] = [
   {
     label: 'Auto-approved Today',
     value: '12',
-    trend: { text: '+3 from yesterday', color: '#10B981', icon: 'up' },
+    trend: { text: '+3 from yesterday', color: 'var(--state-healthy)', icon: 'up' },
   },
   {
     label: 'Blocked Today',
     value: '1',
-    badge: { text: 'blocked', color: '#EF4444', bg: 'rgba(239,68,68,0.12)' },
+    badge: { text: 'blocked', color: 'var(--state-critical)', bg: 'rgba(var(--state-critical-rgb),0.12)' },
   },
   {
     label: 'Avg Review Time',
     value: '2.3 min',
-    trend: { text: '-15% trend', color: '#10B981', icon: 'down' },
+    trend: { text: '-15% trend', color: 'var(--state-healthy)', icon: 'down' },
   },
 ]
 
@@ -115,10 +115,10 @@ export const recentExecutions: RecentExecution[] = [
    ═══════════════════════════════════════════ */
 
 export const confidenceData = [
-  { range: '0.9-1.0', count: 6, fill: '#10B981' },
+  { range: '0.9-1.0', count: 6, fill: 'var(--state-healthy)' },
   { range: '0.8-0.9', count: 5, fill: '#14B8A6' },
-  { range: '0.7-0.8', count: 3, fill: '#F59E0B' },
-  { range: '<0.7', count: 0, fill: '#EF4444' },
+  { range: '0.7-0.8', count: 3, fill: 'var(--state-warning)' },
+  { range: '<0.7', count: 0, fill: 'var(--state-critical)' },
 ]
 
 /* ═══════════════════════════════════════════
@@ -138,14 +138,14 @@ export const engineBg: Record<Engine, string> = {
 }
 
 export const priorityConfig: Record<Priority, { color: string; bg: string; label: string }> = {
-  CRITICAL: { color: '#EF4444', bg: 'rgba(239,68,68,0.12)', label: 'CRITICAL' },
-  HIGH: { color: '#F59E0B', bg: 'rgba(245,158,11,0.12)', label: 'HIGH' },
+  CRITICAL: { color: 'var(--state-critical)', bg: 'rgba(var(--state-critical-rgb),0.12)', label: 'CRITICAL' },
+  HIGH: { color: 'var(--state-warning)', bg: 'rgba(var(--state-warning-rgb),0.12)', label: 'HIGH' },
   MEDIUM: { color: '#64748B', bg: 'rgba(100,116,139,0.12)', label: 'MEDIUM' },
 }
 
 export const statusConfig: Record<RecentExecution['status'], { color: string; bg: string }> = {
-  Approved: { color: '#10B981', bg: 'rgba(16,185,129,0.12)' },
-  Rejected: { color: '#EF4444', bg: 'rgba(239,68,68,0.12)' },
+  Approved: { color: 'var(--state-healthy)', bg: 'rgba(16,185,129,0.12)' },
+  Rejected: { color: 'var(--state-critical)', bg: 'rgba(var(--state-critical-rgb),0.12)' },
   'Auto-executed': { color: '#14B8A6', bg: 'rgba(20,184,166,0.12)' },
 }
 
@@ -154,10 +154,10 @@ export const statusConfig: Record<RecentExecution['status'], { color: string; bg
    ═══════════════════════════════════════════ */
 
 export function getConfidenceColor(c: number): string {
-  if (c >= 0.9) return '#10B981'
+  if (c >= 0.9) return 'var(--state-healthy)'
   if (c >= 0.8) return '#14B8A6'
-  if (c >= 0.7) return '#F59E0B'
-  return '#EF4444'
+  if (c >= 0.7) return 'var(--state-warning)'
+  return 'var(--state-critical)'
 }
 
 /* ═══════════════════════════════════════════

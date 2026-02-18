@@ -1,17 +1,9 @@
 import { useState, useEffect, memo, useMemo } from 'react';
 import { motion } from 'framer-motion';
+import { fadeUp, staggerContainer } from '@/lib/motion-presets';
 import { AreaChart, Area, ResponsiveContainer } from 'recharts';
 import { CountUp } from '@/components/poseidon';
 
-const stagger = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.08 } },
-};
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 16 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.2, 0.8, 0.2, 1] } },
-};
 
 interface StatCardProps {
   label: string;
@@ -105,7 +97,7 @@ export function KpiGrid() {
   return (
     <motion.section
       className="kpi-grid"
-      variants={stagger}
+      variants={staggerContainer}
       initial="hidden"
       animate="visible"
       aria-label="Key performance indicators"

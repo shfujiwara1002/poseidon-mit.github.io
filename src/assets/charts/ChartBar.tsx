@@ -1,5 +1,4 @@
 import React from 'react';
-import { theme } from '../../theme';
 import { ChartGlowDefs } from './ChartGlowDefs';
 
 interface ChartBarProps {
@@ -22,7 +21,7 @@ export const ChartBar: React.FC<ChartBarProps> = ({
   data,
   width = 400,
   height = 200,
-  color = theme.accent.cyan,
+  color = 'var(--accent-cyan)',
   showReflection = true,
   showScanlines = true,
   barRadius = 4,
@@ -55,7 +54,7 @@ export const ChartBar: React.FC<ChartBarProps> = ({
                 y1={lineY}
                 x2={width}
                 y2={lineY}
-                stroke={theme.glass.glassBorder}
+                stroke={'var(--glass-border)'}
                 strokeWidth="1"
                 strokeOpacity={ratio === 1 ? '0.25' : '0.08'}
               />
@@ -111,7 +110,7 @@ export const ChartBar: React.FC<ChartBarProps> = ({
                 x={x + barWidth / 2}
                 y={y - 12}
                 fill="white"
-                fontFamily={theme.typography.fontHeader}
+                fontFamily={'var(--font-display)'}
                 fontSize="14"
                 textAnchor="middle"
                 filter="url(#neon-glow-small)"
@@ -125,7 +124,7 @@ export const ChartBar: React.FC<ChartBarProps> = ({
               y={height + 20}
               fill="white"
               fillOpacity="0.6"
-              fontFamily={theme.typography.fontMono}
+              fontFamily={'var(--font-mono)'}
               fontSize="12"
               textAnchor="middle"
             >

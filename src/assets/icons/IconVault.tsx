@@ -1,13 +1,11 @@
 import React from 'react';
-import { theme } from '../../theme';
-
 interface IconProps {
   size?: number;
   color?: string;
   style?: React.CSSProperties;
 }
 
-export const IconVault: React.FC<IconProps> = ({ size = 24, color = theme.semantic.threat, style }) => {
+export const IconVault: React.FC<IconProps> = ({ size = 24, color = 'var(--engine-protect)', style }) => {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={style}>
       <rect x="3" y="3" width="18" height="18" rx="2" stroke={color} strokeWidth="2" />

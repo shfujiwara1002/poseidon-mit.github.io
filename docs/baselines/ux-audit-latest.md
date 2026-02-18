@@ -1,9 +1,9 @@
 # UX Audit Latest
 
-- Date: 2026-02-15
+- Date: 2026-02-18
 - Overall Score: **5/5.0**
 - Verify: **PASS**
-- Open Issues: **0**
+- Open Issues: **6**
 
 ## Criteria Scores
 | Criteria | Score | Note |
@@ -24,7 +24,12 @@
 ## Top Open Issues (Priority Sorted)
 | ID | Route | Criteria | Severity | PriorityScore | Autofixable | Symptom |
 | --- | --- | --- | --- | ---: | --- | --- |
-| - | - | - | - | - | - | No open issues |
+| UX-AUTO-001 | / | oneCta | P0 | 24 | yes | Expected <= 1 primary CTA; found 3. |
+| UX-AUTO-002 | /dashboard | oneCta | P0 | 24 | yes | Expected <= 1 primary CTA; found 3. |
+| UX-AUTO-003 | /protect | oneCta | P0 | 24 | yes | Expected <= 1 primary CTA; found 3. |
+| UX-AUTO-004 | /execute | oneCta | P0 | 24 | yes | Expected <= 1 primary CTA; found 3. |
+| UX-AUTO-005 | /govern | oneCta | P0 | 24 | yes | Expected <= 1 primary CTA; found 3. |
+| UX-AUTO-006 | /settings | oneCta | P0 | 24 | yes | Expected <= 1 primary CTA; found 2. |
 
 ## Verify Checks
 | Command | Status | Exit |

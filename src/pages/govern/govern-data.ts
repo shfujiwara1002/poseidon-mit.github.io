@@ -131,17 +131,17 @@ export const kpiData: KpiCardData[] = [
   {
     label: 'Verifiable',
     value: '100%',
-    trend: { text: 'up from 99.8%', color: '#10B981' },
+    trend: { text: 'up from 99.8%', color: 'var(--state-healthy)' },
   },
   {
     label: 'Avg Evidence Points',
     value: '8.4',
-    trend: { text: '+1.2 trend', color: '#10B981' },
+    trend: { text: '+1.2 trend', color: 'var(--state-healthy)' },
   },
   {
     label: 'Human Reviews',
     value: '3',
-    badge: { text: 'pending', color: '#F59E0B', bg: 'rgba(245,158,11,0.12)' },
+    badge: { text: 'pending', color: 'var(--state-warning)', bg: 'rgba(var(--state-warning-rgb),0.12)' },
   },
 ]
 

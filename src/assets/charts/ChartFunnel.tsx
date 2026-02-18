@@ -1,5 +1,4 @@
 import React from 'react';
-import { theme } from '../../theme';
 import { ChartGlowDefs } from './ChartGlowDefs';
 
 interface ChartFunnelProps {
@@ -50,17 +49,17 @@ export const ChartFunnel: React.FC<ChartFunnelProps> = ({
           >
             <path d={path} fill={stage.color} fillOpacity="0.15" stroke={stage.color} strokeWidth="1" strokeOpacity="0.5" filter="url(#neon-glow-small)" />
 
-            <text x={width / 2} y={y + stageHeight / 2 - 5} fill="white" fontFamily={theme.typography.fontUi} fontSize="13" textAnchor="middle">
+            <text x={width / 2} y={y + stageHeight / 2 - 5} fill="white" fontFamily={'var(--font-body)'} fontSize="13" textAnchor="middle">
               {stage.label}
             </text>
 
-            <text x={width / 2} y={y + stageHeight / 2 + 12} fill="white" fontFamily={theme.typography.fontMono} fontSize="14" fontWeight="bold" textAnchor="middle">
+            <text x={width / 2} y={y + stageHeight / 2 + 12} fill="white" fontFamily={'var(--font-mono)'} fontSize="14" fontWeight="bold" textAnchor="middle">
               {stage.value.toLocaleString()}
             </text>
 
             {showPercentages && i < stages.length - 1 && (
               <g transform={`translate(${width - 40}, ${y + stageHeight})`}>
-                <text x="0" y="4" fill="white" fillOpacity="0.5" fontFamily={theme.typography.fontMono} fontSize="10">
+                <text x="0" y="4" fill="white" fillOpacity="0.5" fontFamily={'var(--font-mono)'} fontSize="10">
                   {Math.round((stages[i + 1].value / stage.value) * 100)}%
                 </text>
               </g>

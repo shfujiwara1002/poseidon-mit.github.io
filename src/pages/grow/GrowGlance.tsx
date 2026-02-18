@@ -38,8 +38,8 @@ export function GrowGlance() {
                 <span
                   className="text-[10px] font-semibold uppercase tracking-wider rounded-full px-2 py-0.5"
                   style={{
-                    background: goal.status === 'On track' ? 'rgba(16,185,129,0.12)' : goal.status === 'Ahead' ? 'rgba(139,92,246,0.12)' : 'rgba(245,158,11,0.12)',
-                    color: goal.status === 'On track' ? '#10B981' : goal.status === 'Ahead' ? 'var(--engine-grow)' : '#F59E0B',
+                    background: goal.status === 'On track' ? 'rgba(16,185,129,0.12)' : goal.status === 'Ahead' ? 'rgba(139,92,246,0.12)' : 'rgba(var(--state-warning-rgb),0.12)',
+                    color: goal.status === 'On track' ? 'var(--state-healthy)' : goal.status === 'Ahead' ? 'var(--engine-grow)' : 'var(--state-warning)',
                   }}
                 >
                   {goal.status}

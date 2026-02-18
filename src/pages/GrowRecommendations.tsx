@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Lightbulb, Sparkles, TrendingUp, DollarSign, BarChart3, ChevronDown, ChevronUp, Send, X, Shield, Filter } from 'lucide-react';
+import { ArrowLeft, Lightbulb, Sparkles, DollarSign, ChevronDown, ChevronUp, Send, X, Filter } from 'lucide-react';
 import { Link } from '../router';
 import { usePageTitle } from '../hooks/use-page-title';
 import { GovernFooter, AuroraPulse } from '@/components/poseidon'
@@ -75,11 +75,11 @@ const recommendations: Recommendation[] = [
   },
 ];
 
-const categoryColors: Record<Exclude<Category, 'All'>, string> = { Savings: 'var(--engine-protect)', Debt: '#EF4444', Income: 'var(--engine-dashboard)', Investment: 'var(--engine-grow)' };
+const categoryColors: Record<Exclude<Category, 'All'>, string> = { Savings: 'var(--engine-protect)', Debt: 'var(--state-critical)', Income: 'var(--engine-dashboard)', Investment: 'var(--engine-grow)' };
 const difficultyColors: Record<Difficulty, { text: string; bg: string }> = {
   Easy: { text: 'var(--engine-protect)', bg: 'rgba(34,197,94,0.15)' },
   Medium: { text: 'var(--engine-execute)', bg: 'rgba(234,179,8,0.15)' },
-  Hard: { text: '#EF4444', bg: 'rgba(239,68,68,0.15)' },
+  Hard: { text: 'var(--state-critical)', bg: 'rgba(var(--state-critical-rgb),0.15)' },
 };
 
 /* ═══════════════════════════════════════════
@@ -359,21 +359,6 @@ export function GrowRecommendations() {
             </div>
           </aside>
         </div>
-
-        {/* Govern footer */}
-        <motion.footer
-          variants={fadeUp}
-          className="flex flex-wrap items-center gap-3 rounded-2xl border-t border-white/10 bg-white/[0.03] px-4 py-3"
-          role="contentinfo"
-          aria-label="Governance verification"
-        >
-          <Shield className="h-4 w-4 text-emerald-400" />
-          <span className="text-xs font-medium text-emerald-400">Verified</span>
-          <span className="text-xs font-mono text-white/30">GV-2026-0216-GROW-REC</span>
-          <span className="text-xs text-white/20">·</span>
-          <span className="text-xs text-white/30">GrowthForecast v3.2</span>
-          <Link to="/govern/oversight" className="ml-auto text-xs text-white/40 hover:text-white/60 transition-colors">Request human review</Link>
-        </motion.footer>
 
         <GovernFooter auditId={GOVERNANCE_META['/grow/recommendations'].auditId} pageContext={GOVERNANCE_META['/grow/recommendations'].pageContext} />
       </motion.div>

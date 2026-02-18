@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Eye, UserCheck, Bot, AlertTriangle, CheckCircle, XCircle, Clock, HelpCircle, Shield } from 'lucide-react';
+import { ArrowLeft, Eye, Bot } from 'lucide-react';
 import { Link } from '../router';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { usePageTitle } from '../hooks/use-page-title';
@@ -10,7 +9,7 @@ import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets';
 
 const reviewCards = [
   {
-    id: 'RV-001', urgency: 'Critical' as const, urgencyColor: '#EF4444', engine: 'Protect', engineColor: 'var(--engine-protect)',
+    id: 'RV-001', urgency: 'Critical' as const, urgencyColor: 'var(--state-critical)', engine: 'Protect', engineColor: 'var(--engine-protect)',
     action: 'Block card', confidence: 0.71, reason: 'Amount $4,200 near threshold',
     aiRec: 'AI recommends blocking due to anomalous spending pattern. Transaction origin flagged.',
     auditId: 'GV-2026-0216-OVR-001',
@@ -216,16 +215,6 @@ export function GovernOversight() {
             </motion.div>
           </div>
         </div>
-
-        {/* Govern footer */}
-        <motion.footer variants={fadeUp} className="flex flex-wrap items-center gap-3 rounded-2xl border-t border-white/10 bg-white/[0.03] px-4 py-3" role="contentinfo">
-          <Shield className="h-4 w-4 text-emerald-400" />
-          <span className="text-xs font-medium text-emerald-400">Verified</span>
-          <span className="text-xs font-mono text-white/30">GV-2026-0216-OVR</span>
-          <span className="text-xs text-white/20">·</span>
-          <span className="text-xs text-white/30">OversightEngine v1.1</span>
-          <Link to="/govern/audit" className="ml-auto text-xs text-white/40 hover:text-white/60 transition-colors">Request human review</Link>
-        </motion.footer>
 
         <GovernFooter auditId={GOVERNANCE_META['/govern/oversight'].auditId} pageContext={GOVERNANCE_META['/govern/oversight'].pageContext} />
       </motion.div>

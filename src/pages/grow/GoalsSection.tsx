@@ -31,7 +31,7 @@ function GoalCard({ goal, navigate, viewMode = 'detail' }: { goal: Goal; navigat
   const sc = statusConfig[goal.status]
   return (
     <motion.div variants={fadeUp}>
-      <GlassCard borderColor={goal.status === 'Behind' ? '#F59E0B' : 'rgba(139,92,246,0.3)'} className="flex flex-col gap-4">
+      <GlassCard borderColor={goal.status === 'Behind' ? 'var(--state-warning)' : 'rgba(139,92,246,0.3)'} className="flex flex-col gap-4">
         <div className="flex items-start justify-between flex-wrap gap-2">
           <h3 className="text-base font-semibold" style={{ color: '#F1F5F9' }}>{goal.name}</h3>
           <span
@@ -80,7 +80,7 @@ function GoalCard({ goal, navigate, viewMode = 'detail' }: { goal: Goal; navigat
           </div>
           <div className="flex flex-col gap-0.5">
             <span className="text-[10px] uppercase tracking-wider" style={{ color: '#64748B' }}>Gap</span>
-            <span className="text-sm font-mono font-semibold tabular-nums" style={{ color: '#F59E0B' }}>{goal.gap}</span>
+            <span className="text-sm font-mono font-semibold tabular-nums" style={{ color: 'var(--state-warning)' }}>{goal.gap}</span>
           </div>
         </div>
 

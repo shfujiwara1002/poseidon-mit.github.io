@@ -1,16 +1,8 @@
 import type React from 'react';
 import { motion } from 'framer-motion';
+import { fadeUp, staggerContainer } from '@/lib/motion-presets';
 import { TrendingUp, ArrowDown, Activity } from 'lucide-react';
 
-const stagger = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.08 } },
-};
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 16 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.2, 0.8, 0.2, 1] } },
-};
 
 /* ═══════════════════════ Net Worth Hero ═══════════════════════ */
 
@@ -193,7 +185,7 @@ export function DecisionRail() {
     <motion.div
       className="decision-rail"
       data-slot="decision_rail"
-      variants={stagger}
+      variants={staggerContainer}
       initial="hidden"
       animate="visible"
     >

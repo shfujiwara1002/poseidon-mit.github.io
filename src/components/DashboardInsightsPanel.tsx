@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { fadeUp, staggerContainer } from '@/lib/motion-presets';
 
 export type InsightVariant = 'morning' | 'evening';
 
@@ -30,15 +31,6 @@ const EVENING_METRICS = [
   { label: 'Actions pending', value: '2', tone: 'execute' },
 ];
 
-const stagger = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.06 } },
-};
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.2, 0.8, 0.2, 1] } },
-};
 
 interface DashboardInsightsPanelProps {
   variant: InsightVariant;
@@ -54,7 +46,7 @@ export function DashboardInsightsPanel({ variant }: DashboardInsightsPanelProps)
       {variant === 'morning' ? (
         <motion.div
           className="dashboard-insights-card dashboard-insights-card--activity glass-surface"
-          variants={stagger}
+          variants={staggerContainer}
           initial="hidden"
           animate="visible"
         >
@@ -78,7 +70,7 @@ export function DashboardInsightsPanel({ variant }: DashboardInsightsPanelProps)
       ) : (
         <motion.div
           className="dashboard-insights-card glass-surface"
-          variants={stagger}
+          variants={staggerContainer}
           initial="hidden"
           animate="visible"
         >

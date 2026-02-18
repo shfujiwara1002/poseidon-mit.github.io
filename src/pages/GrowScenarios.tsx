@@ -38,7 +38,6 @@ const forecastData: { x: number; median: number; low: number; high: number }[] =
 
 const horizonOptions = ['30d', '90d', '1yr'] as const;
 
-const circumference = 2 * Math.PI * 40;
 
 /* ═══════════════════════════════════════════
    COMPONENT
@@ -50,7 +49,7 @@ export function GrowScenarios() {
   const [horizon, setHorizon] = useState<(typeof horizonOptions)[number]>('1yr');
   const [incomeAdj, setIncomeAdj] = useState(10);
   const [expenseAdj, setExpenseAdj] = useState(-5);
-  const [dirty, setDirty] = useState(false);
+  const [_dirty, setDirty] = useState(false);
 
   const selected = scenarios.find((s) => s.id === activeScenario) ?? scenarios[1];
 
@@ -313,7 +312,7 @@ export function GrowScenarios() {
                     <div className="flex-1 h-1.5 rounded-full bg-white/10">
                       <div
                         className="h-full rounded-full"
-                        style={{ width: `${Math.abs(f.contribution) * 100}%`, background: f.contribution > 0 ? 'var(--engine-grow)' : '#EF4444', opacity: 0.7 }}
+                        style={{ width: `${Math.abs(f.contribution) * 100}%`, background: f.contribution > 0 ? 'var(--engine-grow)' : 'var(--state-critical)', opacity: 0.7 }}
                       />
                     </div>
                     <span className="text-xs text-white/40 w-8 text-right">{f.contribution > 0 ? '+' : ''}{f.contribution.toFixed(2)}</span>

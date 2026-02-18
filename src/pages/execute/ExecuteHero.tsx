@@ -93,8 +93,8 @@ function HeroSection({ navigate, viewMode, onViewModeChange }: HeroSectionProps)
             Approve
           </button>
           <button
-            className="inline-flex items-center gap-2 rounded-xl border px-5 py-2.5 text-sm font-semibold transition-all hover:shadow-[0_0_12px_rgba(239,68,68,0.3)] active:scale-[0.98] cursor-pointer"
-            style={{ borderColor: 'rgba(239,68,68,0.4)', color: '#EF4444', background: 'transparent' }}
+            className="inline-flex items-center gap-2 rounded-xl border px-5 py-2.5 text-sm font-semibold transition-all hover:shadow-[0_0_12px_rgba(var(--state-critical-rgb),0.3)] active:scale-[0.98] cursor-pointer"
+            style={{ borderColor: 'rgba(var(--state-critical-rgb),0.4)', color: 'var(--state-critical)', background: 'transparent' }}
             aria-label="Reject action: Block wire transfer to MerchantX"
             onClick={() => navigate('/execute/approval')}
           >

@@ -1,5 +1,4 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { theme } from '../../theme';
 import { ChartGlowDefs } from './ChartGlowDefs';
 
 interface ChartLineProps {
@@ -51,7 +50,7 @@ export const ChartLine: React.FC<ChartLineProps> = ({
   data,
   width = 400,
   height = 200,
-  color = theme.accent.cyan,
+  color = 'var(--accent-cyan)',
   strokeWidth = 3,
   showArea = true,
   showGrid = true,
@@ -67,7 +66,7 @@ export const ChartLine: React.FC<ChartLineProps> = ({
   showAxisLabels = false,
   xLabels,
   secondaryData,
-  secondaryColor = theme.accent.violet,
+  secondaryColor = 'var(--accent-violet)',
   animated = false,
   style,
 }) => {
@@ -156,7 +155,7 @@ export const ChartLine: React.FC<ChartLineProps> = ({
                 y1={y}
                 x2={width}
                 y2={y}
-                stroke={theme.glass.glassBorder}
+                stroke={'var(--glass-border)'}
                 strokeWidth="1"
                 strokeOpacity={ratio === 1 ? '0.3' : '0.1'}
               />
@@ -250,7 +249,7 @@ export const ChartLine: React.FC<ChartLineProps> = ({
                   x={p.x}
                   y={p.y - 18}
                   fill="white"
-                  fontFamily={theme.typography.fontMono}
+                  fontFamily={'var(--font-mono)'}
                   fontSize="12"
                   textAnchor="middle"
                   dominantBaseline="middle"
@@ -262,7 +261,7 @@ export const ChartLine: React.FC<ChartLineProps> = ({
             )}
 
             {showAxisLabels && xLabels && xLabels[i] && (
-              <text x={p.x} y={height + 20} fill="white" fillOpacity="0.6" fontFamily={theme.typography.fontMono} fontSize="11" textAnchor="middle">
+              <text x={p.x} y={height + 20} fill="white" fillOpacity="0.6" fontFamily={'var(--font-mono)'} fontSize="11" textAnchor="middle">
                 {xLabels[i]}
               </text>
             )}

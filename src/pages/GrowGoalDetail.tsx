@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Target, TrendingUp } from 'lucide-react';
 import { Link } from '../router';

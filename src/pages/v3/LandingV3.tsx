@@ -185,7 +185,7 @@ export default function LandingV3() {
           className="relative z-10 max-w-7xl mx-auto px-6 text-center"
           initial="hidden"
           animate="visible"
-          variants={{ visible: { transition: { staggerChildren: 0.15 } } }}
+          variants={stagger}
         >
           <motion.h1
             variants={fadeUp}
@@ -284,7 +284,7 @@ export default function LandingV3() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: '-60px' }}
-            variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
+            variants={stagger}
           >
             <motion.h2
               variants={fadeUp}
@@ -342,7 +342,7 @@ export default function LandingV3() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: '-60px' }}
-            variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
+            variants={stagger}
           >
             <motion.h2
               variants={fadeUp}

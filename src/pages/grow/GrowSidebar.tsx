@@ -117,7 +117,7 @@ function AssetAllocation() {
       </div>
       <span
         className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider"
-        style={{ color: '#10B981' }}
+        style={{ color: 'var(--state-healthy)' }}
       >
         <CheckCircle2 size={10} />
         Within target range

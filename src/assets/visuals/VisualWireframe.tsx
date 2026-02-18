@@ -1,6 +1,4 @@
 import React from 'react';
-import { theme } from '../../theme';
-
 interface VisualWireframeProps {
   width?: number;
   height?: number;
@@ -11,7 +9,7 @@ interface VisualWireframeProps {
 export const VisualWireframe: React.FC<VisualWireframeProps> = ({
   width = 300,
   height = 200,
-  color = theme.accent.blue,
+  color = 'var(--accent-blue)',
   style,
 }) => {
   return (

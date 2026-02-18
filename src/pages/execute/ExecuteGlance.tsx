@@ -37,8 +37,8 @@ export function ExecuteGlance() {
           Approve
         </button>
         <button
-          className="inline-flex items-center gap-2 rounded-xl border px-6 py-3 text-sm font-semibold transition-all hover:shadow-[0_0_12px_rgba(239,68,68,0.3)] active:scale-[0.98] cursor-pointer"
-          style={{ borderColor: 'rgba(239,68,68,0.4)', color: '#EF4444', background: 'transparent', minHeight: '48px' }}
+          className="inline-flex items-center gap-2 rounded-xl border px-6 py-3 text-sm font-semibold transition-all hover:shadow-[0_0_12px_rgba(var(--state-critical-rgb),0.3)] active:scale-[0.98] cursor-pointer"
+          style={{ borderColor: 'rgba(var(--state-critical-rgb),0.4)', color: 'var(--state-critical)', background: 'transparent', minHeight: '48px' }}
         >
           <XCircle size={18} />
           Reject
@@ -55,7 +55,7 @@ export function ExecuteGlance() {
         </GlassCard>
         <GlassCard className="flex flex-col items-center gap-1 py-4 glass-hover-execute">
           <span className="text-xs uppercase tracking-wider" style={{ color: '#64748B' }}>Approved Today</span>
-          <span className="text-2xl font-bold" style={{ color: '#10B981' }}>
+          <span className="text-2xl font-bold" style={{ color: 'var(--state-healthy)' }}>
             <CountUp value={7} />
           </span>
         </GlassCard>

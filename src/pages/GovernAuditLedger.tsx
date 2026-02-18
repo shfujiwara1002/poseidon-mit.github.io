@@ -81,15 +81,15 @@ const typeBg: Record<DecisionType, string> = {
 
 const statusConfig: Record<DecisionStatus, { color: string; bg: string; icon: React.ElementType }> = {
   Verified: { color: 'var(--engine-govern)', bg: 'rgba(59,130,246,0.12)', icon: CheckCircle2 },
-  'Pending review': { color: '#F59E0B', bg: 'rgba(245,158,11,0.12)', icon: Clock },
-  Flagged: { color: '#EF4444', bg: 'rgba(239,68,68,0.12)', icon: AlertTriangle },
+  'Pending review': { color: 'var(--state-warning)', bg: 'rgba(var(--state-warning-rgb),0.12)', icon: Clock },
+  Flagged: { color: 'var(--state-critical)', bg: 'rgba(var(--state-critical-rgb),0.12)', icon: AlertTriangle },
 };
 
 function getConfidenceColor(c: number): string {
-  if (c >= 0.9) return '#10B981';
+  if (c >= 0.9) return 'var(--state-healthy)';
   if (c >= 0.8) return 'var(--engine-govern)';
-  if (c >= 0.7) return '#F59E0B';
-  return '#EF4444';
+  if (c >= 0.7) return 'var(--state-warning)';
+  return 'var(--state-critical)';
 }
 
 /* ═══════════════════════════════════════════
@@ -441,11 +441,11 @@ function AuditTable({
 function AuditSummary() {
   const data = [
     { label: 'Total decisions', value: '847' },
-    { label: 'Verified', value: '789 (93%)', color: '#10B981' },
-    { label: 'Pending', value: '55 (6%)', color: '#F59E0B' },
-    { label: 'Flagged', value: '3 (1%)', color: '#EF4444' },
+    { label: 'Verified', value: '789 (93%)', color: 'var(--state-healthy)' },
+    { label: 'Pending', value: '55 (6%)', color: 'var(--state-warning)' },
+    { label: 'Flagged', value: '3 (1%)', color: 'var(--state-critical)' },
     { label: 'Avg evidence', value: '8.4 pts' },
-    { label: 'Compliance', value: '100%', color: '#10B981' },
+    { label: 'Compliance', value: '100%', color: 'var(--state-healthy)' },
   ];
 
   return (

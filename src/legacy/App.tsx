@@ -1,3 +1,8 @@
+/**
+ * @deprecated — Legacy unified App wrapper.
+ * Replaced by MinimalApp + AppNavShell in src/main.tsx.
+ * Kept in src/legacy/ for reference only. Do NOT import.
+ */
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { AppShell } from './components/AppShell';

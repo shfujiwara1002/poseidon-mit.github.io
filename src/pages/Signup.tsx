@@ -22,11 +22,11 @@ const avatars = [
 
 export function Signup() {
   const { navigate } = useRouter();
-  const [firstName, setFirstName] = useState('Shinji');
-  const [lastName, setLastName] = useState('Fujiwara');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirm, setConfirm] = useState('');
+  const [firstName, _setFirstName] = useState('Shinji');
+  const [lastName, _setLastName] = useState('Fujiwara');
+  const [email, _setEmail] = useState('');
+  const [password, _setPassword] = useState('');
+  const [confirm, _setConfirm] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);

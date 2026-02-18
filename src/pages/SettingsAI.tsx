@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Brain, Sliders, Bot, Shield, TrendingUp, Zap, Scale, Save, RotateCcw } from 'lucide-react';
+import { ArrowLeft, Brain, Shield, TrendingUp, Zap, Scale, Save, RotateCcw } from 'lucide-react';
 import { Link } from '../router';
 import { GovernFooter } from '@/components/poseidon'
 import { GOVERNANCE_META } from '@/lib/governance-meta'
@@ -182,16 +182,6 @@ export function SettingsAI() {
             </div>
           </div>
         </motion.div>
-
-        {/* Govern footer */}
-        <motion.footer variants={fadeUp} className="flex flex-wrap items-center gap-3 rounded-2xl border-t border-white/10 bg-white/[0.03] px-4 py-3" role="contentinfo">
-          <Shield className="h-4 w-4 text-emerald-400" />
-          <span className="text-xs font-medium text-emerald-400">Verified</span>
-          <span className="text-xs font-mono text-white/30">GV-2026-0216-AISET</span>
-          <span className="text-xs text-white/20">·</span>
-          <span className="text-xs text-white/30">PolicyEngine v2.0</span>
-          <Link to="/govern/oversight" className="ml-auto text-xs text-white/40 hover:text-white/60 transition-colors">Request human review</Link>
-        </motion.footer>
 
         <GovernFooter auditId={GOVERNANCE_META['/settings/ai'].auditId} pageContext={GOVERNANCE_META['/settings/ai'].pageContext} />
       </motion.div>
