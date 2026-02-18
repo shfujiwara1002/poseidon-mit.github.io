@@ -13,7 +13,7 @@ import * as pdfjs from 'pdfjs-dist';
 import { FileDown } from 'lucide-react';
 import { Link } from '../router';
 
-const PDF_URL = '/Poseidon_AI_MIT_CTO_V3_Visual_First.pdf';
+const PDF_URL = '/CTO-Group7-Poseidon.pdf';
 const PDFJS_VERSION = '3.11.174';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS_VERSION}/pdf.worker.min.js`;
