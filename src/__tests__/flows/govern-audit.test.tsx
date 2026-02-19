@@ -37,7 +37,7 @@ describe('Govern audit flow', () => {
 
     it('has governance contract set', () => {
       const { container } = renderWithRouter(GovernTrust);
-      expect(container.querySelector('.mission-govern-badge')).not.toBeNull();
+      expect(container.querySelector('footer[aria-label="Governance verification footer"]')).not.toBeNull();
     });
   });
 
@@ -54,7 +54,7 @@ describe('Govern audit flow', () => {
 
     it('has governance contract set', () => {
       const { container } = renderWithRouter(GovernAuditLedger);
-      expect(container.querySelector('.mission-govern-badge')).not.toBeNull();
+      expect(container.querySelector('footer[aria-label="Governance verification footer"]')).not.toBeNull();
     });
   });
 
@@ -79,7 +79,7 @@ describe('Govern audit flow', () => {
 
     it('has governance contract set', () => {
       const { container } = renderWithRouter(GovernAuditDetail);
-      expect(container.querySelector('.mission-govern-badge')).not.toBeNull();
+      expect(container.querySelector('footer[aria-label="Governance verification footer"]')).not.toBeNull();
     });
   });
 });

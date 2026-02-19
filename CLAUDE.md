@@ -111,6 +111,7 @@ import { fadeUp, staggerContainer, staggerItem, pageTransition } from '@/lib/mot
 - **Never add old components** to v0 pages (no PageShell, no old context providers, no old data visualizations)
 - v0 pages go into `src/pages/` directly as self-contained components
 - v0 primitives go into `components/ui/`, composites into `components/blocks/`
+- Active frontend toolchain is Vite-only; do not introduce `next/*` imports into active app code
 
 ### New Page Requirements (App Shell routes)
 

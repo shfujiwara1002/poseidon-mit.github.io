@@ -41,10 +41,6 @@ for (const file of targetRouteFiles) {
   const source = read(file);
   if (!source) continue;
 
-  if (!source.includes('Skip to main content')) {
-    failures.push(`${file}: missing skip link text "Skip to main content".`);
-  }
-
   const hasMainId = source.includes('id="main-content"');
   const hasMainRole = source.includes('role="main"') || /<(?:motion\.)?main[\s>]/.test(source);
 

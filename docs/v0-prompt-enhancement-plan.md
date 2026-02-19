@@ -3,6 +3,7 @@
 > **Status**: 計画ドキュメント（実装前レビュー用）
 > **Date**: 2026-02-18
 > **Goal**: v0 が各画面で「何を構築すべきか」を具体的に理解できるレベルまで Prompt を拡充する
+> **Architecture Note (2026-02-19)**: Active frontend is Vite-only. Canonical route files are `src/pages/*.tsx`. Legacy Next assets are archived under `legacy/next/`.
 
 ## Scope Alignment Note
 

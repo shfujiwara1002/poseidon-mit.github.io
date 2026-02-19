@@ -47,30 +47,22 @@ describe('Protect decision flow (PRT02)', () => {
 
   it('has governance contract set', () => {
     const { container } = renderPRT02();
-    const govBadge = container.querySelector('.mission-govern-badge');
-    expect(govBadge).not.toBeNull();
+    const govFooter = container.querySelector('footer[aria-label="Governance verification footer"]');
+    expect(govFooter).not.toBeNull();
   });
 
   it('provides dispute link', () => {
     renderPRT02();
-    expect(screen.getByText(/Open dispute/i)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Open execute queue/i })).toBeInTheDocument();
   });
 
   it('signal section appears before decision controls in DOM order', () => {
     const { container } = renderPRT02();
-
-    // Signal section contains "Alert type"
-    const signalSection = container.querySelector('.engine-section');
-    // Decision section contains data-slot="action_preview"
-    const decisionSection = container.querySelector('[data-slot="action_preview"]');
-
-    expect(signalSection).not.toBeNull();
-    expect(decisionSection).not.toBeNull();
-
-    if (signalSection && decisionSection) {
-      const position = signalSection.compareDocumentPosition(decisionSection);
-      // Signal must come before decision
-      expect(position & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    }
+    const content = container.textContent ?? '';
+    const signalPos = content.indexOf('Alert type');
+    const decisionPos = content.indexOf('Recommended actions');
+    expect(signalPos).toBeGreaterThanOrEqual(0);
+    expect(decisionPos).toBeGreaterThanOrEqual(0);
+    expect(signalPos).toBeLessThan(decisionPos);
   });
 });

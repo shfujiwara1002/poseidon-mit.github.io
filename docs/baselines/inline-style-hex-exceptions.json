@@ -122,7 +122,21 @@
       "expiresOn": "2026-03-31"
     },
     {
+      "file": "src/pages/Dashboard.tsx",
+      "allow": ["inline-style", "hex-literal"],
+      "owner": "mit-demo-ui",
+      "reason": "V0 parity migration in progress for target route set.",
+      "expiresOn": "2026-03-31"
+    },
+    {
       "file": "src/pages/Settings.tsx",
+      "allow": ["inline-style", "hex-literal"],
+      "owner": "mit-demo-ui",
+      "reason": "V0 parity migration in progress for target route set.",
+      "expiresOn": "2026-03-31"
+    },
+    {
+      "file": "src/pages/NotFound.tsx",
       "allow": ["inline-style", "hex-literal"],
       "owner": "mit-demo-ui",
       "reason": "V0 parity migration in progress for target route set.",

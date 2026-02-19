@@ -2,6 +2,13 @@
 
 Poseidon.AI — AI-powered personal finance guardian (MIT CTO Program Capstone Project).
 
+## Runtime Policy
+
+- Frontend runtime is **Vite-only**.
+- Canonical route components live in `src/pages/`.
+- Next.js assets are archived under `legacy/next/` and are excluded from active build/test flows.
+- Package manager is **npm** (`package-lock.json` is authoritative).
+
 ## Overview
 
 Poseidon.AI is a unified AI backbone for personal finance that combines governance-first compliance, deterministic ML models, GenAI explanations, and consent-based execution. This repository contains the interactive prototype and pitch deck source.
