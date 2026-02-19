@@ -1,218 +1,292 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Shield, Check, X, CheckCircle, Lock, Star, ChevronDown, ArrowRight } from 'lucide-react';
-import { Link } from '../router';
-import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets'
+import { useState } from "react"
+import { motion } from "framer-motion"
+import { Link } from '@/router'
+import { Check, Zap, Shield, TrendingUp, HelpCircle, ChevronDown } from "lucide-react"
+import { PublicTopBar } from '@/components/landing/PublicTopBar'
 
-const features = [
-  { name: 'Dashboard monitoring', group: 'AI Features', starter: true, pro: true, enterprise: true },
-  { name: 'Protect engine', group: 'AI Features', starter: true, pro: true, enterprise: true },
-  { name: 'Grow engine', group: 'AI Features', starter: false, pro: true, enterprise: true },
-  { name: 'Execute engine', group: 'AI Features', starter: false, pro: true, enterprise: true },
-  { name: 'AI decisions/mo', group: 'AI Features', starter: '100', pro: '10,000', enterprise: 'Unlimited' },
-  { name: 'Audit trail', group: 'Security', starter: 'Basic', pro: 'Full', enterprise: 'Full + SOC 2' },
-  { name: 'SHAP explanations', group: 'Security', starter: false, pro: true, enterprise: true },
-  { name: 'Custom model training', group: 'Security', starter: false, pro: false, enterprise: true },
-  { name: 'Data encryption', group: 'Security', starter: true, pro: true, enterprise: true },
-  { name: 'Email support', group: 'Support', starter: true, pro: true, enterprise: true },
-  { name: 'Priority support', group: 'Support', starter: false, pro: '4h SLA', enterprise: '1h SLA' },
-  { name: 'Dedicated AM', group: 'Support', starter: false, pro: false, enterprise: true },
-];
-
-const faqItems = [
-  { q: 'Can I switch plans at any time?', a: 'Yes. Upgrade instantly, downgrade at end of billing period. No lock-in contracts.' },
-  { q: 'Is there a free trial for Pro?', a: 'Yes, 14-day free trial with full Pro features. No credit card required to start.' },
-  { q: 'What happens to my data if I downgrade?', a: 'Your data is preserved. Features above your plan tier are disabled but data remains accessible.' },
-  { q: 'Do you offer nonprofit discounts?', a: 'Yes. Contact sales for 50% off Pro and custom Enterprise pricing for qualified nonprofits.' },
-];
-
-export function Pricing() {
-  const [annual, setAnnual] = useState(false);
-  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
-
-  return (
-    <div className="min-h-screen w-full" style={{ background: '#0B1221' }}>
-      {/* Top nav */}
-      <nav className="border-b border-white/[0.06]" style={{ background: 'rgba(11,18,33,0.8)' }}>
-        <div className="mx-auto px-4 md:px-6 lg:px-8 h-14 flex items-center justify-between" style={{ maxWidth: '1280px' }}>
-          <div className="flex items-center gap-2">
-            <Shield className="h-5 w-5" style={{ color: 'var(--engine-dashboard)' }} />
-            <span className="text-base font-bold text-white">Poseidon.AI</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <Link to="/login" className="text-sm text-white/60 hover:text-white/80 transition-colors">Sign in</Link>
-            <Link to="/signup" className="px-4 py-2 rounded-xl text-xs font-semibold text-[#0B1221] hover:opacity-90 transition-opacity" style={{ background: 'var(--engine-dashboard)' }}>Get started</Link>
-          </div>
-        </div>
-      </nav>
-
-      <motion.div className="mx-auto flex flex-col gap-8 md:gap-12 px-4 py-10 md:px-6 md:py-16 lg:px-8" style={{ maxWidth: '1280px' }} variants={stagger} initial="hidden" animate="visible">
-        {/* Hero */}
-        <motion.div variants={fadeUp} className="text-center flex flex-col items-center gap-3">
-          <span className="text-xs font-semibold px-3 py-1 rounded-full" style={{ background: 'rgba(0,240,255,0.15)', color: 'var(--engine-dashboard)' }}>Pricing</span>
-          <h1 className="text-3xl md:text-4xl font-bold text-white text-balance">Simple, transparent pricing</h1>
-          <p className="text-sm text-slate-400 max-w-md text-pretty">Start free, scale when you&apos;re ready. All plans include full audit trails.</p>
-          <div className="flex items-center gap-3 mt-4">
-            <span className={`text-sm ${!annual ? 'text-white' : 'text-white/40'}`}>Monthly</span>
-            <button onClick={() => setAnnual(!annual)} className={`w-12 h-6 rounded-full relative transition-colors ${annual ? '' : 'bg-white/10'}`} style={annual ? { background: 'var(--engine-dashboard)' } : {}} role="switch" aria-checked={annual}>
-              <div className={`absolute top-1 w-4 h-4 rounded-full transition-transform ${annual ? 'translate-x-7 bg-[#0B1221]' : 'translate-x-1 bg-white'}`} />
-            </button>
-            <span className={`text-sm ${annual ? 'text-white' : 'text-white/40'}`}>Annual</span>
-            {annual && <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400">Save 20%</span>}
-          </div>
-        </motion.div>
-
-        {/* Pricing cards */}
-        <motion.div variants={fadeUp} className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Starter */}
-          <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-6 flex flex-col">
-            <h3 className="text-lg font-bold text-white mb-1">Starter</h3>
-            <p className="text-xs text-white/40 mb-4">Free forever</p>
-            <div className="mb-6">
-              <span className="text-3xl font-bold text-white">$0</span>
-              <span className="text-sm text-white/40">/mo</span>
-            </div>
-            <ul className="flex flex-col gap-2 mb-6 flex-1">
-              {['Basic monitoring', '1 goal', '100 AI decisions/mo', 'Email support'].map((f) => (
-                <li key={f} className="flex items-center gap-2 text-sm text-white/60">
-                  <Check className="h-3.5 w-3.5 text-white/30 shrink-0" />{f}
-                </li>
-              ))}
-            </ul>
-            <Link to="/signup" className="w-full text-center py-3 rounded-xl text-sm font-semibold border border-white/10 text-white/70 hover:bg-white/5 transition-colors">Get started free</Link>
-          </div>
-
-          {/* Pro */}
-          <div className="rounded-2xl border-2 p-6 flex flex-col relative" style={{ borderColor: 'var(--engine-dashboard)', background: 'rgba(0,240,255,0.03)' }}>
-            <span className="absolute -top-3 right-4 text-[10px] font-bold px-3 py-1 rounded-full" style={{ background: 'var(--engine-dashboard)', color: '#0B1221' }}>Most popular</span>
-            <h3 className="text-lg font-bold text-white mb-1">Pro</h3>
-            <p className="text-xs text-white/40 mb-4">For serious users</p>
-            <div className="mb-6">
-              <span className="text-3xl font-bold text-white">${annual ? '23' : '29'}</span>
-              <span className="text-sm text-white/40">/mo</span>
-              {annual && <span className="text-xs text-white/30 ml-2 line-through">$29</span>}
-            </div>
-            <ul className="flex flex-col gap-2 mb-6 flex-1">
-              {['All Protect + Grow + Execute', 'Unlimited goals', '10,000 decisions/mo', 'Priority support', 'Full audit trail', 'SHAP explanations'].map((f) => (
-                <li key={f} className="flex items-center gap-2 text-sm text-white/60">
-                  <Check className="h-3.5 w-3.5 shrink-0" style={{ color: 'var(--engine-dashboard)' }} />{f}
-                </li>
-              ))}
-            </ul>
-            <Link to="/signup" className="w-full text-center py-3 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity" style={{ background: 'var(--engine-dashboard)', color: '#0B1221' }}>Start free trial</Link>
-          </div>
-
-          {/* Enterprise */}
-          <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-6 flex flex-col">
-            <h3 className="text-lg font-bold text-white mb-1">Enterprise</h3>
-            <p className="text-xs text-white/40 mb-4">Custom pricing</p>
-            <div className="mb-6">
-              <span className="text-3xl font-bold text-white">Custom</span>
-            </div>
-            <ul className="flex flex-col gap-2 mb-6 flex-1">
-              {['Unlimited everything', 'Custom model training', 'SOC 2 report', 'Dedicated AM', 'SLA guarantee', 'On-prem option'].map((f) => (
-                <li key={f} className="flex items-center gap-2 text-sm text-white/60">
-                  <Check className="h-3.5 w-3.5 text-white/30 shrink-0" />{f}
-                </li>
-              ))}
-            </ul>
-            <Link to="/help" className="block w-full text-center py-3 rounded-xl text-sm font-semibold border border-white/10 text-white/70 hover:bg-white/5 transition-colors">Contact sales</Link>
-          </div>
-        </motion.div>
-
-        {/* Feature comparison table */}
-        <motion.div variants={fadeUp} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] overflow-x-auto">
-          <table className="w-full text-left min-w-[600px]">
-            <thead>
-              <tr className="border-b border-white/[0.06]">
-                <th className="px-4 py-3 text-xs text-white/50">Feature</th>
-                <th className="px-4 py-3 text-xs text-white/50 text-center">Starter</th>
-                <th className="px-4 py-3 text-xs text-center" style={{ color: 'var(--engine-dashboard)' }}>Pro</th>
-                <th className="px-4 py-3 text-xs text-white/50 text-center">Enterprise</th>
-              </tr>
-            </thead>
-            <tbody>
-              {(() => {
-                let lastGroup = '';
-                return features.map((f) => {
-                  const showGroup = f.group !== lastGroup;
-                  lastGroup = f.group;
-                  const renderCell = (val: boolean | string) => {
-                    if (val === true) return <CheckCircle className="h-4 w-4 text-emerald-400 mx-auto" />;
-                    if (val === false) return <X className="h-4 w-4 text-red-400/40 mx-auto" />;
-                    return <span className="text-xs text-white/60">{val}</span>;
-                  };
-                  return (
-                    <React.Fragment key={f.name}>
-                      {showGroup && (
-                        <tr><td colSpan={4} className="px-4 pt-4 pb-2 text-[10px] font-semibold text-white/30 uppercase tracking-wider">{f.group}</td></tr>
-                      )}
-                      <tr className="border-b border-white/[0.04]">
-                        <td className="px-4 py-2.5 text-xs text-white/60">{f.name}</td>
-                        <td className="px-4 py-2.5 text-center">{renderCell(f.starter)}</td>
-                        <td className="px-4 py-2.5 text-center">{renderCell(f.pro)}</td>
-                        <td className="px-4 py-2.5 text-center">{renderCell(f.enterprise)}</td>
-                      </tr>
-                    </React.Fragment>
-                  );
-                });
-              })()}
-            </tbody>
-          </table>
-        </motion.div>
-
-        {/* Trust signals */}
-        <motion.div variants={fadeUp} className="flex flex-wrap justify-center gap-6">
-          {[
-            { icon: Lock, text: 'Bank-grade security' },
-            { icon: Shield, text: 'GDPR + CCPA' },
-            { icon: Star, text: 'MIT CTO Program 2026' },
-          ].map((t) => (
-            <div key={t.text} className="flex items-center gap-2">
-              <t.icon className="h-4 w-4 text-white/30" />
-              <span className="text-sm text-white/40">{t.text}</span>
-            </div>
-          ))}
-        </motion.div>
-
-        {/* FAQ */}
-        <motion.div variants={fadeUp}>
-          <h2 className="text-lg font-bold text-white mb-4 text-center">Frequently Asked Questions</h2>
-          <div className="max-w-2xl mx-auto flex flex-col gap-2">
-            {faqItems.map((faq, idx) => (
-              <div key={idx} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] overflow-hidden">
-                <button onClick={() => setExpandedFaq(expandedFaq === idx ? null : idx)} className="w-full text-left flex items-center justify-between p-4">
-                  <span className="text-sm font-medium text-white pr-4">{faq.q}</span>
-                  <ChevronDown className={`h-4 w-4 text-white/30 shrink-0 transition-transform ${expandedFaq === idx ? 'rotate-180' : ''}`} />
-                </button>
-                {expandedFaq === idx && (
-                  <div className="px-4 pb-4 border-t border-white/[0.06]">
-                    <p className="text-xs text-slate-400 leading-relaxed pt-3">{faq.a}</p>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Bottom CTA */}
-        <motion.div variants={fadeUp} className="text-center flex flex-col items-center gap-4 py-8">
-          <h2 className="text-2xl font-bold text-white">Ready to get started?</h2>
-          <div className="flex gap-3">
-            <Link to="/dashboard" className="flex items-center gap-1.5 px-6 py-3 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity" style={{ background: 'var(--engine-dashboard)', color: '#0B1221' }}>
-              Open Dashboard <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link to="/help" className="px-6 py-3 rounded-xl text-sm font-semibold border border-white/10 text-white/70 hover:bg-white/5 transition-colors">Talk to sales</Link>
-          </div>
-        </motion.div>
-
-        {/* Footer */}
-        <motion.footer variants={fadeUp} className="text-center text-xs text-white/20 py-4 border-t border-white/[0.06]">
-          &copy; 2026 Poseidon.AI &middot; Privacy &middot; Terms
-        </motion.footer>
-      </motion.div>
-    </div>
-  );
+/* ── Motion presets ── */
+const spring = { type: "spring" as const, stiffness: 380, damping: 30 }
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: spring },
+}
+const staggerContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1 } },
 }
 
-export default Pricing;
+/* ── Plan data ── */
+const PLANS = [
+  {
+    name: "Starter",
+    price: { monthly: 0, annual: 0 },
+    description: "For individuals exploring AI-powered finance",
+    features: [
+      "1 connected account",
+      "Basic threat detection",
+      "Weekly digest",
+      "Community support",
+      "Standard dashboards",
+    ],
+    cta: "Get started free",
+    highlight: false,
+  },
+  {
+    name: "Pro",
+    price: { monthly: 29, annual: 24 },
+    description: "For users who want full protection and growth",
+    features: [
+      "Unlimited accounts",
+      "Real-time threat detection",
+      "Scenario modeling",
+      "Priority support",
+      "Custom dashboards",
+      "Full audit ledger",
+      "Execute automation",
+    ],
+    cta: "Create account",
+    highlight: true,
+  },
+  {
+    name: "Enterprise",
+    price: { monthly: null, annual: null },
+    description: "For teams requiring compliance and governance",
+    features: [
+      "Everything in Pro",
+      "SSO & team management",
+      "Dedicated support",
+      "SLA guarantee",
+      "Custom integrations",
+      "Compliance reporting",
+      "On-premise option",
+    ],
+    cta: "Contact sales",
+    highlight: false,
+  },
+]
+
+const FAQ_ITEMS = [
+  {
+    q: "How does the free trial work?",
+    a: "Start with the Starter plan at no cost. Upgrade anytime to unlock real-time protection, scenario modeling, and full audit capabilities.",
+  },
+  {
+    q: "Can I switch plans later?",
+    a: "Yes. You can upgrade, downgrade, or cancel at any time. Changes take effect at the next billing cycle.",
+  },
+  {
+    q: "Is my financial data secure?",
+    a: "Absolutely. We use bank-level encryption, read-only data access, and every AI decision is fully auditable through the Govern engine.",
+  },
+  {
+    q: "What happens when I cancel?",
+    a: "Your data remains accessible for 30 days. You can export everything, and no further charges apply.",
+  },
+]
+
+export default function PricingPage() {
+  const [annual, setAnnual] = useState(true)
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
+
+  return (
+    <>
+      <PublicTopBar />
+      <main id="main-content" className="relative">
+      {/* Background */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        aria-hidden="true"
+        style={{
+          background: "radial-gradient(60% 40% at 50% 0%, rgba(0,240,255,0.04), transparent)",
+        }}
+      />
+
+      <div className="relative z-10 mx-auto max-w-6xl px-6 py-16">
+        {/* ── P1: Hero ── */}
+        <motion.section
+          className="text-center mb-16"
+          initial="hidden"
+          animate="visible"
+          variants={staggerContainer}
+        >
+          <motion.p
+            variants={fadeUp}
+            className="text-xs font-semibold uppercase tracking-widest mb-4"
+            style={{ color: "var(--engine-dashboard)" }}
+          >
+            Simple, transparent pricing
+          </motion.p>
+          <motion.h1
+            variants={fadeUp}
+            className="text-3xl md:text-5xl font-bold leading-tight tracking-tight mb-4 text-balance"
+            style={{ color: "#F1F5F9" }}
+          >
+            Choose your level of{" "}
+            <span style={{ color: "var(--engine-dashboard)" }}>protection</span>
+          </motion.h1>
+          <motion.p variants={fadeUp} className="text-base md:text-lg max-w-2xl mx-auto" style={{ color: "#94A3B8" }}>
+            Every plan includes explainable AI decisions, full audit trails, and the ability to reverse any action.
+          </motion.p>
+
+          {/* Annual/Monthly toggle */}
+          <motion.div variants={fadeUp} className="flex items-center justify-center gap-3 mt-8">
+            <span className="text-sm" style={{ color: annual ? "#64748B" : "#F1F5F9" }}>Monthly</span>
+            <button
+              onClick={() => setAnnual(!annual)}
+              className="relative w-12 h-6 rounded-full transition-colors"
+              style={{
+                background: annual ? "var(--engine-dashboard)" : "rgba(255,255,255,0.1)",
+              }}
+              aria-label={`Switch to ${annual ? "monthly" : "annual"} billing`}
+            >
+              <span
+                className="absolute top-0.5 w-5 h-5 rounded-full transition-transform"
+                style={{
+                  background: "#0B1221",
+                  left: annual ? "calc(100% - 22px)" : "2px",
+                }}
+              />
+            </button>
+            <span className="text-sm" style={{ color: annual ? "#F1F5F9" : "#64748B" }}>
+              Annual
+              <span className="ml-1 text-xs font-semibold" style={{ color: "var(--state-healthy)" }}>
+                Save 17%
+              </span>
+            </span>
+          </motion.div>
+        </motion.section>
+
+        {/* ── P2: Plan cards ── */}
+        <motion.section
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={staggerContainer}
+        >
+          {PLANS.map((plan) => (
+            <motion.div
+              key={plan.name}
+              variants={fadeUp}
+              className="glass-surface rounded-2xl p-6 flex flex-col relative"
+              style={{
+                border: plan.highlight
+                  ? "1px solid rgba(0,240,255,0.3)"
+                  : "1px solid rgba(255,255,255,0.06)",
+              }}
+            >
+              {plan.highlight && (
+                <span
+                  className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full"
+                  style={{
+                    background: "var(--engine-dashboard)",
+                    color: "#0B1221",
+                  }}
+                >
+                  Most Popular
+                </span>
+              )}
+
+              <h3 className="text-lg font-bold mb-1" style={{ color: "#F1F5F9" }}>{plan.name}</h3>
+              <p className="text-sm mb-4" style={{ color: "#64748B" }}>{plan.description}</p>
+
+              <div className="mb-6">
+                {plan.price.monthly !== null ? (
+                  <>
+                    <span className="text-4xl font-bold font-mono" style={{ color: "#F1F5F9" }}>
+                      ${annual ? plan.price.annual : plan.price.monthly}
+                    </span>
+                    <span className="text-sm ml-1" style={{ color: "#64748B" }}>/month</span>
+                  </>
+                ) : (
+                  <span className="text-2xl font-bold" style={{ color: "#F1F5F9" }}>Custom</span>
+                )}
+              </div>
+
+              <ul className="flex flex-col gap-3 mb-8 flex-1">
+                {plan.features.map((f) => (
+                  <li key={f} className="flex items-start gap-2 text-sm" style={{ color: "#CBD5E1" }}>
+                    <Check size={16} className="mt-0.5 flex-shrink-0" style={{ color: "var(--state-healthy)" }} />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+
+              <Link
+                to={plan.price.monthly === null ? "#contact" : "/signup"}
+                className="block text-center text-sm font-semibold py-3 rounded-xl transition-all"
+                style={{
+                  background: plan.highlight
+                    ? "linear-gradient(135deg, #14B8A6, #06B6D4)"
+                    : "rgba(255,255,255,0.06)",
+                  color: plan.highlight ? "#0B1221" : "#F1F5F9",
+                  border: plan.highlight ? "none" : "1px solid rgba(255,255,255,0.08)",
+                }}
+              >
+                {plan.cta}
+              </Link>
+            </motion.div>
+          ))}
+        </motion.section>
+
+        {/* ── P3: FAQ ── */}
+        <motion.section
+          className="max-w-3xl mx-auto mb-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={staggerContainer}
+        >
+          <motion.h2
+            variants={fadeUp}
+            className="text-2xl font-bold text-center mb-8"
+            style={{ color: "#F1F5F9" }}
+          >
+            Frequently asked questions
+          </motion.h2>
+
+          <div className="flex flex-col gap-3">
+            {FAQ_ITEMS.map((item, i) => (
+              <motion.div
+                key={i}
+                variants={fadeUp}
+                className="glass-surface rounded-xl overflow-hidden"
+              >
+                <button
+                  className="w-full flex items-center justify-between p-4 text-left"
+                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                  aria-expanded={openFaq === i}
+                >
+                  <span className="text-sm font-medium" style={{ color: "#F1F5F9" }}>{item.q}</span>
+                  <ChevronDown
+                    size={16}
+                    className="flex-shrink-0 transition-transform"
+                    style={{
+                      color: "#64748B",
+                      transform: openFaq === i ? "rotate(180deg)" : "rotate(0deg)",
+                    }}
+                  />
+                </button>
+                {openFaq === i && (
+                  <div className="px-4 pb-4">
+                    <p className="text-sm leading-relaxed" style={{ color: "#94A3B8" }}>{item.a}</p>
+                  </div>
+                )}
+              </motion.div>
+            ))}
+          </div>
+        </motion.section>
+
+        {/* Trust badges */}
+        <div className="flex items-center justify-center gap-6 flex-wrap text-[10px] font-mono uppercase tracking-widest" style={{ color: "#475569" }}>
+          <span className="flex items-center gap-1.5"><Shield size={12} /> Bank-level encryption</span>
+          <span style={{ opacity: 0.3 }}>|</span>
+          <span className="flex items-center gap-1.5"><TrendingUp size={12} /> Explainable AI</span>
+          <span style={{ opacity: 0.3 }}>|</span>
+          <span className="flex items-center gap-1.5"><Zap size={12} /> Reversible actions</span>
+        </div>
+      </div>
+      </main>
+    </>
+  )
+}

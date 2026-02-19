@@ -14,50 +14,52 @@ function read(file) {
   return fs.readFileSync(fullPath, 'utf8');
 }
 
-const checks = [
-  {
-    file: 'src/pages/Dashboard.tsx',
-    test: (s) => /<(?:motion\.)?main[^>]*id="main-content"/.test(s),
-    message: 'Dashboard must expose <main id="main-content">.',
-  },
-  {
-    file: 'src/pages/Dashboard.tsx',
-    test: (s) => /Skip to/.test(s),
-    message: 'Dashboard must include skip link.',
-  },
-  {
-    file: 'src/components/layout/page-shell.tsx',
-    test: (s) => /<header className="page-shell-hero/.test(s) && /<footer className="page-shell-footer/.test(s),
-    message: 'PageShell layout must expose semantic hero and footer wrappers.',
-  },
+const targetRouteFiles = [
+  'src/pages/Landing.tsx',
+  'src/pages/Pricing.tsx',
+  'src/pages/Signup.tsx',
+  'src/pages/Login.tsx',
+  'src/pages/Onboarding.tsx',
+  'src/pages/OnboardingGoals.tsx',
+  'src/pages/OnboardingConsent.tsx',
+  'src/pages/OnboardingComplete.tsx',
+  'src/pages/Dashboard.tsx',
+  'src/pages/Protect.tsx',
+  'src/pages/ProtectAlertDetail.tsx',
+  'src/pages/Grow.tsx',
+  'src/pages/GrowGoalDetail.tsx',
+  'src/pages/GrowScenarios.tsx',
+  'src/pages/Execute.tsx',
+  'src/pages/ExecuteHistory.tsx',
+  'src/pages/Govern.tsx',
+  'src/pages/GovernAuditLedger.tsx',
+  'src/pages/Settings.tsx',
+  'src/pages/NotFound.tsx',
 ];
 
-for (const check of checks) {
-  const source = read(check.file);
+for (const file of targetRouteFiles) {
+  const source = read(file);
   if (!source) continue;
-  if (!check.test(source)) {
-    failures.push(`${check.file}: ${check.message}`);
+
+  if (!source.includes('Skip to main content')) {
+    failures.push(`${file}: missing skip link text "Skip to main content".`);
+  }
+
+  const hasMainId = source.includes('id="main-content"');
+  const hasMainRole = source.includes('role="main"') || /<(?:motion\.)?main[\s>]/.test(source);
+
+  if (!hasMainId || !hasMainRole) {
+    failures.push(`${file}: must include main landmark with id="main-content".`);
   }
 }
 
-const structureChecks = [
-  {
-    file: 'src/components/layout/page-shell.tsx',
-    test: (s) => /<header className="page-shell-hero/.test(s),
-    message: 'PageShell layout must expose a semantic hero header wrapper.',
-  },
-  {
-    file: 'src/components/layout/AppNavShell.tsx',
-    test: (s) => /aria-label="Main navigation"/.test(s),
-    message: 'AppNavShell must expose an accessible main navigation label.',
-  },
-];
-
-for (const check of structureChecks) {
-  const source = read(check.file);
-  if (!source) continue;
-  if (!check.test(source)) {
-    failures.push(`${check.file}: ${check.message}`);
+const appNav = read('src/components/layout/AppNavShell.tsx');
+if (appNav) {
+  if (!/aria-label="Main navigation"/.test(appNav)) {
+    failures.push('src/components/layout/AppNavShell.tsx: main nav aria label is required.');
+  }
+  if (!/aria-label="Breadcrumb"/.test(appNav)) {
+    failures.push('src/components/layout/AppNavShell.tsx: breadcrumb aria label is required.');
   }
 }
 

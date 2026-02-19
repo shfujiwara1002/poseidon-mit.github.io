@@ -1,530 +1,262 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState } from "react"
+import { motion } from "framer-motion"
+import { Link } from '@/router'
 import {
-  Shield,
-  User as UserIcon,
-  Brain,
-  Plug,
+  Settings,
+  User,
   Bell,
-  Settings as SettingsIcon,
-  Mail,
-  Download,
-  Upload,
-  RotateCcw,
-  Clock,
-  CheckCircle2,
-  AlertTriangle,
-  CircleDot,
-} from 'lucide-react';
-import { usePageTitle } from '../hooks/use-page-title';
-import { GovernFooter, AuroraPulse } from '@/components/poseidon';
-import { GOVERNANCE_META } from '@/lib/governance-meta';
-import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets';
+  Shield,
+  Scale,
+  Monitor,
+} from "lucide-react"
 
-/* ═══════════════════════════════════════════
-   TYPES
-   ═══════════════════════════════════════════ */
-
-type IntegrationStatus = 'Connected' | 'Pending' | 'Not connected' | 'Configured';
-
-interface Integration {
-  id: string;
-  name: string;
-  description: string;
-  logo: string;
-  logoColor: string;
-  logoBg: string;
-  status: IntegrationStatus;
-  details: string;
-  lastSync?: string;
-  actions: string[];
+/* ── Motion presets ── */
+const spring = { type: "spring" as const, stiffness: 380, damping: 30 }
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: spring },
+}
+const staggerContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.08 } },
 }
 
-interface SettingsTab {
-  id: string;
-  label: string;
-  icon: React.ElementType;
-}
-
-/* ═══════════════════════════════════════════
-   DATA
-   ═══════════════════════════════════════════ */
-
-const tabs: SettingsTab[] = [
-  { id: 'profile', label: 'Profile', icon: UserIcon },
-  { id: 'ai', label: 'AI Configuration', icon: Brain },
-  { id: 'integrations', label: 'Integrations', icon: Plug },
-  { id: 'privacy', label: 'Privacy & Data', icon: Shield },
-  { id: 'notifications', label: 'Notifications', icon: Bell },
-  { id: 'preferences', label: 'Preferences', icon: SettingsIcon },
-];
-
-const integrations: Integration[] = [
-  {
-    id: 'plaid',
-    name: 'Plaid',
-    description: 'Bank Connections',
-    logo: 'P',
-    logoColor: '#14B8A6',
-    logoBg: 'rgba(20,184,166,0.15)',
-    status: 'Connected',
-    details: '4 accounts linked',
-    lastSync: '5 minutes ago',
-    actions: ['Configure', 'Disconnect'],
-  },
-  {
-    id: 'stripe',
-    name: 'Stripe',
-    description: 'Payment Processing',
-    logo: 'S',
-    logoColor: 'var(--engine-grow)',
-    logoBg: 'rgba(139,92,246,0.15)',
-    status: 'Connected',
-    details: 'Business account',
-    lastSync: '1 hour ago',
-    actions: ['Configure', 'Disconnect'],
-  },
-  {
-    id: 'coinbase',
-    name: 'Coinbase',
-    description: 'Crypto',
-    logo: 'C',
-    logoColor: 'var(--state-warning)',
-    logoBg: 'rgba(var(--state-warning-rgb),0.15)',
-    status: 'Pending',
-    details: 'Authorization required',
-    actions: ['Complete setup'],
-  },
-  {
-    id: 'quickbooks',
-    name: 'QuickBooks',
-    description: 'Accounting',
-    logo: 'Q',
-    logoColor: 'var(--state-healthy)',
-    logoBg: 'rgba(16,185,129,0.15)',
-    status: 'Not connected',
-    details: 'Sync transactions automatically',
-    actions: ['Connect'],
-  },
-  {
-    id: 'robinhood',
-    name: 'Robinhood',
-    description: 'Investments',
-    logo: 'R',
-    logoColor: '#14B8A6',
-    logoBg: 'rgba(20,184,166,0.15)',
-    status: 'Connected',
-    details: '1 portfolio',
-    lastSync: '3 hours ago',
-    actions: ['Configure', 'Disconnect'],
-  },
-  {
-    id: 'email',
-    name: 'Email Notifications',
-    description: 'Alerts & Reports',
-    logo: '',
-    logoColor: 'var(--engine-govern)',
-    logoBg: 'rgba(59,130,246,0.15)',
-    status: 'Configured',
-    details: 'user@example.com',
-    actions: ['Configure'],
-  },
-];
-
-const recentChanges = [
-  { text: 'Plaid reconnected', time: '5 min ago' },
-  { text: 'Email preferences updated', time: '2 hours ago' },
-  { text: 'AI risk threshold adjusted', time: 'Yesterday' },
-];
-
-/* ═══════════════════════════════════════════
-   UTILITY HELPERS
-   ═══════════════════════════════════════════ */
-
-const statusConfig: Record<IntegrationStatus, { color: string; bg: string }> = {
-  Connected: { color: 'var(--state-healthy)', bg: 'rgba(16,185,129,0.12)' },
-  Pending: { color: 'var(--state-warning)', bg: 'rgba(var(--state-warning-rgb),0.12)' },
-  'Not connected': { color: '#64748B', bg: 'rgba(100,116,139,0.12)' },
-  Configured: { color: 'var(--state-healthy)', bg: 'rgba(16,185,129,0.12)' },
-};
-
-/* ═══════════════════════════════════════════
-   GLASS CARD COMPONENT
-   ═══════════════════════════════════════════ */
-
-function GlassCard({
-  children,
-  className = '',
-  borderColor,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement> & { borderColor?: string }) {
+/* ── AuroraPulse ── */
+function AuroraPulse({ color }: { color: string }) {
   return (
     <div
-      className={`rounded-2xl border border-white/[0.06] p-4 md:p-6 ${className}`}
+      className="pointer-events-none absolute inset-0"
+      aria-hidden="true"
       style={{
-        background: 'rgba(255,255,255,0.03)',
-        backdropFilter: 'blur(24px)',
-        WebkitBackdropFilter: 'blur(24px)',
-        boxShadow: '0 4px 16px rgba(0,0,0,0.2)',
-        ...(borderColor ? { borderLeftWidth: '2px', borderLeftColor: borderColor } : {}),
+        background: `radial-gradient(70% 50% at 50% 0%, ${color}0F, transparent), radial-gradient(40% 40% at 80% 20%, ${color}08, transparent)`,
+        animation: "aurora-drift 8s ease-in-out infinite alternate",
       }}
-      {...props}
-    >
-      {children}
-    </div>
-  );
+    />
+  )
 }
 
-/* ═══════════════════════════════════════════
-   HERO SECTION
-   ═══════════════════════════════════════════ */
-
-function HeroSection() {
+/* ── GovernFooter ── */
+function GovernFooter({ auditId, pageContext }: { auditId: string; pageContext: string }) {
   return (
-    <motion.section
-      variants={stagger}
-      initial="hidden"
-      animate="visible"
-      className="flex flex-col gap-6"
+    <footer
+      className="mt-8 flex flex-col gap-3 md:flex-row md:items-center md:justify-between rounded-2xl border border-white/[0.06] px-4 py-3 md:px-6 md:py-4"
+      style={{ background: "rgba(255,255,255,0.03)" }}
+      role="contentinfo"
+      aria-label="Governance verification footer"
     >
-      <motion.div variants={fadeUp}>
-        <span
-          className="inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold tracking-wider uppercase"
-          style={{
-            borderColor: 'rgba(0,240,255,0.3)',
-            background: 'rgba(0,240,255,0.08)',
-            color: 'var(--engine-dashboard)',
-          }}
-        >
-          <SettingsIcon size={12} />
-          Settings
+      <div className="flex items-center gap-3">
+        <Scale size={14} style={{ color: "var(--engine-govern)" }} />
+        <span className="text-xs" style={{ color: "#94A3B8" }}>
+          Every decision on this page is logged to the immutable audit ledger.
         </span>
-      </motion.div>
-
-      <motion.div variants={fadeUp} className="flex flex-col gap-2">
-        <h1
-          className="text-2xl md:text-4xl font-bold leading-tight tracking-tight text-balance"
-          style={{ fontFamily: 'var(--font-display)', color: '#F1F5F9' }}
+      </div>
+      <div className="flex items-center gap-3">
+        <span className="text-[10px] font-mono uppercase tracking-wider" style={{ color: "#64748B" }}>
+          {auditId}
+        </span>
+        <Link
+          to="/govern/audit"
+          className="text-[10px] font-semibold uppercase tracking-wider"
+          style={{ color: "var(--engine-govern)" }}
         >
-          System preferences. 8 integrations active. All engines configured.
-        </h1>
-        <p className="text-sm md:text-base leading-relaxed" style={{ color: '#CBD5E1' }}>
-          Control AI behavior, data access, and system policies.
-        </p>
-      </motion.div>
-
-      <motion.div
-        variants={fadeUp}
-        className="flex flex-wrap items-center gap-1 text-xs"
-        style={{ color: '#64748B' }}
-        role="note"
-      >
-        <span>Last updated 2 hours ago</span>
-        <span aria-hidden="true">|</span>
-        <span>Auto-save enabled</span>
-        <span aria-hidden="true">|</span>
-        <span>Changes take effect immediately</span>
-      </motion.div>
-    </motion.section>
-  );
+          Open ledger
+        </Link>
+      </div>
+    </footer>
+  )
 }
 
-/* ═══════════════════════════════════════════
-   TABS
-   ═══════════════════════════════════════════ */
-
-function SettingsTabs({
-  activeTab,
-  onTabChange,
+/* ── Toggle component ── */
+function SettingToggle({
+  label,
+  desc,
+  defaultOn = true,
 }: {
-  activeTab: string;
-  onTabChange: (id: string) => void;
+  label: string
+  desc: string
+  defaultOn?: boolean
 }) {
+  const [on, setOn] = useState(defaultOn)
   return (
-    <>
-      {/* Desktop vertical tabs */}
-      <nav
-        className="hidden lg:flex flex-col gap-1 w-52 shrink-0"
-        role="tablist"
-        aria-label="Settings categories"
+    <div className="flex items-start justify-between gap-4 py-3" style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
+      <div>
+        <p className="text-sm font-medium" style={{ color: "#F1F5F9" }}>{label}</p>
+        <p className="text-xs" style={{ color: "#94A3B8" }}>{desc}</p>
+      </div>
+      <button
+        onClick={() => setOn(!on)}
+        className="relative w-11 h-6 rounded-full flex-shrink-0 transition-colors"
+        style={{ background: on ? "var(--engine-dashboard)" : "rgba(255,255,255,0.1)" }}
+        role="switch"
+        aria-checked={on}
+        aria-label={label}
       >
-        {tabs.map((tab) => {
-          const isActive = tab.id === activeTab;
-          return (
-            <button
-              key={tab.id}
-              role="tab"
-              aria-selected={isActive}
-              onClick={() => onTabChange(tab.id)}
-              className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all cursor-pointer text-left"
+        <span
+          className="absolute top-0.5 w-5 h-5 rounded-full transition-all"
+          style={{
+            background: "#0B1221",
+            left: on ? "calc(100% - 22px)" : "2px",
+          }}
+        />
+      </button>
+    </div>
+  )
+}
+
+export default function SettingsPage() {
+  return (
+    <div className="relative">
+      <AuroraPulse color="var(--engine-dashboard)" />
+
+      <motion.main
+        id="main-content"
+        className="command-center__main"
+        initial="hidden"
+        animate="visible"
+        variants={staggerContainer}
+      >
+        {/* ── P1: Settings Summary ── */}
+        <motion.section variants={staggerContainer} className="hero-section">
+          <motion.div variants={fadeUp} className="hero-kicker">
+            <span className="hero-kicker__icon"><Settings size={14} /></span>
+            Settings
+          </motion.div>
+
+          <motion.h1 variants={fadeUp} className="hero-headline">
+            Control your{" "}
+            <span style={{ color: "var(--engine-dashboard)" }}>experience</span>
+          </motion.h1>
+
+          <motion.p variants={fadeUp} className="hero-subline">
+            Manage your profile, notifications, and security preferences. All changes are logged.
+          </motion.p>
+        </motion.section>
+
+        {/* ── P2: Control Cards ── */}
+        <div className="flex flex-col lg:flex-row gap-4 px-4 md:px-6 lg:px-8">
+          {/* Profile card */}
+          <motion.div variants={fadeUp} className="flex-1 glass-surface rounded-2xl p-5">
+            <div className="flex items-center gap-3 mb-4">
+              <div
+                className="flex items-center justify-center w-10 h-10 rounded-xl"
+                style={{ background: "rgba(0,240,255,0.08)" }}
+              >
+                <User size={20} style={{ color: "var(--engine-dashboard)" }} />
+              </div>
+              <div>
+                <p className="text-sm font-semibold" style={{ color: "#F1F5F9" }}>Profile</p>
+                <p className="text-xs" style={{ color: "#64748B" }}>Account details</p>
+              </div>
+            </div>
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs" style={{ color: "#94A3B8" }}>Name</span>
+                <span className="text-sm font-medium" style={{ color: "#F1F5F9" }}>Jane Doe</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs" style={{ color: "#94A3B8" }}>Email</span>
+                <span className="text-sm font-medium" style={{ color: "#F1F5F9" }}>jane@example.com</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs" style={{ color: "#94A3B8" }}>Plan</span>
+                <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={{ background: "rgba(0,240,255,0.1)", color: "var(--engine-dashboard)" }}>Pro</span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Notification preferences */}
+          <motion.div variants={fadeUp} className="flex-1 glass-surface rounded-2xl p-5">
+            <div className="flex items-center gap-3 mb-4">
+              <div
+                className="flex items-center justify-center w-10 h-10 rounded-xl"
+                style={{ background: "rgba(234,179,8,0.08)" }}
+              >
+                <Bell size={20} style={{ color: "var(--engine-execute)" }} />
+              </div>
+              <div>
+                <p className="text-sm font-semibold" style={{ color: "#F1F5F9" }}>Notifications</p>
+                <p className="text-xs" style={{ color: "#64748B" }}>Alert preferences</p>
+              </div>
+            </div>
+            <SettingToggle label="Threat alerts" desc="Immediate notification for critical threats" defaultOn={true} />
+            <SettingToggle label="Weekly digest" desc="Summary of activity and recommendations" defaultOn={true} />
+            <SettingToggle label="Execution alerts" desc="Notify when actions are auto-queued" defaultOn={false} />
+          </motion.div>
+        </div>
+
+        {/* Security section */}
+        <motion.section variants={fadeUp} className="px-4 md:px-6 lg:px-8">
+          <div className="glass-surface rounded-2xl p-5">
+            <div className="flex items-center gap-3 mb-4">
+              <div
+                className="flex items-center justify-center w-10 h-10 rounded-xl"
+                style={{ background: "rgba(34,197,94,0.08)" }}
+              >
+                <Shield size={20} style={{ color: "var(--engine-protect)" }} />
+              </div>
+              <div>
+                <p className="text-sm font-semibold" style={{ color: "#F1F5F9" }}>Security</p>
+                <p className="text-xs" style={{ color: "#64748B" }}>Authentication and access controls</p>
+              </div>
+            </div>
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center justify-between py-2" style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
+                <div>
+                  <p className="text-sm font-medium" style={{ color: "#F1F5F9" }}>Two-factor authentication</p>
+                  <p className="text-xs" style={{ color: "#94A3B8" }}>Add an extra layer of security</p>
+                </div>
+                <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={{ background: "rgba(16,185,129,0.1)", color: "var(--state-healthy)" }}>
+                  Enabled
+                </span>
+              </div>
+              <div className="flex items-center justify-between py-2" style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
+                <div>
+                  <p className="text-sm font-medium" style={{ color: "#F1F5F9" }}>Active sessions</p>
+                  <p className="text-xs" style={{ color: "#94A3B8" }}>Manage your logged-in devices</p>
+                </div>
+                <span className="text-sm font-mono" style={{ color: "#F1F5F9" }}>2 devices</span>
+              </div>
+              <div className="flex items-center justify-between py-2">
+                <div>
+                  <p className="text-sm font-medium" style={{ color: "#F1F5F9" }}>Data export</p>
+                  <p className="text-xs" style={{ color: "#94A3B8" }}>Download all your data</p>
+                </div>
+                <button
+                  className="text-xs font-semibold px-3 py-1.5 rounded-lg"
+                  style={{ background: "rgba(255,255,255,0.06)", color: "#CBD5E1" }}
+                >
+                  Export
+                </button>
+              </div>
+            </div>
+          </div>
+        </motion.section>
+
+        {/* ── P3: Review action bar ── */}
+        <motion.section variants={fadeUp} className="px-4 md:px-6 lg:px-8">
+          <div className="glass-surface rounded-2xl p-5 flex items-center justify-between">
+            <p className="text-sm" style={{ color: "#94A3B8" }}>
+              All settings changes are recorded in the audit ledger.
+            </p>
+            {/* CTA: Primary -> /settings (self) */}
+            <Link
+              to="/settings"
+              className="inline-flex items-center gap-2 text-sm font-semibold px-5 py-2.5 rounded-xl"
               style={{
-                background: isActive ? 'rgba(255,255,255,0.08)' : 'transparent',
-                color: isActive ? '#F1F5F9' : '#94A3B8',
-                borderLeft: isActive ? '4px solid var(--engine-dashboard)' : '4px solid transparent',
-                minHeight: '44px',
+                background: "linear-gradient(135deg, #14B8A6, #06B6D4)",
+                color: "#0B1221",
               }}
             >
-              <tab.icon size={16} />
-              {tab.label}
-            </button>
-          );
-        })}
-      </nav>
-
-      {/* Mobile horizontal scroll tabs */}
-      <div className="lg:hidden overflow-x-auto -mx-4 px-4">
-        <div className="flex gap-2 pb-2" role="tablist" aria-label="Settings categories">
-          {tabs.map((tab) => {
-            const isActive = tab.id === activeTab;
-            return (
-              <button
-                key={tab.id}
-                role="tab"
-                aria-selected={isActive}
-                onClick={() => onTabChange(tab.id)}
-                className="flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium whitespace-nowrap transition-all cursor-pointer"
-                style={{
-                  background: isActive ? 'rgba(0,240,255,0.12)' : 'rgba(255,255,255,0.05)',
-                  color: isActive ? 'var(--engine-dashboard)' : '#94A3B8',
-                  border: isActive ? '1px solid rgba(0,240,255,0.3)' : '1px solid transparent',
-                  minHeight: '44px',
-                }}
-              >
-                <tab.icon size={14} />
-                {tab.label}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-    </>
-  );
-}
-
-/* ═══════════════════════════════════════════
-   INTEGRATION CARD
-   ═══════════════════════════════════════════ */
-
-function IntegrationCard({ integration }: { integration: Integration }) {
-  const sc = statusConfig[integration.status];
-  return (
-    <motion.div variants={fadeUp}>
-      <GlassCard className="flex flex-col gap-4 transition-all hover:bg-white/[0.04]">
-        <div className="flex items-start gap-3">
-          <div
-            className="flex items-center justify-center rounded-full shrink-0"
-            style={{ width: 40, height: 40, background: integration.logoBg }}
-            aria-hidden="true"
-          >
-            {integration.logo ? (
-              <span className="text-sm font-bold" style={{ color: integration.logoColor }}>
-                {integration.logo}
-              </span>
-            ) : (
-              <Mail size={18} style={{ color: integration.logoColor }} />
-            )}
+              Review settings controls
+            </Link>
           </div>
-          <div className="flex flex-col gap-0.5 min-w-0 flex-1">
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-semibold" style={{ color: '#F1F5F9' }}>{integration.name}</span>
-              <span
-                className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold"
-                style={{ background: sc.bg, color: sc.color }}
-                aria-label={`${integration.name} integration: ${integration.status}`}
-              >
-                {integration.status === 'Connected' || integration.status === 'Configured' ? (
-                  <CheckCircle2 size={9} />
-                ) : integration.status === 'Pending' ? (
-                  <AlertTriangle size={9} />
-                ) : (
-                  <CircleDot size={9} />
-                )}
-                {integration.status}
-              </span>
-            </div>
-            <span className="text-xs" style={{ color: '#64748B' }}>{integration.description}</span>
-          </div>
+        </motion.section>
+
+        {/* GovernFooter */}
+        <div className="px-4 md:px-6 lg:px-8">
+          <GovernFooter auditId="GV-2026-0216-SETT" pageContext="settings overview" />
         </div>
-
-        <div className="flex items-center justify-between">
-          <span className="text-xs" style={{ color: '#94A3B8' }}>{integration.details}</span>
-          {integration.lastSync && (
-            <span className="flex items-center gap-1 text-[10px]" style={{ color: '#64748B' }}>
-              <Clock size={10} />
-              {integration.lastSync}
-            </span>
-          )}
-        </div>
-
-        <div className="flex flex-wrap gap-2">
-          {integration.actions.map((action) => {
-            const isDisconnect = action === 'Disconnect';
-            const isConnect = action === 'Connect' || action === 'Complete setup';
-            return (
-              <button
-                key={action}
-                className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
-                style={
-                  isConnect
-                    ? {
-                        background: 'linear-gradient(135deg, #14B8A6, #0D9488)',
-                        color: '#04141a',
-                        minHeight: '36px',
-                      }
-                    : isDisconnect
-                    ? {
-                        border: '1px solid rgba(var(--state-critical-rgb),0.3)',
-                        color: 'var(--state-critical)',
-                        background: 'transparent',
-                        minHeight: '36px',
-                      }
-                    : {
-                        border: '1px solid rgba(255,255,255,0.1)',
-                        color: '#CBD5E1',
-                        background: 'transparent',
-                        minHeight: '36px',
-                      }
-                }
-                aria-label={`${action} ${integration.name}`}
-              >
-                {action}
-              </button>
-            );
-          })}
-        </div>
-      </GlassCard>
-    </motion.div>
-  );
-}
-
-/* ═══════════════════════════════════════════
-   SIDEBAR COMPONENTS
-   ═══════════════════════════════════════════ */
-
-function QuickActions() {
-  return (
-    <GlassCard className="flex flex-col gap-3">
-      <h3 className="text-sm font-semibold" style={{ fontFamily: 'var(--font-display)', color: '#F1F5F9' }}>
-        Quick Actions
-      </h3>
-      <button
-        className="w-full inline-flex items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-xs font-medium transition-all hover:bg-white/[0.04] cursor-pointer"
-        style={{ borderColor: 'rgba(255,255,255,0.1)', color: '#CBD5E1', background: 'transparent', minHeight: '44px' }}
-      >
-        <Download size={14} />
-        Export all settings
-      </button>
-      <button
-        className="w-full inline-flex items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-xs font-medium transition-all hover:shadow-[0_0_8px_rgba(var(--state-critical-rgb),0.2)] cursor-pointer"
-        style={{ borderColor: 'rgba(var(--state-critical-rgb),0.3)', color: 'var(--state-critical)', background: 'transparent', minHeight: '44px' }}
-      >
-        <RotateCcw size={14} />
-        Reset to defaults
-      </button>
-      <button
-        className="w-full inline-flex items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-xs font-medium transition-all hover:bg-white/[0.04] cursor-pointer"
-        style={{ borderColor: 'rgba(255,255,255,0.1)', color: '#CBD5E1', background: 'transparent', minHeight: '44px' }}
-      >
-        <Upload size={14} />
-        Import configuration
-      </button>
-    </GlassCard>
-  );
-}
-
-function RecentChanges() {
-  return (
-    <GlassCard className="flex flex-col gap-4">
-      <h3 className="text-sm font-semibold" style={{ fontFamily: 'var(--font-display)', color: '#F1F5F9' }}>
-        Recent Changes
-      </h3>
-      <div className="flex flex-col gap-0">
-        {recentChanges.map((item, i) => (
-          <div
-            key={i}
-            className="flex items-start gap-3 py-2.5"
-            style={{
-              borderBottom: i < recentChanges.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
-            }}
-          >
-            <div
-              className="mt-0.5 h-2 w-2 rounded-full shrink-0"
-              style={{ background: 'var(--engine-dashboard)' }}
-              aria-hidden="true"
-            />
-            <div className="flex flex-col gap-0.5 min-w-0">
-              <span className="text-xs font-medium" style={{ color: '#F1F5F9' }}>{item.text}</span>
-              <span className="text-[10px]" style={{ color: '#64748B' }}>{item.time}</span>
-            </div>
-          </div>
-        ))}
-      </div>
-    </GlassCard>
-  );
-}
-
-/* ═══════════════════════════════════════════
-   MAIN COMPONENT
-   ═══════════════════════════════════════════ */
-
-export function Settings() {
-  usePageTitle('Settings');
-  const [activeTab, setActiveTab] = useState('integrations');
-
-  return (
-    <div className="relative min-h-screen w-full" style={{ background: '#0B1221' }}>
-      <AuroraPulse color="var(--engine-dashboard)" intensity="subtle" />
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-1/2 focus:-translate-x-1/2 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold"
-        style={{ background: 'var(--engine-dashboard)', color: '#0B1221' }}
-      >
-        Skip to main content
-      </a>
-
-      <div
-        id="main-content"
-        className="mx-auto flex flex-col gap-6 md:gap-8 px-4 py-6 md:px-6 md:py-8 lg:px-8"
-        style={{ maxWidth: '1280px' }}
-        role="main"
-      >
-        <HeroSection />
-
-        <div className="flex flex-col lg:flex-row gap-6">
-          {/* Tabs */}
-          <SettingsTabs activeTab={activeTab} onTabChange={setActiveTab} />
-
-          {/* Main content */}
-          <div className="flex-1 min-w-0" role="tabpanel" aria-label={`${tabs.find(t => t.id === activeTab)?.label} settings`}>
-            <motion.div variants={stagger} initial="hidden" animate="visible" className="flex flex-col gap-4">
-              <motion.div variants={fadeUp}>
-                <h2 className="text-lg md:text-xl font-semibold" style={{ fontFamily: 'var(--font-display)', color: '#F1F5F9' }}>
-                  Integrations
-                </h2>
-                <p className="text-sm mt-1" style={{ color: '#94A3B8' }}>
-                  Connect external accounts and services
-                </p>
-              </motion.div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {integrations.map((integration) => (
-                  <IntegrationCard key={integration.id} integration={integration} />
-                ))}
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Sidebar */}
-          <aside className="w-full lg:w-72 shrink-0 flex flex-col gap-4" aria-label="Settings sidebar">
-            <QuickActions />
-            <RecentChanges />
-          </aside>
-        </div>
-
-        <GovernFooter auditId={GOVERNANCE_META['/settings'].auditId} pageContext={GOVERNANCE_META['/settings'].pageContext} />
-      </div>
+      </motion.main>
     </div>
-  );
+  )
 }
-
-export default Settings;

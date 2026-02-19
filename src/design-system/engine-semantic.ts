@@ -1,4 +1,4 @@
-import type { MissionTone } from '../components/MissionStatusChip';
+type MissionTone = 'primary' | 'healthy' | 'warning' | 'critical' | 'neutral';
 
 export type EngineSemanticKey = 'Protect' | 'Grow' | 'Execute' | 'Govern';
 

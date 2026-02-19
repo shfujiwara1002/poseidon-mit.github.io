@@ -4,7 +4,7 @@ import { Link } from '../router';
 
 export default function ComingSoon() {
   return (
-    <div className="min-h-screen bg-[#070d1a] text-white flex flex-col">
+    <div className="min-h-screen bg-[#0B1221] text-white flex flex-col">
       <nav className="sticky top-0 z-50 backdrop-blur-xl bg-white/[0.03] border-b border-white/[0.06]">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link

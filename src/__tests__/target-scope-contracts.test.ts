@@ -62,7 +62,7 @@ const ROUTE_PAGE_FILES: Record<RoutePath, string | null> = {
   '/settings/rights': 'src/pages/SettingsRights.tsx',
   '/help': 'src/pages/HelpSupport.tsx',
   '/onboarding': 'src/pages/Onboarding.tsx',
-  '/404': 'src/pages/ComingSoon.tsx',
+  '/404': 'src/pages/NotFound.tsx',
 };
 
 function getPageFile(route: RoutePath): string | null {
@@ -79,9 +79,9 @@ function readPageSource(route: RoutePath): string {
 
 describe('target scope routing contract', () => {
   it('ready routes exactly match the target-scope contract', () => {
-    const expected = new Set<RoutePath>(
-      TARGET_SCOPE_READY_ROUTES.filter((route): route is RoutePath => route in routeLoaders),
-    );
+    const expected = new Set<RoutePath>([
+      ...TARGET_SCOPE_READY_ROUTES.filter((route): route is RoutePath => route in routeLoaders),
+    ]);
     expect(V0_READY_ROUTES).toEqual(expected);
   });
 
@@ -163,8 +163,11 @@ describe('target pages enforce minimum structure', () => {
   const targetRoutes = TARGET_SCOPE_READY_ROUTES.filter(
     (route): route is RoutePath => route !== '/404' && route in routeLoaders,
   );
+  const targetRoutesWith404 = TARGET_SCOPE_READY_ROUTES.filter(
+    (route): route is RoutePath => route in routeLoaders,
+  );
 
-  it.each(targetRoutes)('%s includes skip link and main landmark', (route) => {
+  it.each(targetRoutesWith404)('%s includes skip link and main landmark', (route) => {
     const source = readPageSource(route);
     expect(source).toContain('Skip to main content');
     expect(source).toContain('id="main-content"');

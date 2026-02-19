@@ -117,7 +117,7 @@ const BREADCRUMB_MAP: Record<string, string[]> = {
   '/settings/ai': ['Settings', 'AI'],
   '/settings/integrations': ['Settings', 'Integrations'],
   '/settings/rights': ['Settings', 'Rights'],
-  '/help': ['Help'],
+  '/help': ['Settings', 'Help'],
 };
 
 /* ─── Helpers ────────────────────────────────────────────── */
@@ -168,7 +168,7 @@ export function AppNavShell({
   );
 
   return (
-    <div className="flex min-h-screen" style={{ background: '#070d1a' }}>
+    <div className="flex min-h-screen" style={{ background: '#0B1221' }}>
       <CommandPalette isOpen={isPaletteOpen} onClose={closePalette} />
       {/* ── Desktop Sidebar ── */}
       <aside
@@ -318,7 +318,7 @@ export function AppNavShell({
           className="hidden lg:flex items-center justify-between sticky top-0 z-30 px-6"
           style={{
             height: 56,
-            background: 'rgba(7, 13, 26, 0.85)',
+            background: 'rgba(11, 18, 33, 0.85)',
             backdropFilter: 'blur(16px)',
             WebkitBackdropFilter: 'blur(16px)',
             borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
@@ -459,7 +459,7 @@ export function AppNavShell({
           className="flex lg:hidden items-center justify-between sticky top-0 z-30 px-4"
           style={{
             height: 56,
-            background: 'rgba(7, 13, 26, 0.9)',
+            background: 'rgba(11, 18, 33, 0.9)',
             backdropFilter: 'blur(16px)',
             WebkitBackdropFilter: 'blur(16px)',
             borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
@@ -512,7 +512,7 @@ export function AppNavShell({
             className="flex items-center gap-2 px-4 lg:px-6 py-2.5 overflow-x-auto"
             style={{
               borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
-              background: 'rgba(7, 13, 26, 0.6)',
+              background: 'rgba(11, 18, 33, 0.6)',
             }}
             role="navigation"
             aria-label="Sub-navigation"
@@ -564,7 +564,7 @@ export function AppNavShell({
         style={{
           height: 64,
           paddingBottom: 'env(safe-area-inset-bottom, 0px)',
-          background: 'rgba(7, 13, 26, 0.9)',
+          background: 'rgba(11, 18, 33, 0.9)',
           backdropFilter: 'blur(24px)',
           WebkitBackdropFilter: 'blur(24px)',
           borderTop: '1px solid rgba(255, 255, 255, 0.06)',

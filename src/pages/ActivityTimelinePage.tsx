@@ -156,7 +156,11 @@ export function ActivityTimelinePage() {
                     <div key={ev.id} className="relative mb-3">
                       <div
                         className="absolute top-3 w-3 h-3 rounded-full ring-2"
-                        style={{ left: '-16px', background: engineDotColor[ev.engine], ringColor: '#0B1221' }}
+                        style={{
+                          left: '-16px',
+                          background: engineDotColor[ev.engine],
+                          boxShadow: '0 0 0 2px #0B1221',
+                        }}
                       />
                       <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-3 ml-2">
                         <div className="flex items-center gap-2 flex-wrap mb-1">

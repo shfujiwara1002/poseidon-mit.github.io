@@ -1,281 +1,229 @@
-import { motion } from 'framer-motion';
-import { ArrowLeft, Target, TrendingUp } from 'lucide-react';
-import { Link } from '../router';
-import { GovernFooter, ForecastBand, AuroraPulse } from '@/components/poseidon'
-import { GOVERNANCE_META } from '@/lib/governance-meta'
-import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets';
+import { motion } from "framer-motion"
+import { Link } from '@/router'
+import { Target, ArrowRight, ArrowLeft, Scale, TrendingUp } from "lucide-react"
+import { ForecastBand } from "@/components/poseidon/forecast-band"
+import type { ForecastPoint } from "@/components/poseidon/forecast-band"
 
-/* ═══════════════════════════════════════════
-   DATA
-   ═══════════════════════════════════════════ */
+/* ── Motion presets ── */
+const spring = { type: "spring" as const, stiffness: 380, damping: 30 }
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: spring },
+}
+const staggerContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1 } },
+}
 
-const goal = { name: 'Emergency Fund', current: 8160, target: 12000 };
-const progressPct = Math.round((goal.current / goal.target) * 100);
-const remaining = goal.target - goal.current;
+/* ── Cross-thread ── */
+const EMERGENCY_FUND_PROGRESS = 73
+const EMERGENCY_FUND_CURRENT = 7300
+const EMERGENCY_FUND_TARGET = 10000
 
-const contributionData = [
-  { month: 'Sep', amount: 400 }, { month: 'Oct', amount: 500 },
-  { month: 'Nov', amount: 450 }, { month: 'Dec', amount: 550 },
-  { month: 'Jan', amount: 500 }, { month: 'Feb', amount: 520 },
-];
-
-const milestones = [
-  { label: 'Goal created', date: 'Jan 2026', done: true },
-  { label: '$2k saved', date: 'Jan 15', done: true },
-  { label: '$5k saved', date: 'Feb 1', done: true },
-  { label: '$8k saved (current)', date: 'Feb 15', done: false, current: true },
-  { label: '$12k target', date: 'May 2026', done: false },
-];
-
-const healthCategories = [
-  { name: 'Savings rate', score: 85 },
-  { name: 'Consistency', score: 78 },
-  { name: 'Growth rate', score: 72 },
-];
-
-const goalForecastData: { x: number; median: number; low: number; high: number }[] = [
-  { x: 0, median: 45, low: 45, high: 45 },
-  { x: 1, median: 52, low: 48, high: 56 },
-  { x: 2, median: 60, low: 53, high: 68 },
-  { x: 3, median: 68, low: 57, high: 82 },
-  { x: 4, median: 76, low: 62, high: 95 },
-  { x: 5, median: 85, low: 66, high: 108 },
-  { x: 6, median: 92, low: 70, high: 118 },
-];
-
-const circumference = 2 * Math.PI * 40;
-
-/* ═══════════════════════════════════════════
-   COMPONENT
-   ═══════════════════════════════════════════ */
-
-export function GrowGoalDetail() {
+/* ── AuroraPulse ── */
+function AuroraPulse({ color }: { color: string }) {
   return (
-    <div className="relative min-h-screen w-full" style={{ background: '#0B1221' }}>
-      <AuroraPulse color="var(--engine-grow)" intensity="subtle" />
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold"
-        style={{ background: 'var(--engine-grow)', color: '#ffffff' }}
-      >
-        Skip to main content
-      </a>
+    <div
+      className="pointer-events-none absolute inset-0"
+      aria-hidden="true"
+      style={{
+        background: `radial-gradient(70% 50% at 50% 0%, ${color}0F, transparent), radial-gradient(40% 40% at 80% 20%, ${color}08, transparent)`,
+        animation: "aurora-drift 8s ease-in-out infinite alternate",
+      }}
+    />
+  )
+}
 
-      <nav
-        className="sticky top-0 z-50 backdrop-blur-xl border-b border-white/[0.06]"
-        style={{ background: 'rgba(11,18,33,0.8)' }}
-        aria-label="Breadcrumb"
-      >
-        <div className="mx-auto px-4 md:px-6 lg:px-8 h-14 flex items-center gap-2" style={{ maxWidth: '1280px' }}>
-          <Link
-            to="/grow"
-            className="flex items-center gap-1.5 text-sm font-medium hover:opacity-80 transition-opacity"
-            style={{ color: 'var(--engine-grow)' }}
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Grow
-          </Link>
-          <span className="text-white/20">/</span>
-          <span className="text-sm text-white/50">Goal Detail</span>
-        </div>
-      </nav>
+/* ── GovernFooter ── */
+function GovernFooter({ auditId, pageContext }: { auditId: string; pageContext: string }) {
+  return (
+    <footer
+      className="mt-8 flex flex-col gap-3 md:flex-row md:items-center md:justify-between rounded-2xl border border-white/[0.06] px-4 py-3 md:px-6 md:py-4"
+      style={{ background: "rgba(255,255,255,0.03)" }}
+      role="contentinfo"
+      aria-label="Governance verification footer"
+    >
+      <div className="flex items-center gap-3">
+        <Scale size={14} style={{ color: "var(--engine-govern)" }} />
+        <span className="text-xs" style={{ color: "#94A3B8" }}>
+          Every decision on this page is logged to the immutable audit ledger.
+        </span>
+      </div>
+      <div className="flex items-center gap-3">
+        <span className="text-[10px] font-mono uppercase tracking-wider" style={{ color: "#64748B" }}>
+          {auditId}
+        </span>
+        <Link
+          to="/govern/audit"
+          className="text-[10px] font-semibold uppercase tracking-wider"
+          style={{ color: "var(--engine-govern)" }}
+        >
+          Open ledger
+        </Link>
+      </div>
+    </footer>
+  )
+}
 
-      <motion.div
+/* ── Forecast data (goal-specific) ── */
+const FORECAST_DATA: ForecastPoint[] = Array.from({ length: 12 }, (_, i) => ({
+  x: i,
+  median: 7300 + i * 250,
+  low: 7300 + i * 180,
+  high: 7300 + i * 320,
+}))
+
+/* ── Monthly contribution data ── */
+const CONTRIBUTIONS = [
+  { month: "Oct", amount: 350 },
+  { month: "Nov", amount: 380 },
+  { month: "Dec", amount: 360 },
+  { month: "Jan", amount: 420 },
+  { month: "Feb", amount: 420 },
+]
+
+export default function GrowGoalPage() {
+  const circumference = 2 * Math.PI * 40
+  const strokeDashoffset = circumference - (EMERGENCY_FUND_PROGRESS / 100) * circumference
+
+  return (
+    <div className="relative">
+      <AuroraPulse color="var(--engine-grow)" />
+
+      <motion.main
         id="main-content"
-        className="mx-auto flex flex-col gap-6 md:gap-8 px-4 py-6 md:px-6 md:py-8 lg:px-8"
-        style={{ maxWidth: '1280px' }}
-        variants={stagger}
+        className="command-center__main"
         initial="hidden"
         animate="visible"
-        role="main"
+        variants={staggerContainer}
       >
-        {/* Hero */}
-        <motion.div variants={fadeUp} className="flex flex-col gap-1">
-          <div className="flex items-center gap-2 mb-1">
-            <Target className="h-5 w-5" style={{ color: 'var(--engine-grow)' }} />
-            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--engine-grow)' }}>
-              Grow · Goal Detail
-            </span>
-          </div>
-          <h1 className="text-2xl md:text-3xl font-bold text-white">{goal.name}</h1>
-          <p className="text-sm text-slate-400">
-            On track — {progressPct}% complete · Projected completion: May 2026 · Confidence 0.87
-          </p>
-        </motion.div>
+        {/* ── P1: Goal Progress Summary ── */}
+        <motion.section variants={staggerContainer} className="px-4 md:px-6 lg:px-8">
+          <motion.div variants={fadeUp} className="flex items-center gap-2 mb-4">
+            <Link to="/grow" className="flex items-center gap-1 text-xs font-medium" style={{ color: "#64748B" }}>
+              <ArrowLeft size={14} />
+              Back to Grow
+            </Link>
+          </motion.div>
 
-        {/* KPI bar */}
-        <motion.div variants={fadeUp}>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { label: 'Progress', value: `${progressPct}%`, color: 'var(--engine-grow)' },
-              { label: 'Monthly avg', value: '$500', color: 'var(--engine-protect)' },
-              { label: 'Confidence', value: '0.87', color: 'var(--engine-dashboard)' },
-              { label: 'Months left', value: '3', color: 'var(--engine-execute)' },
-            ].map((kpi) => (
-              <div key={kpi.label} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
-                <p className="text-xs text-white/40 mb-1">{kpi.label}</p>
-                <p className="text-2xl font-bold" style={{ color: kpi.color }}>{kpi.value}</p>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* 2-column layout */}
-        <div className="flex flex-col lg:flex-row gap-6">
-          {/* Main feed */}
-          <motion.div variants={fadeUp} className="flex-1 min-w-0 lg:w-2/3 flex flex-col gap-4">
-            {/* Progress ring + amounts */}
-            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6 flex flex-col md:flex-row items-center gap-6">
-              <div className="relative shrink-0" aria-label={`${progressPct}% progress`}>
-                <svg width="96" height="96" viewBox="0 0 96 96" aria-hidden="true">
-                  <circle cx="48" cy="48" r="40" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="8" />
-                  <circle
-                    cx="48" cy="48" r="40" fill="none" stroke="var(--engine-grow)" strokeWidth="8"
-                    strokeLinecap="round"
-                    strokeDasharray={`${(progressPct / 100) * circumference} ${circumference}`}
-                    transform="rotate(-90 48 48)"
-                  />
-                </svg>
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-2xl font-bold text-white">{progressPct}%</span>
-                  <span className="text-[10px] text-white/40">Progress</span>
-                </div>
-              </div>
-              <div className="flex-1 w-full">
-                <p className="text-lg font-semibold text-white">${goal.current.toLocaleString()} saved</p>
-                <p className="text-sm text-slate-400 mt-0.5">of ${goal.target.toLocaleString()} target · ${remaining.toLocaleString()} remaining</p>
-                <div className="mt-3 h-2 rounded-full bg-white/10">
-                  <div className="h-full rounded-full transition-all" style={{ width: `${progressPct}%`, background: 'var(--engine-grow)' }} />
-                </div>
-                <p className="text-xs text-white/40 mt-1">On track — Projected completion May 2026</p>
+          <motion.div variants={fadeUp} className="glass-surface rounded-2xl p-6 flex flex-col md:flex-row items-center gap-8">
+            {/* Progress ring */}
+            <div className="relative flex-shrink-0">
+              <svg width={100} height={100} className="-rotate-90">
+                <circle cx={50} cy={50} r={40} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={6} />
+                <circle
+                  cx={50} cy={50} r={40}
+                  fill="none"
+                  stroke="var(--engine-grow)"
+                  strokeWidth={6}
+                  strokeLinecap="round"
+                  strokeDasharray={circumference}
+                  strokeDashoffset={strokeDashoffset}
+                />
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-xl font-bold font-mono" style={{ color: "#F1F5F9" }}>{EMERGENCY_FUND_PROGRESS}%</span>
               </div>
             </div>
 
-            {/* Monthly contributions */}
-            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <TrendingUp className="h-4 w-4" style={{ color: 'var(--engine-grow)' }} />
-                <h2 className="text-sm font-semibold text-white">Monthly Contributions</h2>
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-2">
+                <Target size={16} style={{ color: "var(--engine-grow)" }} />
+                <h1 className="text-xl font-bold" style={{ color: "#F1F5F9" }}>Emergency fund</h1>
               </div>
-              <div className="flex items-end gap-2 h-20 mb-2">
-                {contributionData.map((d) => (
-                  <div key={d.month} className="flex-1 flex flex-col items-center gap-1">
-                    <div
-                      className="w-full rounded-sm"
-                      style={{ height: `${(d.amount / 600) * 100}%`, background: d.amount >= 500 ? 'var(--engine-grow)' : 'rgba(139,92,246,0.4)' }}
-                    />
+              <p className="text-sm mb-1" style={{ color: "#94A3B8" }}>
+                ${EMERGENCY_FUND_CURRENT.toLocaleString()} of ${EMERGENCY_FUND_TARGET.toLocaleString()}
+              </p>
+              <p className="text-xs" style={{ color: "#64748B" }}>
+                At current pace, you will reach your target in approximately 3 months.
+              </p>
+            </div>
+          </motion.div>
+        </motion.section>
+
+        {/* ── P2: Contribution Timeline + Forecast ── */}
+        <div className="flex flex-col lg:flex-row gap-4 px-4 md:px-6 lg:px-8">
+          {/* Contribution timeline */}
+          <motion.div variants={fadeUp} className="flex-1 glass-surface rounded-2xl p-5">
+            <p className="text-xs font-semibold uppercase tracking-wider mb-4" style={{ color: "#64748B" }}>
+              Recent contributions
+            </p>
+            <div className="flex flex-col gap-3">
+              {CONTRIBUTIONS.map((c) => (
+                <div key={c.month} className="flex items-center justify-between">
+                  <span className="text-sm" style={{ color: "#CBD5E1" }}>{c.month} 2026</span>
+                  <div className="flex items-center gap-3">
+                    <div className="w-32 h-2 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
+                      <div
+                        className="h-full rounded-full"
+                        style={{
+                          width: `${(c.amount / 450) * 100}%`,
+                          background: "var(--engine-grow)",
+                        }}
+                      />
+                    </div>
+                    <span className="text-sm font-mono font-semibold w-14 text-right" style={{ color: "#F1F5F9" }}>
+                      ${c.amount}
+                    </span>
                   </div>
-                ))}
-              </div>
-              <div className="flex justify-between">
-                {contributionData.map((d) => (
-                  <div key={d.month} className="flex-1 text-center">
-                    <p className="text-[10px] text-white/30">{d.month}</p>
-                    <p className="text-[10px] text-white/50">${d.amount}</p>
-                  </div>
-                ))}
-              </div>
-              <div className="flex items-center gap-2 mt-3">
-                <div className="h-px flex-1 bg-white/10" />
-                <span className="text-[10px] text-white/30">Target: $500/mo</span>
-              </div>
-              <p className="text-xs text-white/30 mt-2">Projected completion: May 2026 · Confidence 0.87 · GoalTracker v2.1</p>
-            </div>
-
-            {/* Goal projection forecast */}
-            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6">
-              <h2 className="text-sm font-semibold text-white mb-4">Goal Projection</h2>
-              <div className="flex flex-col items-center gap-2">
-                <ForecastBand data={goalForecastData} width={280} height={100} engine="grow" />
-                <p className="text-xs text-white/30">Confidence band based on contribution variance and growth rate</p>
-              </div>
-            </div>
-
-            {/* AI recommendation */}
-            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6" style={{ borderLeftWidth: 3, borderLeftColor: 'var(--engine-grow)' }}>
-              <div className="flex items-start gap-3 mb-3">
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold" style={{ background: 'rgba(139,92,246,0.2)', color: 'var(--engine-grow)' }}>AI</div>
-                <div>
-                  <p className="text-sm font-semibold text-white">AI Recommendation</p>
-                  <p className="text-xs text-white/50 mt-1">Increasing monthly contribution by $100 would accelerate completion by 3 weeks.</p>
                 </div>
-              </div>
-              <p className="text-xs text-white/30">+$100/mo brings completion to early May 2026 · Acceleration possible · GoalTracker v2.1</p>
-              <div className="flex gap-3 mt-4">
-                <Link
-                  to="/execute"
-                  className="px-4 py-2 rounded-lg text-white text-xs font-semibold hover:opacity-90 transition-opacity"
-                  style={{ background: 'var(--engine-grow)' }}
-                >
-                  Add Funds
-                </Link>
-                <Link to="/grow" className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white/60 text-xs hover:bg-white/10 transition-colors">
-                  Back to Grow
-                </Link>
-              </div>
+              ))}
             </div>
           </motion.div>
 
-          {/* Side rail */}
-          <aside className="w-full lg:w-72 shrink-0 flex flex-col gap-4" aria-label="Goal detail sidebar">
-            {/* Goal health */}
-            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
-              <h3 className="text-xs font-semibold text-white/70 uppercase tracking-wider mb-3">Goal Health</h3>
-              <div className="space-y-3">
-                {healthCategories.map((cat) => (
-                  <div key={cat.name}>
-                    <div className="flex justify-between text-xs mb-1">
-                      <span className="text-white/50">{cat.name}</span>
-                      <span className="text-white/70">{cat.score}</span>
-                    </div>
-                    <div className="h-1.5 rounded-full bg-white/10">
-                      <div className="h-full rounded-full" style={{ width: `${cat.score}%`, background: 'var(--engine-grow)' }} />
-                    </div>
-                  </div>
-                ))}
-              </div>
+          {/* Forecast */}
+          <motion.div variants={fadeUp} className="lg:w-80 glass-surface rounded-2xl p-5">
+            <p className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: "#64748B" }}>
+              Projected path
+            </p>
+            <ForecastBand data={FORECAST_DATA} width={280} height={80} engine="grow" className="w-full" />
+            <div className="flex items-center justify-between mt-2">
+              <span className="text-[10px] font-mono" style={{ color: "#94A3B8" }}>Now</span>
+              <span className="text-[10px] font-mono" style={{ color: "#94A3B8" }}>+12 months</span>
             </div>
-
-            {/* Milestones */}
-            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
-              <h3 className="text-xs font-semibold text-white/70 uppercase tracking-wider mb-3">Goal Milestones</h3>
-              <div className="space-y-3">
-                {milestones.map((m) => (
-                  <div key={m.label} className="flex items-start gap-2">
-                    <div className={`w-2.5 h-2.5 rounded-full mt-0.5 shrink-0 ${m.done ? 'bg-emerald-400' : m.current ? 'bg-violet-400 animate-pulse' : 'bg-white/20'}`} />
-                    <div>
-                      <p className={`text-xs ${m.done ? 'text-white/50 line-through' : m.current ? 'text-white font-medium' : 'text-white/50'}`}>{m.label}</p>
-                      <p className="text-[10px] text-white/30">{m.date}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Stats */}
-            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
-              <h3 className="text-xs font-semibold text-white/70 uppercase tracking-wider mb-3">Statistics</h3>
-              <div className="space-y-2.5">
-                {[
-                  { label: 'Total saved', value: `$${goal.current.toLocaleString()}`, color: 'text-violet-400' },
-                  { label: 'Remaining', value: `$${remaining.toLocaleString()}`, color: 'text-white/70' },
-                  { label: 'Avg monthly', value: '$493', color: 'text-white/70' },
-                  { label: 'Best month', value: '$550 (Dec)', color: 'text-emerald-400' },
-                ].map((row) => (
-                  <div key={row.label} className="flex justify-between">
-                    <span className="text-xs text-white/50">{row.label}</span>
-                    <span className={`text-xs font-medium ${row.color}`}>{row.value}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </aside>
+          </motion.div>
         </div>
 
-        <GovernFooter auditId={GOVERNANCE_META['/grow/goal'].auditId} pageContext={GOVERNANCE_META['/grow/goal'].pageContext} />
-      </motion.div>
-    </div>
-  );
-}
+        {/* ── P3: Goal Adjustment Action ── */}
+        <motion.section variants={fadeUp} className="px-4 md:px-6 lg:px-8">
+          <div className="glass-surface rounded-2xl p-5 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div>
+              <p className="text-sm font-semibold mb-1" style={{ color: "#F1F5F9" }}>
+                Adjust your savings pace
+              </p>
+              <p className="text-xs" style={{ color: "#94A3B8" }}>
+                Increasing your monthly transfer by $60 would accelerate your target by 3 weeks.
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              <Link
+                to="/grow"
+                className="text-sm font-medium px-4 py-2 rounded-xl"
+                style={{ color: "#94A3B8" }}
+              >
+                Back to grow
+              </Link>
+              {/* CTA: Primary -> /execute */}
+              <Link
+                to="/execute"
+                className="inline-flex items-center gap-2 text-sm font-semibold px-5 py-2.5 rounded-xl"
+                style={{
+                  background: "linear-gradient(135deg, #8B5CF6, #A78BFA)",
+                  color: "#0B1221",
+                }}
+              >
+                Adjust goal
+                <ArrowRight size={16} />
+              </Link>
+            </div>
+          </div>
+        </motion.section>
 
-export default GrowGoalDetail;
+        {/* GovernFooter */}
+        <div className="px-4 md:px-6 lg:px-8">
+          <GovernFooter auditId="GV-2026-0216-GROW-GL" pageContext="goal tracking" />
+        </div>
+      </motion.main>
+    </div>
+  )
+}

@@ -77,7 +77,7 @@ function ConfidenceTrend() {
                 fontSize: '12px',
                 color: '#F1F5F9',
               }}
-              formatter={(value: number) => [value.toFixed(2), 'Confidence']}
+              formatter={(value?: number) => [(value ?? 0).toFixed(2), 'Confidence']}
               labelFormatter={(label) => `Day ${label}`}
             />
           </LineChart>

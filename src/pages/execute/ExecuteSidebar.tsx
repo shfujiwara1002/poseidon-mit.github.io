@@ -131,7 +131,7 @@ function ConfidenceChart() {
                 fontSize: '12px',
                 color: '#F1F5F9',
               }}
-              formatter={(value: number) => [`${value} actions`, 'Count']}
+              formatter={(value?: number) => [`${value ?? 0} actions`, 'Count']}
             />
             <Bar dataKey="count" radius={[0, 4, 4, 0]} barSize={14}>
               {confidenceData.map((entry, idx) => (

@@ -1,184 +1,115 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import {
-  TrendingUp, Target, Home, GraduationCap, Briefcase, Plane, ShoppingBag, Check,
-} from 'lucide-react';
-import { Link, useRouter } from '../router';
-import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets'
+import { useState } from "react"
+import { motion } from "framer-motion"
+import { Link } from '@/router'
+import { Shield, TrendingUp, PiggyBank, Target, ArrowRight, ArrowLeft, Check } from "lucide-react"
 
-/* ── Step progress bar ── */
-const stepsMeta = [
-  { label: 'Connect' },
-  { label: 'Goals' },
-  { label: 'Consent' },
-  { label: 'Ready' },
-];
-
-function StepProgress({ current }: { current: number }) {
-  return (
-    <div className="flex items-center justify-center gap-2 md:gap-4 py-4">
-      {stepsMeta.map((step, idx) => (
-        <React.Fragment key={step.label}>
-          <div className="flex items-center gap-2">
-            <div
-              className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
-                idx < current
-                  ? 'bg-[var(--engine-protect)] text-white'
-                  : idx === current
-                    ? 'border-2 border-[var(--engine-grow)] text-[var(--engine-grow)]'
-                    : 'border border-white/20 text-white/30'
-              }`}
-              style={idx === current ? { animation: 'pulse 2s infinite' } : {}}
-            >
-              {idx < current ? <Check className="h-4 w-4" /> : idx + 1}
-            </div>
-            <span
-              className={`text-xs font-medium hidden md:inline ${
-                idx < current
-                  ? 'text-[var(--engine-protect)]'
-                  : idx === current
-                    ? 'text-white'
-                    : 'text-white/30'
-              }`}
-            >
-              {step.label}
-            </span>
-          </div>
-          {idx < stepsMeta.length - 1 && (
-            <div className={`w-8 md:w-12 h-px flex-shrink-0 ${idx < current ? 'bg-[var(--engine-protect)]/40' : 'bg-white/10'}`} />
-          )}
-        </React.Fragment>
-      ))}
-    </div>
-  );
+const spring = { type: "spring" as const, stiffness: 380, damping: 30 }
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: spring },
+}
+const staggerContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.08 } },
 }
 
-/* ── Goals data ── */
-interface GoalDef {
-  id: string;
-  icon: React.FC<{ className?: string; style?: React.CSSProperties }>;
-  color: string;
-  label: string;
-  desc: string;
-  target: string;
-}
+const GOALS = [
+  { id: "protect", icon: Shield, label: "Protect my money", desc: "Detect fraud, block threats, monitor risk", color: "var(--engine-protect)" },
+  { id: "grow", icon: TrendingUp, label: "Grow my wealth", desc: "Optimize savings, hit financial milestones", color: "var(--engine-grow)" },
+  { id: "save", icon: PiggyBank, label: "Build emergency fund", desc: "Automated savings toward safety net", color: "var(--engine-execute)" },
+  { id: "invest", icon: Target, label: "Invest smarter", desc: "Scenario-based portfolio optimization", color: "var(--engine-dashboard)" },
+]
 
-const goals: GoalDef[] = [
-  { id: 'emergency', icon: Target, color: 'var(--engine-protect)', label: 'Emergency Fund', desc: '3\u20136 months of expenses', target: '$18,000' },
-  { id: 'home', icon: Home, color: 'var(--engine-dashboard)', label: 'Buy a Home', desc: 'Down payment savings', target: '$80,000' },
-  { id: 'debt', icon: GraduationCap, color: 'var(--engine-execute)', label: 'Pay Off Debt', desc: 'Student loans & credit cards', target: '$24,500' },
-  { id: 'retire', icon: Briefcase, color: 'var(--engine-grow)', label: 'Retirement', desc: 'FIRE or 401k maximization', target: '$1.2M by 65' },
-  { id: 'travel', icon: Plane, color: 'var(--state-warning)', label: 'Dream Vacation', desc: 'Travel fund', target: '$8,000' },
-  { id: 'purchase', icon: ShoppingBag, color: 'var(--state-critical)', label: 'Major Purchase', desc: 'Car, gadgets, etc.', target: 'Custom' },
-];
+export default function OnboardingGoalsPage() {
+  const [selected, setSelected] = useState<Set<string>>(new Set(["protect"]))
 
-export function OnboardingGoals() {
-  const { navigate } = useRouter();
-  const [selected, setSelected] = useState<string[]>([]);
-
-  const toggleGoal = (id: string) => {
-    setSelected((prev) => (prev.includes(id) ? prev.filter((g) => g !== id) : [...prev, id]));
-  };
+  const toggle = (id: string) => {
+    setSelected((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }
 
   return (
-    <div className="min-h-screen w-full" style={{ background: '#0B1221' }}>
-      <motion.div
-        className="mx-auto flex flex-col gap-6 px-4 py-8 max-w-lg"
-        variants={stagger}
-        initial="hidden"
-        animate="visible"
-      >
-        {/* Progress */}
-        <motion.div variants={fadeUp}>
-          <StepProgress current={1} />
-        </motion.div>
-
-        {/* Hero */}
-        <motion.div variants={fadeUp} className="flex flex-col items-center text-center gap-2">
-          <div className="flex items-center gap-1.5 mb-2">
-            <TrendingUp className="h-4 w-4" style={{ color: 'var(--engine-grow)' }} />
-            <span className="text-xs font-mono" style={{ color: 'var(--engine-grow)' }}>Step 2 of 4</span>
-          </div>
-          <h1 className="text-2xl font-bold text-white text-balance">What matters most to you?</h1>
-          <p className="text-sm text-white/50 max-w-sm">
-            {"Poseidon\u2019s Grow engine builds your personalized financial roadmap."}
-          </p>
-        </motion.div>
-
-        {/* Goal cards */}
-        <motion.div variants={fadeUp} className="flex flex-col gap-3">
-          {goals.map((goal) => {
-            const isSelected = selected.includes(goal.id);
-            return (
-              <button
-                key={goal.id}
-                onClick={() => toggleGoal(goal.id)}
-                className={`rounded-2xl border p-4 text-left transition-all flex items-center gap-4 ${
-                  isSelected
-                    ? 'bg-[var(--engine-grow)]/[0.06]'
-                    : 'border-white/[0.08] bg-white/[0.03] hover:border-white/20'
-                }`}
-                style={isSelected ? { borderColor: 'rgba(139,92,246,0.5)' } : undefined}
-              >
-                {/* Icon */}
-                <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
-                  style={{ background: `${goal.color}15` }}
-                >
-                  <goal.icon className="h-5 w-5" style={{ color: goal.color }} />
-                </div>
-
-                {/* Text */}
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-white">{goal.label}</p>
-                  <p className="text-xs text-white/50 mt-0.5">{goal.desc}</p>
-                </div>
-
-                {/* Target */}
-                <span className="text-sm text-white/50 shrink-0 font-mono">{goal.target}</span>
-
-                {/* Check indicator */}
-                <div
-                  className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 transition-all ${
-                    isSelected
-                      ? 'bg-[var(--engine-grow)] border-[var(--engine-grow)]'
-                      : 'border-white/20'
-                  }`}
-                >
-                  {isSelected && <Check className="h-3 w-3 text-white" />}
-                </div>
-              </button>
-            );
-          })}
-        </motion.div>
-
-        {/* Selected count */}
-        <motion.div variants={fadeUp} className="text-center">
-          <span className="text-xs text-white/40">
-            {selected.length} {selected.length === 1 ? 'goal' : 'goals'} selected
-          </span>
-        </motion.div>
-
-        {/* Bottom action bar */}
-        <motion.div variants={fadeUp} className="flex items-center justify-between mt-2">
-          <Link
-            to="/onboarding/connect"
-            className="text-sm text-white/40 hover:text-white/60 transition-colors"
+    <main id="main-content" className="relative">
+      <div className="relative z-10 mx-auto max-w-2xl px-6 py-12">
+        <motion.div initial="hidden" animate="visible" variants={staggerContainer}>
+          <motion.h1
+            variants={fadeUp}
+            className="text-2xl md:text-3xl font-bold leading-tight tracking-tight mb-2 text-balance"
+            style={{ color: "#F1F5F9" }}
           >
-            {'\u2190 Back'}
-          </Link>
-          <button
-            onClick={() => navigate('/onboarding/consent')}
-            disabled={selected.length === 0}
-            className="px-6 py-2.5 rounded-xl text-sm font-bold transition-opacity hover:opacity-90 disabled:opacity-40"
-            style={{ background: 'var(--engine-grow)', color: '#FFFFFF' }}
-          >
-            {'Continue \u2192'}
-          </button>
+            What matters most to you?
+          </motion.h1>
+          <motion.p variants={fadeUp} className="text-sm mb-8" style={{ color: "#94A3B8" }}>
+            Select your priorities. Your AI engines will be tuned accordingly. You can always change these later.
+          </motion.p>
+
+          {/* Goal cards grid */}
+          <motion.div variants={staggerContainer} className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-10">
+            {GOALS.map((goal) => {
+              const isSelected = selected.has(goal.id)
+              return (
+                <motion.button
+                  key={goal.id}
+                  variants={fadeUp}
+                  onClick={() => toggle(goal.id)}
+                  className="glass-surface rounded-xl p-4 text-left transition-all relative"
+                  style={{
+                    border: isSelected
+                      ? `1px solid ${goal.color}50`
+                      : "1px solid rgba(255,255,255,0.06)",
+                  }}
+                >
+                  {isSelected && (
+                    <div
+                      className="absolute top-3 right-3 w-5 h-5 rounded-full flex items-center justify-center"
+                      style={{ background: goal.color }}
+                    >
+                      <Check size={12} style={{ color: "#0B1221" }} />
+                    </div>
+                  )}
+                  <div
+                    className="flex items-center justify-center w-10 h-10 rounded-lg mb-3"
+                    style={{ background: `${goal.color}15` }}
+                  >
+                    <goal.icon size={20} style={{ color: goal.color }} />
+                  </div>
+                  <p className="text-sm font-semibold mb-1" style={{ color: "#F1F5F9" }}>{goal.label}</p>
+                  <p className="text-xs" style={{ color: "#94A3B8" }}>{goal.desc}</p>
+                </motion.button>
+              )
+            })}
+          </motion.div>
+
+          {/* Actions */}
+          <motion.div variants={fadeUp} className="flex items-center justify-between">
+            <Link
+              to="/onboarding/connect"
+              className="flex items-center gap-1.5 text-sm font-medium"
+              style={{ color: "#64748B" }}
+            >
+              <ArrowLeft size={16} />
+              Back
+            </Link>
+            {/* CTA: Primary -> /onboarding/consent */}
+            <Link
+              to="/onboarding/consent"
+              className="inline-flex items-center gap-2 text-sm font-semibold px-6 py-2.5 rounded-xl transition-all"
+              style={{
+                background: selected.size > 0 ? "linear-gradient(135deg, #14B8A6, #06B6D4)" : "rgba(255,255,255,0.06)",
+                color: selected.size > 0 ? "#0B1221" : "#64748B",
+                pointerEvents: selected.size > 0 ? "auto" : "none",
+              }}
+            >
+              Continue to consent
+              <ArrowRight size={16} />
+            </Link>
+          </motion.div>
         </motion.div>
-      </motion.div>
-    </div>
-  );
+      </div>
+    </main>
+  )
 }
-
-export default OnboardingGoals;

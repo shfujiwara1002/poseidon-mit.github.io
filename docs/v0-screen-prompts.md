@@ -4,7 +4,7 @@
 This document is the single prompt spec for the current rebuild scope.
 
 - Functional scope: 16 units
-- Implemented route scope: 19 pages + `/onboarding` entry alias + `/404`
+- Implemented route scope: 21 route operation (19 pages + `/onboarding` entry alias + `/404`)
 - Target routes:
   - `/`, `/pricing`, `/signup`, `/login`
   - `/onboarding`, `/onboarding/connect`, `/onboarding/goals`, `/onboarding/consent`, `/onboarding/complete`

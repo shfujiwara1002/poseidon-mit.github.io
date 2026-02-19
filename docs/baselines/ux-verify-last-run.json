@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "timestamp": "2026-02-18T19:22:27.565Z",
+  "timestamp": "2026-02-18T20:49:34.561Z",
   "total": 9,
   "failed": 0,
   "results": [
@@ -8,64 +8,82 @@
       "cmd": "npm run test:run",
       "ok": true,
       "status": 0,
-      "stdout": "> poseidon-prototype@0.1.0 test:run\n> vitest run\n\n\n RUN  v4.0.18 /Users/shinjifujiwara/code/poseidon-mit.github.io\n\n ✓ src/components/__tests__/GovernContractSet.test.tsx (3 tests) 57ms\n ✓ src/components/__tests__/Button.test.tsx (10 tests) 229ms\n ✓ src/components/__tests__/DashboardInsightsPanel.test.tsx (2 tests) 77ms\n ✓ src/components/__tests__/GlassCard.test.tsx (6 tests) 139ms\n ✓ src/__tests__/flows/rights-exercise.test.tsx (5 tests) 271ms\n ✓ src/__tests__/flows/execute-approval.test.tsx (6 tests) 423ms\n     ✓ starts with approve button disabled  305ms\n ✓ src/__tests__/flows/protect-decision.test.tsx (8 tests) 524ms\n ✓ src/__tests__/flows/govern-audit.test.tsx (10 tests) 499ms\n ✓ src/__tests__/infra-integrity.test.ts (9 tests) 3ms\n ✓ src/design-system/__tests__/design-system-enforcement.test.ts (3 tests) 1078ms\n     ✓ passes strict design-system gate for reachable pages and app surfaces  1077ms\n ✓ src/pages/__tests__/visual-system-all-pages.test.tsx (11 tests) 433ms\n ✓ src/contracts/__tests__/screen-contracts-v4.test.tsx (87 tests) 848ms\n\n Test Files  12 passed (12)\n      Tests  160 passed (160)\n   Start at  14:22:17\n   Duration  3.70s (transform 1.89s, setup 2.96s, import 5.87s, tests 4.58s, environment 12.83s)",
-      "stderr": "(node:94151) Warning: `--localstorage-file` was provided without a valid path\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:94153) Warning: `--localstorage-file` was provided without a valid path\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:94145) Warning: `--localstorage-file` was provided without a valid path\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:94154) Warning: `--localstorage-file` was provided without a valid path\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:94148) Warning: `--localstorage-file` was provided without a valid path\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:94149) Warning: `--localstorage-file` was provided without a valid path\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:94147) Warning: `--localstorage-file` was provided without a valid path\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:94150) Warning: `--localstorage-file` was provided without a valid path\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:94155) Warning: `--localstorage-file` was provided without a valid path\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:94152) Warning: `--localstorage-file` was provided without a valid path\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:94146) Warning: `--localstorage-file` was provided without a valid path\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:94281) Warning: `--localstorage-file` was provided without a valid path\n(Use `node --trace-warnings ...` to show where the warning was created)\nNot implemented: HTMLMediaElement's play() method\nNot implemented: HTMLMediaElement's play() method"
+      "stdout": "> poseidon-prototype@0.1.0 test:run\n> vitest run\n\n\n RUN  v4.0.18 /Users/shinjifujiwara/code/poseidon-mit.github.io\n\n ✓ src/components/__tests__/Button.test.tsx (10 tests) 292ms\n ✓ src/components/__tests__/GovernContractSet.test.tsx (3 tests) 54ms\n ✓ src/components/__tests__/DashboardInsightsPanel.test.tsx (2 tests) 31ms\n ✓ src/components/__tests__/GlassCard.test.tsx (6 tests) 117ms\n ✓ src/__tests__/flows/rights-exercise.test.tsx (5 tests) 309ms\n ✓ src/__tests__/flows/execute-approval.test.tsx (6 tests) 360ms\n ✓ src/__tests__/flows/protect-decision.test.tsx (8 tests) 464ms\n ✓ src/__tests__/infra-integrity.test.ts (9 tests) 3ms\n ✓ src/__tests__/flows/govern-audit.test.tsx (10 tests) 431ms\n ✓ src/design-system/__tests__/design-system-enforcement.test.ts (3 tests) 1113ms\n     ✓ passes strict design-system gate for reachable pages and app surfaces  1106ms\n ✓ src/pages/__tests__/visual-system-all-pages.test.tsx (11 tests) 417ms\n ✓ src/contracts/__tests__/screen-contracts-v4.test.tsx (87 tests) 824ms\n\n Test Files  12 passed (12)\n      Tests  160 passed (160)\n   Start at  15:49:24\n   Duration  4.06s (transform 2.83s, setup 3.60s, import 6.59s, tests 4.42s, environment 14.03s)",
+      "stderr": "(node:2318) Warning: `--localstorage-file` was provided without a valid path\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:2317) Warning: `--localstorage-file` was provided without a valid path\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:2312) Warning: `--localstorage-file` was provided without a valid path\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:2321) Warning: `--localstorage-file` was provided without a valid path\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:2314) Warning: `--localstorage-file` was provided without a valid path\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:2313) Warning: `--localstorage-file` was provided without a valid path\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:2315) Warning: `--localstorage-file` was provided without a valid path\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:2319) Warning: `--localstorage-file` was provided without a valid path\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:2316) Warning: `--localstorage-file` was provided without a valid path\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:2311) Warning: `--localstorage-file` was provided without a valid path\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:2320) Warning: `--localstorage-file` was provided without a valid path\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:2445) Warning: `--localstorage-file` was provided without a valid path\n(Use `node --trace-warnings ...` to show where the warning was created)\nNot implemented: HTMLMediaElement's play() method\nNot implemented: HTMLMediaElement's play() method",
+      "stdout_truncated": false,
+      "stderr_truncated": false
     },
     {
       "cmd": "npm run check:design-system",
       "ok": true,
       "status": 0,
-      "stdout": "> poseidon-prototype@0.1.0 check:design-system\n> npm run check:design-system:strict\n\n\n> poseidon-prototype@0.1.0 check:design-system:strict\n> node scripts/check-design-system-usage.mjs --strict && node scripts/check-design-token-hygiene.mjs --strict\n\n[design-system] reachable files: 91\n[design-system] reachable pages: 71\n[design-system] reachable components: 1\n[design-system] usage checks passed.\n[token-hygiene] scanned 4767 lines across 11 page CSS files\n[token-hygiene] checks passed.",
-      "stderr": ""
+      "stdout": "> poseidon-prototype@0.1.0 check:design-system\n> npm run check:design-system:strict\n\n\n> poseidon-prototype@0.1.0 check:design-system:strict\n> node scripts/check-design-system-usage.mjs --strict && node scripts/check-design-token-hygiene.mjs --strict\n\n[design-system] reachable files: 91\n[design-system] reachable pages: 71\n[design-system] reachable components: 8\n[design-system] usage checks passed.\n[token-hygiene] scanned 4767 lines across 11 page CSS files\n[token-hygiene] checks passed.",
+      "stderr": "",
+      "stdout_truncated": false,
+      "stderr_truncated": false
     },
     {
       "cmd": "npm run check:motion-policy",
       "ok": true,
       "status": 0,
       "stdout": "> poseidon-prototype@0.1.0 check:motion-policy\n> node scripts/check-motion-policy.mjs\n\nMotion policy checks passed.",
-      "stderr": ""
+      "stderr": "",
+      "stdout_truncated": false,
+      "stderr_truncated": false
     },
     {
       "cmd": "npm run check:a11y-structure",
       "ok": true,
       "status": 0,
       "stdout": "> poseidon-prototype@0.1.0 check:a11y-structure\n> node scripts/check-a11y-structure.mjs\n\nA11y structure checks passed.",
-      "stderr": ""
+      "stderr": "",
+      "stdout_truncated": false,
+      "stderr_truncated": false
     },
     {
       "cmd": "npm run check:cta-hierarchy",
       "ok": true,
       "status": 0,
       "stdout": "> poseidon-prototype@0.1.0 check:cta-hierarchy\n> node scripts/check-cta-hierarchy.mjs\n\nCTA hierarchy checks passed.",
-      "stderr": ""
+      "stderr": "",
+      "stdout_truncated": false,
+      "stderr_truncated": false
     },
     {
       "cmd": "npm run check:contrast-budget",
       "ok": true,
       "status": 0,
       "stdout": "> poseidon-prototype@0.1.0 check:contrast-budget\n> node scripts/check-contrast-budget.mjs\n\nContrast budget checks passed.",
-      "stderr": ""
+      "stderr": "",
+      "stdout_truncated": false,
+      "stderr_truncated": false
     },
     {
       "cmd": "npm run build",
       "ok": true,
       "status": 0,
-      "stdout": "                         11.82 kB │ gzip:   3.56 kB\ndist/assets/InsightsFeed-CEG3nT0F.js                     12.50 kB │ gzip:   3.75 kB\ndist/assets/GovernRegistry-LilGtYru.js                   12.72 kB │ gzip:   3.10 kB\ndist/assets/GovernPolicy-DMYl1EoY.js                     12.98 kB │ gzip:   3.77 kB\ndist/assets/AlertsHub-DThgUAE9.js                        13.01 kB │ gzip:   3.66 kB\ndist/assets/GrowScenarios-KALxwzx2.js                    14.07 kB │ gzip:   3.80 kB\ndist/assets/ProtectAlertDetail-eV1woD67.js               14.31 kB │ gzip:   3.88 kB\ndist/assets/Landing-XTMMO3F3.js                          14.98 kB │ gzip:   4.41 kB\ndist/assets/ProtectDispute-DyhpFU5s.js                   15.63 kB │ gzip:   4.02 kB\ndist/assets/aurora-pulse-D7nIGrsp.js                     15.70 kB │ gzip:   5.08 kB\ndist/assets/GrowRecommendations-iCFia7LY.js              16.21 kB │ gzip:   4.57 kB\ndist/assets/GovernAuditLedger-6moAc8N8.js                17.03 kB │ gzip:   4.44 kB\ndist/assets/ExecuteApproval-DnDAExsj.js                  17.66 kB │ gzip:   4.84 kB\ndist/assets/Grow-CeaT8yo5.js                             18.95 kB │ gzip:   5.25 kB\ndist/assets/Govern-CvEGMzy2.js                           19.88 kB │ gzip:   5.20 kB\ndist/assets/Execute-t2mG1xuw.js                          21.34 kB │ gzip:   5.59 kB\ndist/assets/Protect-BI4AX_9Q.js                          23.26 kB │ gzip:   5.86 kB\ndist/assets/vendor-icons-JZdGuLlR.js                     23.37 kB │ gzip:   8.05 kB\ndist/assets/Dashboard-CUQIN5RK.js                        24.35 kB │ gzip:   6.69 kB\ndist/assets/index-h92niCpJ.js                            41.25 kB │ gzip:  11.20 kB\ndist/assets/vendor-motion-D80q4JVV.js                   120.55 kB │ gzip:  38.50 kB\ndist/assets/vendor-react-B1hMqR7n.js                    193.09 kB │ gzip:  60.53 kB\ndist/assets/vendor-charts-C6qbOVty.js                   326.09 kB │ gzip:  85.09 kB\ndist/assets/vendor-runtime-Da4uX0Ty.js                  550.08 kB │ gzip: 164.76 kB\n✓ built in 4.04s",
-      "stderr": ""
+      "stdout": "> poseidon-prototype@0.1.0 build\n> vite build\n\nvite v7.3.1 building client environment for production...\ntransforming...\n✓ 2917 modules transformed.\nrendering chunks...\ncomputing gzip size...\ndist/index.html                                           4.05 kB │ gzip:   1.44 kB\ndist/assets/pdf.worker.min-wgc6bjNh.mjs               1,078.61 kB\ndist/assets/index-DdcilKov.css                          175.34 kB │ gzip:  26.30 kB\ndist/assets/use-page-title-B8AmhK8W.js                    0.19 kB │ gzip:   0.16 kB\ndist/assets/useViewMode-BMPpQyIW.js                       0.35 kB │ gzip:   0.28 kB\ndist/assets/useReducedMotionSafe-JlPTm79g.js              0.38 kB │ gzip:   0.26 kB\ndist/assets/motion-presets-DlDlocmN.js                    0.94 kB │ gzip:   0.36 kB\ndist/assets/governance-meta-CneSn5Is.js                   1.82 kB │ gzip:   0.57 kB\ndist/assets/ComingSoon-BAfBtn_e.js                        1.82 kB │ gzip:   0.86 kB\ndist/assets/DesignSystemTokensSpacing-D1BFgVLn.js         2.00 kB │ gzip:   0.84 kB\ndist/assets/DesignSystemTokens-BgpobOX4.js                2.03 kB │ gzip:   0.89 kB\ndist/assets/DesignSystemTokensTypography-CK5gIAh6.js      2.13 kB │ gzip:   0.83 kB\ndist/assets/DesignSystemTokensColors-BVDX3-xm.js          2.67 kB │ gzip:   1.02 kB\ndist/assets/DesignSystemLanding-sGKHZB_D.js               2.74 kB │ gzip:   1.21 kB\ndist/assets/DeckViewer-B0WA_DZ1.js                        2.97 kB │ gzip:   1.35 kB\ndist/assets/DesignSystemTokensMotion-CuVCn4ty.js          3.17 kB │ gzip:   1.15 kB\ndist/assets/DesignSystemComponents-pp5UY9tA.js            3.24 kB │ gzip:   1.47 kB\ndist/assets/Recovery-D5n3_VI_.js                          3.98 kB │ gzip:   1.44 kB\ndist/assets/OnboardingGoals-CoO8m3aX.js                   4.83 kB │ gzip:   1.85 kB\ndist/assets/OnboardingComplete-DZcf7ccv.js                5.00 kB │ gzip:   1.73 kB\ndist/assets/Onboarding-ecW0uU6U.js                        5.49 kB │ gzip:   2.08 kB\ndist/assets/OnboardingConsent-CdEuK21R.js                 6.13 kB │ gzip:   2.29 kB\ndist/assets/Login-BxeBWZzG.js                             6.61 kB │ gzip:   2.36 kB\ndist/assets/TrustSecurity-Bjqv2Or9.js                     9.82 kB │ gzip:   3.02 kB\ndist/assets/Notifications-CLPKnJXv.js                     9.92 kB │ gzip:   3.23 kB\ndist/assets/GovernAuditDetail-PdU042W5.js                 9.94 kB │ gzip:   2.75 kB\ndist/assets/SettingsAI-B-iSYSvO.js                       10.24 kB │ gzip:   3.02 kB\ndist/assets/GovernTrust-DgI0Dpqu.js                      10.26 kB │ gzip:   3.00 kB\ndist/assets/GrowGoalDetail-Ci1Y5f3i.js                   10.74 kB │ gzip:   3.02 kB\ndist/assets/GovernOversight-DRLU01K4.js                  10.86 kB │ gzip:   3.13 kB\ndist/assets/SettingsRights-D5-EdJof.js                   10.90 kB │ gzip:   2.82 kB\ndist/assets/ActivityTimelinePage-BJ4cfHrA.js             10.96 kB │ gzip:   3.30 kB\ndist/assets/HelpSupport-DRNUW27x.js                      11.08 kB │ gzip:   3.65 kB\ndist/assets/SettingsIntegrations-Cw2gQZzU.js             11.12 kB │ gzip:   2.81 kB\ndist/assets/Pricing-Dh2NmzDe.js                          11.16 kB │ gzip:   2.98 kB\ndist/assets/Settings-DbyYIjyt.js                         11.55 kB │ gzip:   3.38 kB\ndist/assets/ExecuteHistory-lrpHSpip.js                   11.62 kB │ gzip:   3.37 kB\ndist/assets/Signup-gpCAfclm.js                           11.82 kB │ gzip:   3.56 kB\ndist/assets/GovernRegistry-BCK3oeWi.js                   12.03 kB │ gzip:   2.95 kB\ndist/assets/GovernPolicy-ChYlMbh3.js                     12.30 kB │ gzip:   3.63 kB\ndist/assets/InsightsFeed-MErkRWoN.js                     12.50 kB │ gzip:   3.75 kB\ndist/assets/AlertsHub-BgXgATFy.js                        13.01 kB │ gzip:   3.66 kB\ndist/assets/GrowScenarios-B5LE5t9q.js                    14.08 kB │ gzip:   3.81 kB\ndist/assets/aurora-pulse-BUvDO6Od.js                     14.56 kB │ gzip:   4.70 kB\ndist/assets/ProtectAlertDetail-FVriIwuQ.js               14.66 kB │ gzip:   3.90 kB\ndist/assets/Landing-erRqSa_r.js                          14.86 kB │ gzip:   4.34 kB\ndist/assets/GrowRecommendations-DWrLw-M2.js              15.52 kB │ gzip:   4.42 kB\ndist/assets/ProtectDispute-HbItuzvD.js                   15.63 kB │ gzip:   4.02 kB\ndist/assets/GovernAuditLedger-C20Kr4vv.js                17.18 kB │ gzip:   4.44 kB\ndist/assets/ExecuteApproval-Dq-U3cQt.js                  17.76 kB │ gzip:   4.84 kB\ndist/assets/Grow-BYxLAHZZ.js                             19.13 kB │ gzip:   5.27 kB\ndist/assets/Govern-BdBWuWi-.js                           20.03 kB │ gzip:   5.21 kB\ndist/assets/Execute-Wy3_nSvR.js                          21.71 kB │ gzip:   5.61 kB\ndist/assets/vendor-icons-JZdGuLlR.js                     23.37 kB │ gzip:   8.05 kB\ndist/assets/Protect-Cu8407yb.js                          23.44 kB │ gzip:   5.86 kB\ndist/assets/Dashboard-BuvFInWE.js                        23.62 kB │ gzip:   6.55 kB\ndist/assets/index-C9ss7FWw.js                            42.22 kB │ gzip:  11.54 kB\ndist/assets/vendor-motion-D80q4JVV.js                   120.55 kB │ gzip:  38.50 kB\ndist/assets/vendor-react-B1hMqR7n.js                    193.09 kB │ gzip:  60.53 kB\ndist/assets/vendor-charts-C6qbOVty.js                   326.09 kB │ gzip:  85.09 kB\ndist/assets/vendor-runtime-Da4uX0Ty.js                  550.08 kB │ gzip: 164.76 kB\n✓ built in 4.07s",
+      "stderr": "",
+      "stdout_truncated": false,
+      "stderr_truncated": false
     },
     {
       "cmd": "npm run check:bundle-budget",
       "ok": true,
       "status": 0,
-      "stdout": "> poseidon-prototype@0.1.0 check:bundle-budget\n> node scripts/check-bundle-budget.mjs\n\n{\n  \"css\": {\n    \"raw\": 166048,\n    \"gzip\": 24584\n  },\n  \"indexJs\": {\n    \"file\": \"index-h92niCpJ.js\",\n    \"raw\": 41250,\n    \"gzip\": 11182\n  },\n  \"budgets\": {\n    \"cssRawMax\": 195000,\n    \"cssGzipMax\": 34000,\n    \"indexJsRawMax\": 130000,\n    \"indexJsGzipMax\": 45000\n  }\n}\n\nBundle budget checks passed.",
-      "stderr": ""
+      "stdout": "> poseidon-prototype@0.1.0 check:bundle-budget\n> node scripts/check-bundle-budget.mjs\n\n{\n  \"css\": {\n    \"raw\": 175344,\n    \"gzip\": 25963\n  },\n  \"indexJs\": {\n    \"file\": \"index-C9ss7FWw.js\",\n    \"raw\": 42222,\n    \"gzip\": 11523\n  },\n  \"budgets\": {\n    \"cssRawMax\": 195000,\n    \"cssGzipMax\": 34000,\n    \"indexJsRawMax\": 130000,\n    \"indexJsGzipMax\": 45000\n  }\n}\n\nBundle budget checks passed.",
+      "stderr": "",
+      "stdout_truncated": false,
+      "stderr_truncated": false
     },
     {
       "cmd": "npm run verify:pwa",
       "ok": true,
       "status": 0,
       "stdout": "> poseidon-prototype@0.1.0 verify:pwa\n> node scripts/verify-pwa.mjs\n\nPWA verification passed.",
-      "stderr": ""
+      "stderr": "",
+      "stdout_truncated": false,
+      "stderr_truncated": false
     }
   ]
 }

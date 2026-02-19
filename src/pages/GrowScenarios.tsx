@@ -1,332 +1,276 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { ArrowLeft, GitBranch, Zap } from 'lucide-react';
-import { Link } from '../router';
-import { GovernFooter, ForecastBand, AuroraPulse } from '@/components/poseidon'
-import { GOVERNANCE_META } from '@/lib/governance-meta'
-import { usePageTitle } from '../hooks/use-page-title';
-import { fadeUp, staggerContainer as stagger } from '@/lib/motion-presets';
+import { useState } from "react"
+import { motion } from "framer-motion"
+import { Link } from '@/router'
+import { TrendingUp, ArrowRight, ArrowLeft, Scale, Check, Zap } from "lucide-react"
+import { ForecastBand } from "@/components/poseidon/forecast-band"
+import type { ForecastPoint } from "@/components/poseidon/forecast-band"
 
-/* ═══════════════════════════════════════════
-   DATA
-   ═══════════════════════════════════════════ */
-
-const scenarios = [
-  { id: 'A', name: 'Aggressive Savings', income: '+0%', expense: '-20%', projectedBalance: '$48,200', delta: '+$8,400', runway: '+42 days', confidence: 82, risk: 'Medium', riskColor: 'text-amber-400', riskBg: 'bg-amber-500/20' },
-  { id: 'B', name: 'Moderate Growth', income: '+10%', expense: '-5%', projectedBalance: '$44,600', delta: '+$4,800', runway: '+26 days', confidence: 91, risk: 'Low', riskColor: 'text-emerald-400', riskBg: 'bg-emerald-500/20' },
-  { id: 'C', name: 'Conservative Hold', income: '+0%', expense: '+0%', projectedBalance: '$39,800', delta: '—', runway: 'Baseline', confidence: 96, risk: 'Minimal', riskColor: 'text-blue-400', riskBg: 'bg-blue-500/20' },
-];
-
-const scenarioFactors = [
-  { label: 'Income stability', contribution: 0.94 },
-  { label: 'Expense variance', contribution: 0.78 },
-  { label: 'Savings rate impact', contribution: 0.85 },
-  { label: 'Market conditions', contribution: 0.62 },
-  { label: 'Seasonal patterns', contribution: -0.15 },
-];
-
-const forecastData: { x: number; median: number; low: number; high: number }[] = [
-  { x: 0, median: 100, low: 95, high: 105 },
-  { x: 1, median: 108, low: 98, high: 118 },
-  { x: 2, median: 115, low: 100, high: 132 },
-  { x: 3, median: 124, low: 104, high: 148 },
-  { x: 4, median: 132, low: 108, high: 162 },
-  { x: 5, median: 141, low: 112, high: 178 },
-  { x: 6, median: 150, low: 115, high: 195 },
-  { x: 7, median: 158, low: 118, high: 210 },
-];
-
-const horizonOptions = ['30d', '90d', '1yr'] as const;
-
-
-/* ═══════════════════════════════════════════
-   COMPONENT
-   ═══════════════════════════════════════════ */
-
-export function GrowScenarios() {
-  usePageTitle('Growth Scenarios');
-  const [activeScenario, setActiveScenario] = useState('B');
-  const [horizon, setHorizon] = useState<(typeof horizonOptions)[number]>('1yr');
-  const [incomeAdj, setIncomeAdj] = useState(10);
-  const [expenseAdj, setExpenseAdj] = useState(-5);
-  const [_dirty, setDirty] = useState(false);
-
-  const selected = scenarios.find((s) => s.id === activeScenario) ?? scenarios[1];
-
-  return (
-    <div className="relative min-h-screen w-full" style={{ background: '#0B1221' }}>
-      <AuroraPulse color="var(--engine-grow)" intensity="subtle" />
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-xl focus:px-4 focus:py-2 focus:text-sm focus:font-semibold"
-        style={{ background: 'var(--engine-grow)', color: '#ffffff' }}
-      >
-        Skip to main content
-      </a>
-
-      <nav
-        className="sticky top-0 z-50 backdrop-blur-xl border-b border-white/[0.06]"
-        style={{ background: 'rgba(11,18,33,0.8)' }}
-        aria-label="Breadcrumb"
-      >
-        <div className="mx-auto px-4 md:px-6 lg:px-8 h-14 flex items-center gap-2" style={{ maxWidth: '1280px' }}>
-          <Link
-            to="/grow"
-            className="flex items-center gap-1.5 text-sm font-medium hover:opacity-80 transition-opacity"
-            style={{ color: 'var(--engine-grow)' }}
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Grow
-          </Link>
-          <span className="text-white/20">/</span>
-          <span className="text-sm text-white/50">Scenarios</span>
-        </div>
-      </nav>
-
-      <motion.div
-        id="main-content"
-        className="mx-auto flex flex-col gap-6 md:gap-8 px-4 py-6 md:px-6 md:py-8 lg:px-8"
-        style={{ maxWidth: '1280px' }}
-        variants={stagger}
-        initial="hidden"
-        animate="visible"
-        role="main"
-      >
-        {/* Hero */}
-        <motion.div variants={fadeUp} className="flex flex-col gap-1">
-          <div className="flex items-center gap-2 mb-1">
-            <GitBranch className="h-5 w-5" style={{ color: 'var(--engine-grow)' }} />
-            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--engine-grow)' }}>
-              Grow · Scenarios
-            </span>
-          </div>
-          <h1 className="text-2xl md:text-3xl font-bold text-white">Financial Scenarios</h1>
-          <p className="text-sm text-slate-400">Model financial outcomes under different assumptions — 10,000 Monte Carlo simulations.</p>
-        </motion.div>
-
-        {/* KPI bar */}
-        <motion.div variants={fadeUp}>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { label: 'Scenarios', value: '3', color: 'var(--engine-grow)' },
-              { label: 'Best delta', value: '+$8.4k', color: 'var(--engine-protect)' },
-              { label: 'Avg confidence', value: '0.90', color: 'var(--engine-dashboard)' },
-              { label: 'Horizon', value: horizon, color: 'var(--engine-govern)' },
-            ].map((kpi) => (
-              <div key={kpi.label} className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
-                <p className="text-xs text-white/40 mb-1">{kpi.label}</p>
-                <p className="text-2xl font-bold" style={{ color: kpi.color }}>{kpi.value}</p>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* 2-column layout */}
-        <div className="flex flex-col lg:flex-row gap-6">
-          {/* Main feed */}
-          <motion.div variants={fadeUp} className="flex-1 min-w-0 lg:w-2/3 flex flex-col gap-4">
-            {/* Scenario Controls */}
-            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6">
-              <h2 className="text-sm font-semibold text-white mb-4">Scenario Controls</h2>
-
-              <div className="space-y-5">
-                <div>
-                  <label className="text-xs text-white/50 uppercase tracking-wider block mb-1">Scenario Name</label>
-                  <input
-                    type="text"
-                    defaultValue={selected.name}
-                    className="w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:ring-1"
-                    style={{ '--tw-ring-color': 'var(--engine-grow)' } as React.CSSProperties}
-                  />
-                </div>
-
-                <div>
-                  <span className="text-xs text-white/50 uppercase tracking-wider block mb-1">
-                    Income Adjustment: {incomeAdj > 0 ? '+' : ''}{incomeAdj}%
-                  </span>
-                  <input
-                    type="range" min={-50} max={100} value={incomeAdj}
-                    onChange={(e) => { setIncomeAdj(Number(e.target.value)); setDirty(true); }}
-                    className="w-full cursor-pointer accent-violet-500"
-                  />
-                  <div className="flex justify-between text-[10px] text-white/30"><span>-50%</span><span>+100%</span></div>
-                </div>
-
-                <div>
-                  <span className="text-xs text-white/50 uppercase tracking-wider block mb-1">
-                    Expense Adjustment: {expenseAdj > 0 ? '+' : ''}{expenseAdj}%
-                  </span>
-                  <input
-                    type="range" min={-50} max={50} value={expenseAdj}
-                    onChange={(e) => { setExpenseAdj(Number(e.target.value)); setDirty(true); }}
-                    className="w-full cursor-pointer accent-violet-500"
-                  />
-                  <div className="flex justify-between text-[10px] text-white/30"><span>-50%</span><span>+50%</span></div>
-                </div>
-
-                <div>
-                  <span className="text-xs text-white/50 uppercase tracking-wider block mb-2">Forecast Horizon</span>
-                  <div className="flex gap-2">
-                    {horizonOptions.map((h) => (
-                      <button
-                        key={h}
-                        onClick={() => setHorizon(h)}
-                        className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors border ${horizon === h ? 'text-violet-300 border-violet-500/40' : 'text-white/50 border-white/10 bg-white/5 hover:bg-white/10'}`}
-                        style={horizon === h ? { background: 'rgba(139,92,246,0.15)' } : {}}
-                      >
-                        {h}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="flex gap-3 pt-2">
-                  <button
-                    className="flex-1 rounded-xl text-white text-sm font-semibold py-2.5 hover:opacity-90 transition-opacity"
-                    style={{ background: 'var(--engine-grow)' }}
-                  >
-                    Run Scenario
-                  </button>
-                  <button
-                    onClick={() => { setIncomeAdj(10); setExpenseAdj(-5); setDirty(false); }}
-                    className="rounded-xl bg-white/5 border border-white/10 text-white/60 text-sm px-4 py-2.5 hover:bg-white/10 transition-colors"
-                  >
-                    Reset
-                  </button>
-                </div>
-              </div>
-              <p className="text-xs text-white/30 mt-3">10,000 Monte Carlo simulations · Confidence bands from historical variance · ScenarioEngine v1.4</p>
-            </div>
-
-            {/* Forecast visualization */}
-            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6">
-              <h2 className="text-sm font-semibold text-white mb-4">Forecast Projection ({horizon})</h2>
-              <div className="h-48 rounded-xl flex flex-col items-center justify-center gap-2" style={{ background: 'linear-gradient(to bottom, rgba(139,92,246,0.1), transparent)', border: '1px solid rgba(255,255,255,0.05)' }}>
-                <ForecastBand data={forecastData} width={320} height={120} engine="grow" className="mx-auto" />
-                <p className="text-2xl font-bold" style={{ color: 'var(--engine-grow)' }}>{selected.projectedBalance}</p>
-              </div>
-              <p className="text-xs text-white/30 mt-2">Projected balance: {selected.projectedBalance} · Delta: {selected.delta} · Horizon: {horizon}</p>
-            </div>
-
-            {/* Results comparison */}
-            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6">
-              <h2 className="text-sm font-semibold text-white mb-4">Results Comparison</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4" style={{ borderLeftWidth: 2, borderLeftColor: 'rgba(255,255,255,0.2)' }}>
-                  <p className="text-xs text-white/50 uppercase tracking-wider">Baseline</p>
-                  <p className="text-2xl font-bold text-white mt-1">$39,800</p>
-                  <div className="mt-3 space-y-1 text-xs text-white/50">
-                    <p>Delta: <span className="text-white/70">—</span></p>
-                    <p>Runway: <span className="text-white/70">Baseline</span></p>
-                    <p>Confidence: <span className="text-white/70">96%</span></p>
-                  </div>
-                </div>
-                <div className="rounded-xl border border-violet-500/30 bg-violet-500/5 p-4" style={{ borderLeftWidth: 2, borderLeftColor: 'var(--engine-grow)' }}>
-                  <p className="text-xs uppercase tracking-wider" style={{ color: 'var(--engine-grow)' }}>{selected.name}</p>
-                  <p className="text-2xl font-bold text-white mt-1">{selected.projectedBalance}</p>
-                  <div className="mt-3 space-y-1 text-xs text-white/50">
-                    <p>Delta: <span className="text-violet-300">{selected.delta}</span></p>
-                    <p>Runway: <span className="text-violet-300">{selected.runway}</span></p>
-                    <p>Confidence: <span className="text-violet-300">{selected.confidence}%</span></p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* AI recommendation */}
-            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 md:p-6" style={{ borderLeftWidth: 2, borderLeftColor: 'var(--engine-grow)' }}>
-              <div className="flex items-start gap-3 mb-3">
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold" style={{ background: 'rgba(139,92,246,0.2)', color: 'var(--engine-grow)' }}>AI</div>
-                <div>
-                  <p className="text-sm text-white">Scenario B is achievable with <span className="font-semibold" style={{ color: 'var(--engine-grow)' }}>91% probability</span>.</p>
-                  <p className="text-xs text-white/50 mt-1">Based on your income stability and historical expense patterns, moderate growth has the best risk-adjusted return.</p>
-                </div>
-              </div>
-              <p className="text-xs text-white/30 mt-2 mb-4">91% achievability · Historical spending patterns + income stability · Monte Carlo simulation</p>
-              <div className="flex gap-3">
-                <Link
-                  to="/execute"
-                  className="px-4 py-2 rounded-lg text-white text-xs font-semibold hover:opacity-90 transition-opacity"
-                  style={{ background: 'var(--engine-grow)' }}
-                >
-                  Send to Execute
-                </Link>
-                <button className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white/60 text-xs hover:bg-white/10 transition-colors">Save Scenario</button>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Side rail */}
-          <aside className="w-full lg:w-72 shrink-0 flex flex-col gap-4" aria-label="Scenarios sidebar">
-            {/* Scenario selector */}
-            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
-              <h3 className="text-xs font-semibold text-white/70 uppercase tracking-wider mb-3">Saved Scenarios</h3>
-              <div className="space-y-2">
-                {scenarios.map((s) => (
-                  <button
-                    key={s.id}
-                    onClick={() => setActiveScenario(s.id)}
-                    className={`w-full text-left rounded-xl p-3 transition-colors border ${activeScenario === s.id ? 'border-violet-500/30' : 'bg-white/5 border-white/10 hover:bg-white/10'}`}
-                    style={activeScenario === s.id ? { background: 'rgba(139,92,246,0.08)' } : {}}
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-white">{s.name}</span>
-                      <span className={`text-xs px-2 py-0.5 rounded-full ${s.riskBg} ${s.riskColor}`}>{s.risk}</span>
-                    </div>
-                    <p className="text-xs text-white/40 mt-1">Delta: {s.delta} · Conf: {s.confidence}%</p>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Confidence ring */}
-            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 flex flex-col items-center">
-              <div className="relative" aria-label={`Scenario confidence: ${selected.confidence}%`}>
-                <svg width="80" height="80" viewBox="0 0 80 80" aria-hidden="true">
-                  <circle cx="40" cy="40" r="32" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
-                  <circle
-                    cx="40" cy="40" r="32" fill="none" stroke="var(--engine-grow)" strokeWidth="6"
-                    strokeLinecap="round"
-                    strokeDasharray={`${(selected.confidence / 100) * 2 * Math.PI * 32} ${2 * Math.PI * 32}`}
-                    transform="rotate(-90 40 40)"
-                  />
-                </svg>
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-lg font-bold text-white">{selected.confidence}%</span>
-                </div>
-              </div>
-              <p className="text-xs text-white/50 mt-2">Confidence</p>
-              <p className="text-[10px] text-white/30 text-center">Monte Carlo confidence for {selected.name}</p>
-            </div>
-
-            {/* Projection factors */}
-            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
-              <div className="flex items-center gap-2 mb-3">
-                <Zap className="h-4 w-4" style={{ color: 'var(--engine-grow)' }} />
-                <h3 className="text-xs font-semibold text-white/70 uppercase tracking-wider">Projection Factors</h3>
-              </div>
-              <div className="space-y-2.5">
-                {scenarioFactors.map((f) => (
-                  <div key={f.label} className="flex items-center gap-2">
-                    <span className="text-xs text-white/50 w-28 shrink-0 truncate">{f.label}</span>
-                    <div className="flex-1 h-1.5 rounded-full bg-white/10">
-                      <div
-                        className="h-full rounded-full"
-                        style={{ width: `${Math.abs(f.contribution) * 100}%`, background: f.contribution > 0 ? 'var(--engine-grow)' : 'var(--state-critical)', opacity: 0.7 }}
-                      />
-                    </div>
-                    <span className="text-xs text-white/40 w-8 text-right">{f.contribution > 0 ? '+' : ''}{f.contribution.toFixed(2)}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </aside>
-        </div>
-
-        <GovernFooter auditId={GOVERNANCE_META['/grow/scenarios'].auditId} pageContext={GOVERNANCE_META['/grow/scenarios'].pageContext} />
-      </motion.div>
-    </div>
-  );
+/* ── Motion presets ── */
+const spring = { type: "spring" as const, stiffness: 380, damping: 30 }
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: spring },
+}
+const staggerContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1 } },
 }
 
-export default GrowScenarios;
+/* ── Cross-thread ── */
+const EMERGENCY_FUND_PROGRESS = 73
+
+/* ── AuroraPulse ── */
+function AuroraPulse({ color }: { color: string }) {
+  return (
+    <div
+      className="pointer-events-none absolute inset-0"
+      aria-hidden="true"
+      style={{
+        background: `radial-gradient(70% 50% at 50% 0%, ${color}0F, transparent), radial-gradient(40% 40% at 80% 20%, ${color}08, transparent)`,
+        animation: "aurora-drift 8s ease-in-out infinite alternate",
+      }}
+    />
+  )
+}
+
+/* ── GovernFooter ── */
+function GovernFooter({ auditId, pageContext }: { auditId: string; pageContext: string }) {
+  return (
+    <footer
+      className="mt-8 flex flex-col gap-3 md:flex-row md:items-center md:justify-between rounded-2xl border border-white/[0.06] px-4 py-3 md:px-6 md:py-4"
+      style={{ background: "rgba(255,255,255,0.03)" }}
+      role="contentinfo"
+      aria-label="Governance verification footer"
+    >
+      <div className="flex items-center gap-3">
+        <Scale size={14} style={{ color: "var(--engine-govern)" }} />
+        <span className="text-xs" style={{ color: "#94A3B8" }}>
+          Every decision on this page is logged to the immutable audit ledger.
+        </span>
+      </div>
+      <div className="flex items-center gap-3">
+        <span className="text-[10px] font-mono uppercase tracking-wider" style={{ color: "#64748B" }}>
+          {auditId}
+        </span>
+        <Link
+          to="/govern/audit"
+          className="text-[10px] font-semibold uppercase tracking-wider"
+          style={{ color: "var(--engine-govern)" }}
+        >
+          Open ledger
+        </Link>
+      </div>
+    </footer>
+  )
+}
+
+/* ── Scenario definitions ── */
+interface Scenario {
+  id: string
+  name: string
+  desc: string
+  monthlySave: number
+  monthsToGoal: number
+  confidence: number
+  data: ForecastPoint[]
+}
+
+const BASE_DATA = (factor: number): ForecastPoint[] =>
+  Array.from({ length: 12 }, (_, i) => ({
+    x: i,
+    median: 7300 + i * factor,
+    low: 7300 + i * (factor * 0.7),
+    high: 7300 + i * (factor * 1.3),
+  }))
+
+const SCENARIOS: Scenario[] = [
+  {
+    id: "conservative",
+    name: "Conservative",
+    desc: "Keep current pace. Lower risk, longer timeline.",
+    monthlySave: 420,
+    monthsToGoal: 7,
+    confidence: 0.92,
+    data: BASE_DATA(250),
+  },
+  {
+    id: "moderate",
+    name: "Moderate boost",
+    desc: "Increase monthly by $60. Balanced risk-reward.",
+    monthlySave: 480,
+    monthsToGoal: 5,
+    confidence: 0.87,
+    data: BASE_DATA(320),
+  },
+  {
+    id: "aggressive",
+    name: "Aggressive",
+    desc: "Maximize contributions. Fastest path, tighter budget.",
+    monthlySave: 600,
+    monthsToGoal: 4,
+    confidence: 0.79,
+    data: BASE_DATA(420),
+  },
+]
+
+export default function GrowScenariosPage() {
+  const [selected, setSelected] = useState("moderate")
+  const activeScenario = SCENARIOS.find((s) => s.id === selected) ?? SCENARIOS[1]
+
+  return (
+    <div className="relative">
+      <AuroraPulse color="var(--engine-grow)" />
+
+      <motion.main
+        id="main-content"
+        className="command-center__main"
+        initial="hidden"
+        animate="visible"
+        variants={staggerContainer}
+      >
+        {/* ── P1: Scenario Selection ── */}
+        <motion.section variants={staggerContainer} className="px-4 md:px-6 lg:px-8">
+          <motion.div variants={fadeUp} className="flex items-center gap-2 mb-4">
+            <Link to="/grow" className="flex items-center gap-1 text-xs font-medium" style={{ color: "#64748B" }}>
+              <ArrowLeft size={14} />
+              Back to Grow
+            </Link>
+          </motion.div>
+
+          <motion.div variants={fadeUp} className="hero-kicker" style={{ borderColor: "rgba(139,92,246,0.2)", background: "rgba(139,92,246,0.06)", color: "var(--engine-grow)" }}>
+            <span className="hero-kicker__icon"><TrendingUp size={14} /></span>
+            Scenario Comparison
+          </motion.div>
+
+          <motion.h1 variants={fadeUp} className="hero-headline mt-3">
+            Compare growth paths
+          </motion.h1>
+          <motion.p variants={fadeUp} className="hero-subline">
+            Emergency fund at {EMERGENCY_FUND_PROGRESS}%. Choose a scenario to see projected outcomes.
+          </motion.p>
+        </motion.section>
+
+        {/* ── Scenario cards ── */}
+        <motion.section
+          variants={staggerContainer}
+          className="grid grid-cols-1 md:grid-cols-3 gap-4 px-4 md:px-6 lg:px-8"
+        >
+          {SCENARIOS.map((s) => (
+            <motion.button
+              key={s.id}
+              variants={fadeUp}
+              onClick={() => setSelected(s.id)}
+              className="glass-surface rounded-2xl p-5 text-left transition-all relative"
+              style={{
+                border: selected === s.id
+                  ? "1px solid rgba(139,92,246,0.4)"
+                  : "1px solid rgba(255,255,255,0.06)",
+              }}
+            >
+              {selected === s.id && (
+                <div
+                  className="absolute top-3 right-3 w-5 h-5 rounded-full flex items-center justify-center"
+                  style={{ background: "var(--engine-grow)" }}
+                >
+                  <Check size={12} style={{ color: "#0B1221" }} />
+                </div>
+              )}
+              <p className="text-sm font-bold mb-1" style={{ color: "#F1F5F9" }}>{s.name}</p>
+              <p className="text-xs mb-3" style={{ color: "#94A3B8" }}>{s.desc}</p>
+              <div className="flex flex-col gap-1.5">
+                <div className="flex items-center justify-between text-xs">
+                  <span style={{ color: "#64748B" }}>Monthly</span>
+                  <span className="font-mono font-semibold" style={{ color: "#F1F5F9" }}>${s.monthlySave}</span>
+                </div>
+                <div className="flex items-center justify-between text-xs">
+                  <span style={{ color: "#64748B" }}>Time to goal</span>
+                  <span className="font-mono font-semibold" style={{ color: "#F1F5F9" }}>{s.monthsToGoal} months</span>
+                </div>
+                <div className="flex items-center justify-between text-xs">
+                  <span style={{ color: "#64748B" }}>Confidence</span>
+                  <span className="font-mono font-semibold" style={{ color: s.confidence >= 0.9 ? "var(--state-healthy)" : s.confidence >= 0.85 ? "var(--state-warning)" : "#F1F5F9" }}>
+                    {(s.confidence * 100).toFixed(0)}%
+                  </span>
+                </div>
+              </div>
+            </motion.button>
+          ))}
+        </motion.section>
+
+        {/* ── P2: Comparative Forecast with ForecastBand ── */}
+        <motion.section variants={fadeUp} className="px-4 md:px-6 lg:px-8">
+          <div className="glass-surface rounded-2xl p-6">
+            <div className="flex items-center justify-between mb-4">
+              <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: "#64748B" }}>
+                {activeScenario.name} forecast
+              </p>
+              <span className="text-[10px] font-mono" style={{ color: "#94A3B8" }}>
+                Confidence: {(activeScenario.confidence * 100).toFixed(0)}%
+              </span>
+            </div>
+            <ForecastBand data={activeScenario.data} width={700} height={120} engine="grow" className="w-full" />
+            <div className="flex items-center justify-between mt-2">
+              <span className="text-[10px] font-mono" style={{ color: "#94A3B8" }}>Now ($7,300)</span>
+              <span className="text-[10px] font-mono" style={{ color: "#94A3B8" }}>
+                +12 months (${activeScenario.data[11].median.toLocaleString()} projected)
+              </span>
+            </div>
+          </div>
+        </motion.section>
+
+        {/* ── P3: Impact Summary + Send to Execute ── */}
+        <motion.section variants={fadeUp} className="px-4 md:px-6 lg:px-8">
+          <div className="glass-surface rounded-2xl p-5 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div>
+              <p className="text-sm font-semibold mb-1" style={{ color: "#F1F5F9" }}>
+                Ready to commit to {activeScenario.name.toLowerCase()}?
+              </p>
+              <p className="text-xs" style={{ color: "#94A3B8" }}>
+                This will queue a monthly transfer of ${activeScenario.monthlySave} for approval in the Execute engine.
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              <Link
+                to="/grow"
+                className="text-sm font-medium px-4 py-2 rounded-xl"
+                style={{ color: "#94A3B8" }}
+              >
+                Back to grow
+              </Link>
+              {/* CTA: Primary -> /execute */}
+              <Link
+                to="/execute"
+                className="inline-flex items-center gap-2 text-sm font-semibold px-5 py-2.5 rounded-xl"
+                style={{
+                  background: "linear-gradient(135deg, #8B5CF6, #A78BFA)",
+                  color: "#0B1221",
+                }}
+              >
+                Send to Execute
+                <Zap size={16} />
+              </Link>
+            </div>
+          </div>
+        </motion.section>
+
+        {/* ── P4: Sensitivity notes (Tier B: 4 block cap) ── */}
+        <motion.section variants={fadeUp} className="px-4 md:px-6 lg:px-8">
+          <div className="glass-surface rounded-2xl p-4">
+            <p className="text-[10px] font-mono uppercase tracking-wider mb-1" style={{ color: "#64748B" }}>
+              Sensitivity notes
+            </p>
+            <p className="text-xs leading-relaxed" style={{ color: "#94A3B8" }}>
+              Forecasts incorporate market volatility, expense variation, and income stability. Confidence bands widen at longer horizons.
+              All projections are re-evaluated weekly. Historical accuracy of this model: 89% within 5% margin.
+            </p>
+          </div>
+        </motion.section>
+
+        {/* GovernFooter */}
+        <div className="px-4 md:px-6 lg:px-8">
+          <GovernFooter auditId="GV-2026-0216-GROW-SC" pageContext="scenario analysis" />
+        </div>
+      </motion.main>
+    </div>
+  )
+}
