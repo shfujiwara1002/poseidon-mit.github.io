@@ -17,7 +17,7 @@ import {
 
 /* ── Motion presets ── */
 const spring = { type: "spring" as const, stiffness: 380, damping: 30 }
-const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: spring } }
+const fadeUp = { hidden: { opacity: 1, y: 0 }, visible: { opacity: 1, y: 0, transition: spring } }
 const staggerContainer = { hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }
 
 /* ── Cross-thread values ── */

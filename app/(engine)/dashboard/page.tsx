@@ -23,7 +23,7 @@ import { AreaChart, Area, ResponsiveContainer } from "recharts"
 /* ── Motion presets (same names/values as src/lib/motion-presets.ts) ── */
 const spring = { type: "spring" as const, stiffness: 380, damping: 30 }
 const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 1, y: 0 },
   visible: { opacity: 1, y: 0, transition: spring },
 }
 const staggerContainer = {
